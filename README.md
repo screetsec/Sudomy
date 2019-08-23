@@ -175,8 +175,8 @@ HTML Report Sample:
 
 
 ## Translations
-- Indonesia
-- English
+- [Indonesia](https://github.com/Screetsec/Sudomy/blob/master/doc/README_ID.md)
+- [English](https://github.com/Screetsec/Sudomy/blob/master/doc/README_EN.md)
 
 
 ## Changelog 
