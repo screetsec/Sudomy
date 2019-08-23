@@ -59,9 +59,10 @@ Asciinema :
 |  Tools | License   | Install |
 | ------------  | ------------ | ------------ |
 |  [Gobuster](https://github.com/OJ/gobuster) |  Apache License 2.0 |  go get github.com/OJ/gobuster |
+|  [jq](https://stedolan.github.io/jq/download/) | copyright (C) 2012 Stephen Dolan | apt-get install jq|
 |  [nmap](https://github.com/nmap/nmap) | GNU General Public License v2.0 | apt-get install nmap |
 
-*Sudomy* requires [Bash](https://www.gnu.org/software/bash/) to run .
+*Sudomy* requires [jq](https://stedolan.github.io/jq/download/) to run and pars .
 ```bash
 # Clone this repository
 git clone --recursive https://github.com/screetsec/Sudomy.git
