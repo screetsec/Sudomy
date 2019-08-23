@@ -47,11 +47,11 @@ The following are the results of passive enumeration DNS testing of *Sublist3r, 
 ## Installation
 *Sudomy* is currently extended with the following tools. Instructions on how to install & use the application are linked below.
 
-|  Tools | URL   | License   | Install |
-| ------------ | ------------ | ------------ | ------------ |
-|  Httprobe  | https://github.com/tomnomnom/httprobe  | go get -u github.com/tomnomnom/httprobe |
-|  Gobuster  |  https://github.com/OJ/gobuster |  Apache License 2.0 |  go get github.com/OJ/gobuster |
-| nmap | https://github.com/nmap/nmap | GNU General Public License v2.0 | apt-get install nmap
+|  Tools | License   | Install |
+| ------------  | ------------ | ------------ |
+|  [Httprobe](https://github.com/tomnomnom/httprobe)  | - | go get -u github.com/tomnomnom/httprobe |
+|  [Gobuster](https://github.com/OJ/gobuster) |  Apache License 2.0 |  go get github.com/OJ/gobuster |
+|  [nmap](https://github.com/nmap/nmap) | GNU General Public License v2.0 | apt-get install nmap |
 
 
 *Sudomy* requires [Node.js](https://nodejs.org/) v4+ to run.
