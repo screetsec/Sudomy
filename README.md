@@ -58,12 +58,10 @@ Asciinema :
 
 |  Tools | License   | Install |
 | ------------  | ------------ | ------------ |
-|  [Httprobe](https://github.com/tomnomnom/httprobe)  | - | go get -u github.com/tomnomnom/httprobe |
 |  [Gobuster](https://github.com/OJ/gobuster) |  Apache License 2.0 |  go get github.com/OJ/gobuster |
 |  [nmap](https://github.com/nmap/nmap) | GNU General Public License v2.0 | apt-get install nmap |
 
-
-*Sudomy* requires [Node.js](https://nodejs.org/) v4+ to run.
+*Sudomy* requires [Bash](https://www.gnu.org/software/bash/) to run.
 
 
 ## Usage
