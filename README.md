@@ -68,7 +68,36 @@ Asciinema :
 $ pip install -r requirements.txt
 ```
 ### Post Installation
-These Following source do not work without API Key
+API Key is needed before querying on third-party sites, such as ```Shodan, Censys, SecurityTrails, Virustotal,``` and ```BinaryEdge```. 
+- The API key setting can be done in sudomy.api file.
+```bash
+# Shodan
+# URL :  http://developer.shodan.io
+# Example :
+#      - SHODAN_API="VGhpc1M0bXBsZWwKVGhmcGxlbAo"
+
+SHODAN_API=""
+
+# Censys
+# URL : https://censys.io/register
+
+CENSYS_API=""
+CENSYS_SECRET=""
+
+# Virustotal
+# URL : https://www.virustotal.com/gui/
+VIRUSTOTAL=""
+
+
+# Binaryedge
+# URL : https://app.binaryedge.io/login
+BINARYEDGE=""
+
+
+# SecurityTrails
+# URL : https://securitytrails.com/
+SECURITY_TRAILS=""
+```
 
 ## Usage
 
@@ -116,7 +145,7 @@ To use one or more plugins:
 ```
 $ sudomy -pS -sC -sS -d hackerone.com
 ```
-To user all plugins: testing hos status, http/https status code, subdomain takeover and screenshots
+To user all plugins: testing host status, http/https status code, subdomain takeover and screenshots
 ```
 $ sudomy --all -d hackerone.com
 ```
@@ -138,10 +167,22 @@ HTML Report Sample:
 
 
 
-## License
+## Translations
+- Indonesia
+- English
 
 
+## Changelog 
+All notable changes to this project will be documented in this [file](https://github.com/Screetsec/sudomy/blob/master/CHANGELOG.md).
 
 
-**Free Software, Hell Yeah!**
+## Credits & Thanks
+- [Tom Hudson](https://github.com/tomnomnom/) - Tomonomnom 
+- [OJ Reeves](https://github.com/OJ/) - Gobuster
+- [Thomas D Maaaaz](https://github.com/maaaaz) - Webscreenshot
+- [Daniel Miessler](https://github.com/danielmiessler/) - SecList
+- [EdOverflow](https://github.com/EdOverflow/) - can-i-take-over-xyz
+- [NgeSEC](https://ngesec.id/) Community
+- [Gauli(dot)Net](https://gauli.net/)
+- [Bugcrowd](https://www.bugcrowd.com/) & [Hackerone](https://www.hackerone.com/)
 
