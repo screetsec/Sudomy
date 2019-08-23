@@ -76,9 +76,58 @@ $ NODE_ENV=production node app
 
 ## Usage
 
-```sh
-$ npm install --production
-$ NODE_ENV=production node app
+```text
+ ___         _ _  _           
+/ __|_  _ __| (_)(_)_ __ _  _ 
+\__ \ || / _  / __ \  ' \ || |
+|___/\_,_\__,_\____/_|_|_\_, |
+                          |__/ v{1.1.0#dev} by @screetsec 
+Sud⍥my - Fast Subdmain Enumeration and Analyzer      
+	 http://github.com/screetsec/sudomy
+
+Usage: sud⍥my.sh [-h [--help]] [-s[--source]][-d[--domain=]] 
+
+Example: sud⍥my.sh -d example.com   
+         sud⍥my.sh -s Shodan,VirusTotal -d example.com
+         sud⍥my.sh -pS -rS -sC -nT -sS -d example.com 
+
+Optional Arguments:
+  -a,  --all		 Running all Enumeration, no nmap & gobuster 
+  -b,  --bruteforce	 Bruteforce Subdomain Using Gobuster (Wordlist: ALL Top SecList DNS) 
+  -d,  --domain		 domain of the website to scan
+  -h,  --help		 show this help message
+  -o,  --html		 Make report output into HTML 
+  -s,  --source		 Use source for Enumerate Subdomain
+  -tO, --takeover	 Subdomain TakeOver Vulnerabilty Scanner
+  -pS, --ping-sweep	 Check live host using methode Ping Sweep
+  -rS, --resolver	 Convert domain lists to resolved IP lists without duplicates
+  -sC, --status-code Get status codes, response from domain list
+  -nT, --nmap-top	 Port scanning with top-ports using nmap from domain list
+  -sS, --screenshot	 Screenshots a list of website
+  -nP, --no-passive	 Do not perform passive subdomain enumeration 
+       --no-probe	 Do not perform httprobe 
+
+```
+To user all 16 Sources and Probe for working http or https servers:
+```
+./sudomy -d hackerone.com
+```
+To user one of more source:
+```
+./sudomy -s shodan,dnsdumpster,webarchive -d hackerone.com
+```
+To use one or more plugins:
+```
+./sudomy -pS -sC -sS -d hackerone.com
+```
+To user all plugins: testing hos status, http/https status code, subdomain takeover and screenshots
+```
+./sudomy --all -d hackerone.com
+```
+
+To create report in HTML Format
+```
+./sudomy --all -d hackerone.com --html
 ```
 
 
