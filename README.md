@@ -67,8 +67,9 @@ $ pip install -r requirements.txt
 ```
 *Sudomy* requires [jq](https://stedolan.github.io/jq/download/) to run and pars. Fore more information, Download and install jq [here](https://stedolan.github.io/jq/download/)
 
-```
-$ apt-get install jq
+```bash
+# Linux ( Debian )
+apt-get install jq
 ```
 
 Download Sudomy From Github
@@ -77,7 +78,7 @@ Download Sudomy From Github
 git clone --recursive https://github.com/screetsec/Sudomy.git
 
 # Go into the repository
-./Sudomy --help
+sudomy --help
 ```
 
 ### Post Installation
