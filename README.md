@@ -65,8 +65,8 @@ Asciinema :
 ```
 $ pip install -r requirements.txt
 ```
-*Sudomy* requires [jq](https://stedolan.github.io/jq/download/) to run and pars .
-Fore More information, Download and install jq [here](https://stedolan.github.io/jq/download/)
+*Sudomy* requires [jq](https://stedolan.github.io/jq/download/) to run and pars. Fore more information, Download and install jq [here](https://stedolan.github.io/jq/download/)
+
 ```
 $ apt-get install jq
 ```
