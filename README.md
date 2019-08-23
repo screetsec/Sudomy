@@ -63,6 +63,12 @@ Asciinema :
 
 *Sudomy* requires [Bash](https://www.gnu.org/software/bash/) to run.
 
+### Dependencies
+```
+$ pip install -r requirements.txt
+```
+### Post Installation
+These Following source do not work without API Key
 
 ## Usage
 
