@@ -110,24 +110,24 @@ Optional Arguments:
 ```
 To user all 16 Sources and Probe for working http or https servers:
 ```
-./sudomy -d hackerone.com
+$ sudomy -d hackerone.com
 ```
 To user one of more source:
 ```
-./sudomy -s shodan,dnsdumpster,webarchive -d hackerone.com
+$ sudomy -s shodan,dnsdumpster,webarchive -d hackerone.com
 ```
 To use one or more plugins:
 ```
-./sudomy -pS -sC -sS -d hackerone.com
+$ sudomy -pS -sC -sS -d hackerone.com
 ```
 To user all plugins: testing hos status, http/https status code, subdomain takeover and screenshots
 ```
-./sudomy --all -d hackerone.com
+$ sudomy --all -d hackerone.com
 ```
 
 To create report in HTML Format
 ```
-./sudomy --all -d hackerone.com --html
+$ sudomy --all -d hackerone.com --html
 ```
 
 
