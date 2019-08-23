@@ -65,9 +65,9 @@ Sudomy saat ini diperluas dengan alat-alat berikut. Petunjuk tentang cara mengin
 ```
 $ pip install -r requirements.txt
 ```
-*Sudomy* membutuhkan [jq](https://stedolan.github.io/jq/download/) untuk menjalankanya. Untuk informasi lebih lanjut tentang cara mendownload dan instalasi jq [disini](https://stedolan.github.io/jq/download/)
+*Sudomy* membutuhkan [jq](https://stedolan.github.io/jq/download/) untuk menjalankanya. Untuk informasi lebih lanjut tentang cara mendownload dan instalasi [disini](https://stedolan.github.io/jq/download/)
 
-```
+```bash
 # For Linux ( Debian )
 $ apt-get install jq
 ```
