@@ -44,6 +44,15 @@
 ## Comparison
 The following are the results of passive enumeration DNS testing of *Sublist3r, Subfinder*, and *Sudomy*. The domain that is used in this comparison is ***bugcrowd.com***. 
 
+|  Sudomy | Subfinder   | Sublister |
+| ------------  | ------------ | ------------ |
+|<img align="left" width="420" height="363" src="https://user-images.githubusercontent.com/17976841/63593207-b9f81b80-c5dd-11e9-9f46-f0cc53e032d4.gif">| <img align="left" width="430" height="363" src="https://user-images.githubusercontent.com/17976841/63592469-d85d1780-c5db-11e9-9e45-421653b65bad.gif"> | <img align="left" width="430" height="363" src="https://user-images.githubusercontent.com/17976841/63592249-55d45800-c5db-11e9-8ad0-80a5b70411c1.gif">   |
+
+Asciinema : 
+- [Subfinder](https://asciinema.org/a/260323)
+- [Sudomy](https://asciinema.org/a/260324)
+- [Sublist3r](https://asciinema.org/a/260325)
+
 ## Installation
 *Sudomy* is currently extended with the following tools. Instructions on how to install & use the application are linked below.
 
