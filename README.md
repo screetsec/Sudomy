@@ -128,7 +128,7 @@ $ sudomy --all -d hackerone.com --html
 
 HTML Report Sample:
 
-| Dashboard	| Pages	       |
+| Dashboard	| Reports	|
 | ------------  | ------------ | 
 |![Index](https://user-images.githubusercontent.com/17976841/63597336-6ab6e880-c5e7-11e9-819e-91634e347b0c.PNG)|![f](https://user-images.githubusercontent.com/17976841/63597476-bbc6dc80-c5e7-11e9-8985-6a73348a2e02.PNG)|
 
