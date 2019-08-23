@@ -3,17 +3,17 @@
 ### Subdomain Enumeration & Analysis
 ![ff](https://user-images.githubusercontent.com/17976841/63212795-b8d57300-c133-11e9-882a-f604d67819cc.png)
 
-***Sudomy*** is a subdomain **enumeration** tool, created using a bash script, to **analyze** domains and **collect** subdomains in **fast** and **comprehensive** way.
+***Sudomy*** is a subdomain enumeration tool, created using a bash script, to analyze domains and collect subdomains in fast and comprehensive way.
 
-# Features !
+## Features !
 ##### For recent time, ***Sudomy*** has these 9 features:
--  **Easy, light, fast and powerful**. Bash script is available by default in almost all Linux distributions. By using bash script **multiprocessing** feature, all processors will be **utilized** optimally.
+-  Easy, light, fast and powerful. Bash script is available by default in almost all Linux distributions. By using bash script multiprocessing feature, all processors will be utilized optimally. 
 -  Subdomain enumeration process can be achieved by using **active** method or **passive** method
     - **Active Method**
-        - ***Sudomy*** utilize **Gobuster** tools because of its **highspeed performance** in carrying out **DNS Subdomain Bruteforce** attack (**wildcard support**). The **wordlist** that is used comes from **combined SecList (Discover/DNS)** lists which contains around **3 million** entries
+        - *Sudomy* utilize Gobuster tools because of its highspeed performance in carrying out DNS Subdomain Bruteforce attack (wildcard support). The wordlist that is used comes from combined SecList (Discover/DNS) lists which contains around 3 million entries
 
     - **Passive Method**
-        - By **selecting** the **third-party** sites, the **enumeration process** can be **optimized**. More **results** will be **obtained** with **less time** require. ***Sudom***y can collect data from these  well-curated **16 third-party sites** :
+        - By selecting the third-party sites, the enumeration process can be optimized. More results will be obtained with less time required. *Sudomy* can collect data from these  well-curated 16 third-party sites:
     
                 https://dnsdumpster.com
                 https://web.archive.org
@@ -31,15 +31,61 @@
                 https://www.threatcrowd.org
                 https://riddler.io
                 https://findsubdomains.com
-- Test the **list of collected subdomain** and probe for **working http or https servers**. This feature uses a third-party tool, [httprobe](https://github.com/tomnomnom/httprobe "httprobe") .
-- Subdomain **availability test based** on **Ping Sweep** and/or by getting **HTTP status code**.
-- The ability to **detect virtualhost** (several subdomains which resolve to single IP Address). ***Sudomy*** **will resolve the collected subdomains to IP addresses**, then  **classify them if several subdomains resolve to single IP address**. This feature will be **very useful** for the next **penetration testing/bug bounty** process. For ***instance, in port scanning, single IP address won’t be scanned repeatedly***
-- Performed **port scanning** from collected **subdomains/virtualhosts IP Addresses**
-- Testing **Subdomain TakeOver** attack
-- Taking **Screenshots** of subdomains
-- Report output in **HTML** or **CSV** format
+- Test the list of collected subdomains and probe for working http or https servers. This feature uses a third-party tool, [httprobe](https://github.com/tomnomnom/httprobe "httprobe").
+- Subdomain availability test based on Ping Sweep and/or by getting HTTP status code.
+- The ability to detect virtualhost (several subdomains which resolve to single IP Address). Sudomy will resolve the collected subdomains to IP addresses, then classify them if several subdomains resolve to single IP address. This feature will be very useful for the next penetration testing/bug bounty process. For instance, in port scanning, single IP address won’t be scanned repeatedly 
+- Performed port scanning from collected subdomains/virtualhosts IP Addresses 
+- Testing Subdomain TakeOver attack
+- Taking Screenshotsof subdomains
+- Report output in HTML or CSV format
 
-# How Sudomy Works
-***Sudomy*** is using cURL library in order to get the HTTP Response Body from third-party sites to then execute the regular expression to get subdomains. This process fully leverages multi processors, more subdomains will be collected with less time consumption.  
-# Comparison
-The following are the results of passive enumeration DNS testing of ***Sublist3r, Subfinder***, and ***Sudomy***. The domain that is used in this comparison is ***bugcrowd.com***. 
+## How Sudomy Works
+*Sudomy* is using cURL library in order to get the HTTP Response Body from third-party sites to then execute the regular expression to get subdomains. This process fully leverages multi processors, more subdomains will be collected with less time consumption.  
+## Comparison
+The following are the results of passive enumeration DNS testing of *Sublist3r, Subfinder*, and *Sudomy*. The domain that is used in this comparison is ***bugcrowd.com***. 
+
+## Installation
+
+*Sudomy* requires [Node.js](https://nodejs.org/) v4+ to run.
+
+Install the dependencies and devDependencies and start the server.
+
+```sh
+$ cd dillinger
+$ npm install -d
+$ node app
+```
+
+For production environments...
+
+```sh
+$ npm install --production
+$ NODE_ENV=production node app
+```
+
+
+### Third-party Tools
+*Sudomy* is currently extended with the following tools. Instructions on how to use them in your own application are linked below.
+|  Tools | URL   | License   |
+| ------------ | ------------ | ------------ |
+|  Httprobe  | https://github.com/tomnomnom/httprobe  |  |
+|  Gobuster  |  https://github.com/OJ/gobuster |  Apache License 2.0 |
+| Webscreenshot | https://github.com/maaaaz/webscreenshot | GNU Lesser General Public License v3.0
+| nmap | https://github.com/nmap/nmap | GNU General Public License v2.0
+
+
+## Usage
+
+```sh
+$ npm install --production
+$ NODE_ENV=production node app
+```
+
+
+## License
+
+
+
+
+**Free Software, Hell Yeah!**
+
