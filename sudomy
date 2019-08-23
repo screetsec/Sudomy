@@ -1,20 +1,27 @@
 #!/usr/bin/env bash
+#-Metadata----------------------------------------------------#
+#  Filename: sudomy (v1.1.0)             (Update: 2019-08-24) #
+#-Info--------------------------------------------------------#
+#  Fast Subdomain Enumeration & Analysis.                     #
+#-Author(s)---------------------------------------------------#
+#  Edo maland ~ @screetsec                                    #
+#-Operating System--------------------------------------------#
+#  Designed for & tested on: Kali Rolling                     #
+#          Reported working: Ubuntu 18                        #
+#-Licence-----------------------------------------------------#
+#  MIT License ~ http://opensource.org/licenses/MIT           #
 
 
-### VAR
+### Variable Name and Version
 
 APPNAME="sud⍥my.sh"
 VERSION="1.1.0#dev"
 
-
 ### Calling Source
-
 source sudomy.api
 source sudomy.conf
 
-
 #### Command calling
-
 goBanner(){
 echo -e ${RED}" ___         _${YELLOW} _  _ ${GREEN}          ${RESET}";
 echo -e ${RED}"/ __|_  _ __| ${YELLOW}(_)(_)${GREEN}_ __ _  _ ${RESET}";
@@ -51,12 +58,8 @@ SPURPLE="\033[0;35m"		# Standar Purple
 SCYAN="\033[0;36m"		# Standar Cyan
 DGRAY="\033[1;30m"		# Dark Gray
 
-
-
 goHelp(){
 goBanner;
-
-
  echo -e "${BOLD}Usage${RESET}: ${APPNAME} [${BOLD}-h [--help]$RESET] [${BOLD}-s[--source]${RESET}][${BOLD}-d[--domain=]${RESET}] \n"
  echo -e "${BOLD}Example${RESET}: ${APPNAME} ${BOLD}-d ${RESET}example.com${PADDING} "
  echo -e "${PADDING}${PADDING}${PADDING}${PADDING} ${APPNAME} ${BOLD}-s${RESET} Shodan,VirusTotal ${BOLD}-d ${RESET}example.com"
@@ -76,8 +79,6 @@ goBanner;
  echo -e "${PADDING}${BOLD}-sS,${RESET} --screenshot\t Screenshots a list of website"
  echo -e "${PADDING}${BOLD}-nP,${RESET} --no-passive\t Do not perform passive subdomain enumeration "
  echo -e "${PADDING}${BOLD}    ${RESET} --no-probe\t Do not perform httprobe "
-
-
  echo -e "\n${BOLD}Sources:${RESET}"
  echo -e "${PADDING}${YELLOW}+${RESET} Shodan${DPADDING} http://developer.shodan.io/billing/"
  echo -e "${PADDING}${YELLOW}+${RESET} VirusTotal${PADDING}\t https://www.virustotal.com/vtapi/v2/domain/"
@@ -102,15 +103,11 @@ goBanner;
 	goHelp && exit 1
 }
 
-
 ## Check Folder Results
 [[ ! -e "${OUT}" ]] \
   && mkdir -vp "${OUT}"||true
 
-
-
 # COMMAND LINE SWITCHES
-
 while [[ "${#}" -gt 0  ]]; do
 args="${1}";
   case "$( echo ${args} | tr '[:upper:]' '[:lower:]' )" in
@@ -233,12 +230,9 @@ command -v dig > /dev/null 2>&1 || { echo "Error: require dig but it's is not in
 #command -v httprobe > /dev/null 2>&1 || { echo "Error: require httprobe but it's is not installed. Aborting." >&2; exit 1; }
 
 ARG_PARS_LIST(){
-
 echo -e "\n${BOLD}[${LGREEN}+${RESET}${BOLD}]${RESET} Parsing & Sorting list Domain "
 echo -e "---------------------------------------------\n"
 DATE_LOG=$(date +%m-%d-%Y)
-
-
 [[ ! -e "${OUT}/${DATE_LOG}/${DOMAIN}" ]] \
   && mkdir -p "${OUT}/${DATE_LOG}/${DOMAIN}"||true
         sed 's/\*\.//g' ${OUT}/*.log | sort -u  > ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_SUBDOMAIN}
@@ -253,8 +247,6 @@ DATE_LOG=$(date +%m-%d-%Y)
         done
         echo -e  "\n${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}Total ${RESET}${DPADDING}\t\t[${GREEN}${COUNT}${RESET}]"
      fi
-
-
 
 }
 
@@ -320,13 +312,10 @@ local _CENSYS="lib/censys/censys_subdomain_finder.py"
   if [[ ! -z "$CENSYS_API" ]] && [[ ! -z "$CENSYS_SECRET" ]] ;then
     echo -e  "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}Censys${RESET}${DPADDING}\t\t[${GREEN} ✔ ${RESET}]"
       MAKEFILE=$(python ${_CENSYS} --censys-api-id ${CENSYS_API} --censys-api-secret ${CENSYS_SECRET} ${DOMAIN}> ${OUT_CENSYS})
-
   else
     echo -e  "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}Censys${RESET}${DPADDING}\t\t[${RED} ✕ ${RESET}]"
   fi
 }
-
-
 
 CERTSPOTTER(){
 local URL_CERTSPOTER="https://api.certspotter.com/v1/issuances?domain="
@@ -353,13 +342,11 @@ local URL_HACKERTARGET="https://api.hackertarget.com/hostsearch/?q="
   curl --silent --request GET --url "${URL_HACKERTARGET}${DOMAIN}" |  sed 's/,.*//' | sort -u  > ${OUT_HACKERTARGET}
 }
 
-
 ENTRUST(){
 local URL_ENTRUST="https://ctsearch.entrust.com/api/v1/certificates?fields=subjectDN&domain="
   echo -e  "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}Entrust${RESET}${DPADDING}\t\t[${GREEN} ✔ ${RESET}]"
    curl --silent --request GET --url "${URL_ENTRUST}${DOMAIN}&includeExpired=false&exactMatch=false&limit=5000" | jq --raw-output -r '.[].subjectDN' | sed 's/,.*//' | sed 's/\*\.//g' |  sed 's/cn=//g' | sort -u > ${OUT_ENTRUST}
 }
-
 
 FINDSUBDOMAIN(){
 local _FINDSUBDOMAIN="https://findsubdomains.com/search/subdomains?domain="
@@ -367,7 +354,6 @@ local _FINDSUBDOMAIN="https://findsubdomains.com/search/subdomains?domain="
   echo -e  "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}Findsubdomain${RESET}${DPADDING}\t[${GREEN} ✔ ${RESET}]"
 
 }
-
 
 THREATCROWD(){
 local URL_THREATCROWD="https://threatcrowd.org/searchApi/v2/domain/report/?domain="
@@ -401,12 +387,8 @@ local URL_CERTSH="https://crt.sh\?q\="
     curl -s https://crt.sh\?q\=%.${DOMAIN} | awk -v pattern="<TD>.*tiket.com" '$0 ~ pattern {gsub("<[^>]*>","");gsub(//,""); print}' | sort -u | sed 's/    //' > ${OUT_CRTSH}
  }
 
-
-
 current_date_time=$(date "+%Y-%m-%d %H:%M:%S")
 goBanner ## Called banner sudomy
-
-
 echo -e "\n${BOLD}[${YELLOW}!${RESET}${BOLD}]${RESET} This tool is for ${BOLD}educational${RESET} purpose only.   "
 echo -e "${BOLD} ${LGREEN} ${RESET}${BOLD} ${RESET} Usage of sudomy for ${BOLD}attacking${RESET} targets ${BOLD}without ${RESET}prior mutual consent is ${RED}illegal${RESET}   "
 echo -e "${BOLD} ${LGREEN} ${RESET}${BOLD} ${RESET} developers assume no liability and are not responsible for any misuse or damage cause by this program   "
@@ -437,18 +419,17 @@ echo -e "---------------------------------------------\n"
 #RIDDLER              ##  http://riddler.io/
 
 
-
 if [[ ${SOURCE} == true ]] ; then
 for arr in $(echo ${LIST} | tr "," "\n" | tr '[:upper:]' '[:lower:]'); do
     eval "${arr}=true";
 done
-        [[ ${shodan} == true ]] && {
+    [[ ${shodan} == true ]] && {
         SHODAN
-		if [[ -f ${OUT_SHODAN} ]];then
-		  COUNT=$(cat ${OUT_SHODAN} | sort -u | wc  -l  )
-		  #echo -e "\t${BLUE}-${RESET}${RESET} Subdomain total: ${COUNT}\n"
-		fi
-	}
+    if [[ -f ${OUT_SHODAN} ]];then
+    COUNT=$(cat ${OUT_SHODAN} | sort -u | wc  -l  )
+    #echo -e "\t${BLUE}-${RESET}${RESET} Subdomain total: ${COUNT}\n"
+    fi
+    }
     [[ ${virustotal} == true ]] && {
           VIRUSTOTAL
     if [[ -f ${OUT_VIRUSTOTAL} ]];then
@@ -574,15 +555,9 @@ elif [[ ${SOURCE} == false ]] ; then
    		"${args_source[i]}" &
 	done
 	     wait
-
 fi
-
-
-
 echo -e "\n${BOLD}[${LGREEN}+${RESET}${BOLD}]${RESET} Get & Count subdomain total From source   "
 echo -e "---------------------------------------------\n"
-
-
 if [[ ${verbose} == true ]] ; then
     if [[ -f ${OUT_SHODAN} ]] ; then
       COUNT=$(cat ${OUT_SHODAN} | sort -u | wc  -l  )
@@ -774,7 +749,6 @@ else
           echo -e  "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}Entrust: Total Subdomain (${COUNT})${RESET}"
         fi
 
-
         if [[ -f ${OUT_THREATCROWD} ]] ; then
        	  COUNT=$(cat ${OUT_THREATCROWD} | sort -u | wc  -l  )
           echo -e  "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}Threatcrowd: Total Subdomain (${COUNT})${RESET}"
@@ -804,10 +778,8 @@ else
        	  COUNT=$(cat ${OUT_CENSYS} | sort -u | wc  -l  )
           echo -e  "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}Censys: Total Subdomain (${COUNT})${RESET}"
         fi
-	
 	ARG_PARS_LIST
 fi
-
 
 if [[ ${PLUGIN_HTTPROBE} == true ]];then
      #_HTTPROBE=httprobe
@@ -830,7 +802,6 @@ if [[ ${PLUGIN_HTTPROBE} == true ]];then
                echo -e "${PADDING}${RESET}${PADDING}${LRED}x${RESET} This Plugin need httprobe, ${RED}install it${RESET}"
 
         fi
-
 fi  
 
 
@@ -855,8 +826,6 @@ fi
 #LIVE_HOST
 
 if [[ ${PLUGIN_PING_SWEEP} == true ]] ; then
-
-
 # Ping sweep (ICMP sweep)
 
 ## A ping sweep (also known as an ICMP sweep) is a basic network scanning technique used
@@ -866,10 +835,8 @@ if [[ ${PLUGIN_PING_SWEEP} == true ]] ; then
 ## hosts. If a given address is live, it will return an ICMP ECHO reply. Ping sweeps are among
 ## the older and slower methods used to scan a network. 
 
-
 echo -e "\n${BOLD}[${LGREEN}+${RESET}${BOLD}]${RESET} Check Live Host: Ping Sweep - ICMP PING  "  ### Reference : https://searchnetworking.techtarget.com/definition/ping-sweep-ICMP-sweep
 echo -e "---------------------------------------------\n"
-
 for SUB_LIVE_CHECK in $(cat ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_SUBDOMAIN}) 
 do
   ping -c1 -W2 $SUB_LIVE_CHECK > /dev/null 2>&1
@@ -908,7 +875,6 @@ do
     else
 	echo -e "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}Resolving${RESET} domains to: ${RED}RESOLVE ERROR ${RESET}"
     fi
-
 	done
 
    #Resolver IP = Subdomain {pars}	
@@ -924,7 +890,6 @@ fi
 
 
 if [[ ${PLUGIN_TAKEOVER} == true ]] ; then
-
 # Subdomain takeover vulnerabilities occur when a subdomain (subdomain.example.com) is pointing to a service 
 # (e.g. GitHub pages, Heroku, etc.) that has been removed or deleted. This allows an attacker to set up a page on the 
 # service that was being used and point their page to that subdomain. For example, if subdomain.example.com was 
@@ -1020,9 +985,7 @@ do
           echo -e "${SUB_TAKEOVER_CHECK} Thinkific Vulnerable"  | tee -a ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_TAKEOVER} > /dev/null 2>&1
 	else	
 	        echo -e "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}[${RED}FAILS${RESET}]\t En: Unknown  ${SUB_TAKEOVER_CHECK} ${RESET}"  ## UKOWN 
-		      echo -e "${SUB_TAKEOVER_CHECK} Unknown Not.Vuln"  | tee -a ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_TAKEOVER} > /dev/null 2>&1
-          
-
+		      echo -e "${SUB_TAKEOVER_CHECK} Unknown Not.Vuln"  | tee -a ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_TAKEOVER} > /dev/null 2>&1   
         fi
 	
 		done ## Close
@@ -1035,9 +998,7 @@ fi ## Ending Subdomain TakeOver
 
 
 
-#if [[ ${OUT_HTML} == true ]] ; then
-	
-
+#if [[ ${OUT_HTML} == true ]] ; then	
 if [[ ${PLUGIN_STATUS_CODE} == true ]]; then
 
 # Explain Reponse status Code
@@ -1356,8 +1317,6 @@ echo -e "${BOLD}${PADDING}${PADDING}\t-${RESET}${BOLD}${RESET}${LGREEN} output/$
               MAKE_TABLE=$(awk 'BEGIN{print ""} {print "<tr>";for(i=1;i<=NF;i++)print "<td>" $i"</td>";print "</tr>"} END{print ""}' ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_HTTPROBE})
               echo ${MAKE_TABLE} >> ${OUT}/${DATE_LOG}/${DOMAIN}/report/valid_probe.html 
           _template >> ${OUT}/${DATE_LOG}/${DOMAIN}/report/valid_probe.html;fi 
-
-
 
         if [[ ! -e "${OUT}/${DATE_LOG}/${DOMAIN}/${FINAL_HTTP_CODE}" ]] ; then
           COUNT_TOTAL_200=0 
