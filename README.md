@@ -45,33 +45,17 @@
 The following are the results of passive enumeration DNS testing of *Sublist3r, Subfinder*, and *Sudomy*. The domain that is used in this comparison is ***bugcrowd.com***. 
 
 ## Installation
+*Sudomy* is currently extended with the following tools. Instructions on how to use the application are linked below.
 
-*Sudomy* requires [Node.js](https://nodejs.org/) v4+ to run.
-
-Install the dependencies and devDependencies and start the server.
-
-```sh
-$ cd dillinger
-$ npm install -d
-$ node app
-```
-
-For production environments...
-
-```sh
-$ npm install --production
-$ NODE_ENV=production node app
-```
-
-
-### Third-party Tools
-*Sudomy* is currently extended with the following tools. Instructions on how to use them in your own application are linked below.
 |  Tools | URL   | License   |
 | ------------ | ------------ | ------------ |
 |  Httprobe  | https://github.com/tomnomnom/httprobe  |  |
 |  Gobuster  |  https://github.com/OJ/gobuster |  Apache License 2.0 |
 | Webscreenshot | https://github.com/maaaaz/webscreenshot | GNU Lesser General Public License v3.0
 | nmap | https://github.com/nmap/nmap | GNU General Public License v2.0
+
+
+*Sudomy* requires [Node.js](https://nodejs.org/) v4+ to run.
 
 
 ## Usage
@@ -101,7 +85,7 @@ Optional Arguments:
   -tO, --takeover	 Subdomain TakeOver Vulnerabilty Scanner
   -pS, --ping-sweep	 Check live host using methode Ping Sweep
   -rS, --resolver	 Convert domain lists to resolved IP lists without duplicates
-  -sC, --status-code Get status codes, response from domain list
+  -sC, --status-code     Get status codes, response from domain list
   -nT, --nmap-top	 Port scanning with top-ports using nmap from domain list
   -sS, --screenshot	 Screenshots a list of website
   -nP, --no-passive	 Do not perform passive subdomain enumeration 
