@@ -59,10 +59,18 @@ Asciinema :
 |  Tools | License   | Install |
 | ------------  | ------------ | ------------ |
 |  [Gobuster](https://github.com/OJ/gobuster) |  Apache License 2.0 |  go get github.com/OJ/gobuster |
-|  [jq](https://stedolan.github.io/jq/download/) | copyright (C) 2012 Stephen Dolan | apt-get install jq|
 |  [nmap](https://github.com/nmap/nmap) | GNU General Public License v2.0 | apt-get install nmap |
 
+### Dependencies
+```
+$ pip install -r requirements.txt
+```
 *Sudomy* requires [jq](https://stedolan.github.io/jq/download/) to run and pars .
+```
+$ apt-get install jq
+```
+Fore More information, Download and install [jq](https://stedolan.github.io/jq/download/)
+
 ```bash
 # Clone this repository
 git clone --recursive https://github.com/screetsec/Sudomy.git
@@ -71,10 +79,6 @@ git clone --recursive https://github.com/screetsec/Sudomy.git
 ./Sudomy --help
 ```
 
-### Dependencies
-```
-$ pip install -r requirements.txt
-```
 ### Post Installation
 API Key is needed before querying on third-party sites, such as ```Shodan, Censys, SecurityTrails, Virustotal,``` and ```BinaryEdge```. 
 - The API key setting can be done in sudomy.api file.
