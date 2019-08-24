@@ -70,6 +70,9 @@ $ pip install -r requirements.txt
 ```bash
 # Linux ( Debian )
 apt-get install jq
+
+# Mac
+brew install jq
 ```
 
 Download Sudomy From Github
