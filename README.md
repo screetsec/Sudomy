@@ -208,6 +208,7 @@ All notable changes to this project will be documented in this [file](https://gi
 - [Thomas D Maaaaz](https://github.com/maaaaz) - Webscreenshot
 - [Daniel Miessler](https://github.com/danielmiessler/) - SecList
 - [EdOverflow](https://github.com/EdOverflow/) - can-i-take-over-xyz
+- [Yuga Nugraha](https://github.com/myugan) - Docker Maintainer
 - [NgeSEC](https://ngesec.id/) Community
 - [Gauli(dot)Net](https://gauli.net/)
 - [Bugcrowd](https://www.bugcrowd.com/) & [Hackerone](https://www.hackerone.com/)
