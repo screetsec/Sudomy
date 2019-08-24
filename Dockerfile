@@ -2,7 +2,7 @@ FROM alpine:3.9 AS builder
 LABEL maintainer="myugan59@gmail.com"
 ENV GOROOT=/usr/lib/go GOPATH=/go PATH=/go/bin:$PATH
 
-RUN apk add --no-cache git make musl-dev go bash bash-doc bash-completion py-pip nmap bind-tools jq curl grep nano && \
+RUN apk add --no-cache git make musl-dev go bash bash-doc bash-completion util-linux py-pip nmap bind-tools jq curl grep nano && \
     rm -rf /var/cache/apk/* && \
     mkdir -p ${GOPATH}/src ${GOPATH}/bin && \
     go get github.com/tomnomnom/httprobe && \
