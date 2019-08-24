@@ -56,10 +56,11 @@ Asciinema :
 ## Instalasi
 Sudomy saat ini diperluas dengan alat-alat berikut. Petunjuk tentang cara menginstal & menggunakan aplikasi ini ditautkan di bawah ini.
 
-|  Tools | License   | Install |
-| ------------  | ------------ | ------------ |
-|  [Gobuster](https://github.com/OJ/gobuster) |  Apache License 2.0 |  go get github.com/OJ/gobuster |
-|  [nmap](https://github.com/nmap/nmap) | GNU General Public License v2.0 | apt-get install nmap |
+|  Tools | License  | Info |
+| ------------  | ------------ | ------------ | 
+|  [Gobuster](https://github.com/OJ/gobuster) |  Apache License 2.0 | Tidak Wajib
+|  [httprobe](https://github.com/tomnomnom/httprobe/) | Tom Hudson - | Wajib
+|  [nmap](https://github.com/nmap/nmap) | GNU General Public License v2.0 | Tidak Wajib
 
 ### Dependencies
 ```
@@ -68,17 +69,28 @@ $ pip install -r requirements.txt
 *Sudomy* membutuhkan [jq](https://stedolan.github.io/jq/download/) untuk menjalankanya. Untuk informasi lebih lanjut tentang cara mendownload dan instalasi [disini](https://stedolan.github.io/jq/download/)
 
 ```bash
-# For Linux ( Debian )
-$ apt-get install jq
+# Linux 
+apt-get install jq nmap
+
+# Mac
+brew install jq nmap
 ```
 
-Download Sudomy dari Github
+***Jika Anda memiliki lingkungan Go siap install dengan:***
+```bash
+export GOPATH=$HOME/go
+export PATH=$PATH:$GOROOT/bin:$GOPATH/bin
+go get -u github.com/tomnomnom/httprobe
+go get -u github.com/tomnomnom/gobuster
+```
+
+**Download Sudomy dari Github**
 ```bash
 # Clone this repository
 git clone --recursive https://github.com/screetsec/Sudomy.git
 
 # Go into the repository
-./Sudomy --help
+sudomy --help
 ```
 ### Pasca Instalasi
 API Key diperlukan untuk melakukan query pada situs pihak ketiga seperti ```Shodan, Censys, SecurityTrails, Virustotal,``` dan ```BinaryEdge```. 
