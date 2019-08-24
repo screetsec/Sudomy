@@ -56,11 +56,11 @@ Asciinema :
 ## Installation
 *Sudomy* is currently extended with the following tools. Instructions on how to install & use the application are linked below.
 
-|  Tools | License   | 
-| ------------  | ------------ |
-|  [Gobuster](https://github.com/OJ/gobuster) |  Apache License 2.0 | 
-|  [httprobe](https://github.com/tomnomnom/httprobe/) | Tom Hudson - |
-|  [nmap](https://github.com/nmap/nmap) | GNU General Public License v2.0 |
+|  Tools | License  | Info |
+| ------------  | ------------ | ------------ | 
+|  [Gobuster](https://github.com/OJ/gobuster) |  Apache License 2.0 | not mandatory
+|  [httprobe](https://github.com/tomnomnom/httprobe/) | Tom Hudson - | mandatory
+|  [nmap](https://github.com/nmap/nmap) | GNU General Public License v2.0 | not mandatory
 
 ### Dependencies
 ```
@@ -70,10 +70,10 @@ $ pip install -r requirements.txt
 
 ```bash
 # Linux 
-apt-get install jq 
+apt-get install jq nmap
 
 # Mac
-brew install jq 
+brew install jq nmap
 ```
 
 ***If you have a Go environment ready to go, it's as easy as:***
