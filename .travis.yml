@@ -1,0 +1,21 @@
+sudo: required
+services:
+  - docker
+
+before_install:
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+
+jobs:
+  include:
+    - stage: build
+      script:
+      - docker build -t screetsec/sudomy:v1.1.0 .
+      - docker push screetsec/sudomy:v1.1.0
+
+notifications:
+  email:
+    recipients:
+    - myugan59@gmail.com
+    - screetsec@gmail.com
+    on_success: never
+    on_failure: always
