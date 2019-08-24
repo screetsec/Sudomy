@@ -24,5 +24,6 @@ COPY --from=builder /app/ ./
 RUN chown -R sudomy:sudomy .
 
 USER sudomy
+VOLUME ["/usr/lib/sudomy"]
 ENTRYPOINT [ "/usr/lib/sudomy/sudomy" ]
 CMD ["--help"]
