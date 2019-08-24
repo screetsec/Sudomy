@@ -56,10 +56,11 @@ Asciinema :
 ## Installation
 *Sudomy* is currently extended with the following tools. Instructions on how to install & use the application are linked below.
 
-|  Tools | License   | Install |
-| ------------  | ------------ | ------------ |
-|  [Gobuster](https://github.com/OJ/gobuster) |  Apache License 2.0 |  go get github.com/OJ/gobuster |
-|  [nmap](https://github.com/nmap/nmap) | GNU General Public License v2.0 | apt-get install nmap |
+|  Tools | License   | 
+| ------------  | ------------ |
+|  [Gobuster](https://github.com/OJ/gobuster) |  Apache License 2.0 | 
+|  [httprobe](https://github.com/tomnomnom/httprobe/) | Tom Hudson - |
+|  [nmap](https://github.com/nmap/nmap) | GNU General Public License v2.0 |
 
 ### Dependencies
 ```
@@ -68,14 +69,22 @@ $ pip install -r requirements.txt
 *Sudomy* requires [jq](https://stedolan.github.io/jq/download/) to run and pars. For more information, Download and install jq [here](https://stedolan.github.io/jq/download/)
 
 ```bash
-# Linux ( Debian )
-apt-get install jq
+# Linux 
+apt-get install jq 
 
 # Mac
-brew install jq
+brew install jq 
 ```
 
-Download Sudomy From Github
+***If you have a Go environment ready to go, it's as easy as:***
+```bash
+export GOPATH=$HOME/go
+export PATH=$PATH:$GOROOT/bin:$GOPATH/bin
+go get -u github.com/tomnomnom/httprobe
+go get -u github.com/tomnomnom/gobuster
+```
+
+**Download Sudomy From Github**
 ```bash
 # Clone this repository
 git clone --recursive https://github.com/screetsec/Sudomy.git
