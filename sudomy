@@ -377,7 +377,7 @@ local URL_RIDDLER="https://riddler.io/search/exportcsv?q=pld:"
 
 WEBARCHIVE(){
   echo -e  "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}Webarchive${RESET}${DPADDING}\t[${GREEN} ✔ ${RESET}]"
-      curl --silent "http://web.archive.org/cdx/search/cdx?url=*.${DOMAIN}/*&output=text&fl=original&collapse=urlkey" | sed -e 's_https*://__' -e "s/\/.*//" -e 's/:.*//' -e 's/^www\.//' | sort -u > ${OUT_WEBARCHIVE}
+      curl --silent "http://web.archive.org/cdx/search/cdx?url=*.${DOMAIN}/*&output=text&fl=original&collapse=urlkey" | sed -e 's_https*://__' -e "s/\/.*//" -e 's/:.*//' -e 's/^www\.//' | sed "/@/d" | sed -e 's/\.$//' | sort -u > ${OUT_WEBARCHIVE}
 }
 
 DNSDUMPSTER(){
