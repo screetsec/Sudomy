@@ -81,7 +81,7 @@ brew install jq nmap
 export GOPATH=$HOME/go
 export PATH=$PATH:$GOROOT/bin:$GOPATH/bin
 go get -u github.com/tomnomnom/httprobe
-go get -u github.com/tomnomnom/gobuster
+go get -u github.com/OJ/gobuster
 ```
 
 **Download Sudomy From Github**
