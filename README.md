@@ -70,10 +70,11 @@ $ pip install -r requirements.txt
 
 ```bash
 # Linux 
-apt-get install jq nmap
+apt-get install jq nmap phantomjs
 
 # Mac
-brew install jq nmap
+brew cask install phantomjs
+brew install jq nmap 
 ```
 
 ***If you have a Go environment ready to go, it's as easy as:***
