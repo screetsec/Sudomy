@@ -11,6 +11,7 @@
 #	   	    : Parrot 				      #
 #                   : Kali Linux 			      #
 #		    : WSL Windows (10.0.17134 N/A Build 17134 #
+#		    : MacOS (Mojave)			      #
 #-Licence-----------------------------------------------------#
 #  MIT License ~ http://opensource.org/licenses/MIT           #
 #-------------------------------------------------------------#
@@ -232,7 +233,7 @@ fi
 command -v nmap > /dev/null 2>&1 || { echo "Error: require nmap but it's is not installed. Aborting." >&2; exit 1; }
 command -v dig > /dev/null 2>&1 || { echo "Error: require dig but it's is not installed. Aborting." >&2; exit 1; }
 command -v jq > /dev/null 2>&1 || { echo "Error: require jq but it's is not installed. Aborting." >&2; exit 1; }
-#command -v httprobe > /dev/null 2>&1 || { echo "Error: require httprobe but it's is not installed. Aborting." >&2; exit 1; }
+command -v httprobe > /dev/null 2>&1 || { echo "Error: require httprobe but it's is not installed. Aborting." >&2; exit 1; }
 
 ARG_PARS_LIST(){
 echo -e "\n${BOLD}[${LGREEN}+${RESET}${BOLD}]${RESET} Parsing & Sorting list Domain "
