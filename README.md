@@ -65,7 +65,7 @@ Asciinema :
 ```
 $ pip install -r requirements.txt
 ```
-*Sudomy* requires [jq](https://stedolan.github.io/jq/download/) to run and pars. Fore more information, Download and install jq [here](https://stedolan.github.io/jq/download/)
+*Sudomy* requires [jq](https://stedolan.github.io/jq/download/) to run and pars. For more information, Download and install jq [here](https://stedolan.github.io/jq/download/)
 
 ```bash
 # Linux ( Debian )
@@ -147,11 +147,11 @@ Optional Arguments:
        --no-probe	 Do not perform httprobe 
 
 ```
-To user all 16 Sources and Probe for working http or https servers:
+To use all 16 Sources and Probe for working http or https servers:
 ```
 $ sudomy -d hackerone.com
 ```
-To user one of more source:
+To use one of more source:
 ```
 $ sudomy -s shodan,dnsdumpster,webarchive -d hackerone.com
 ```
@@ -159,7 +159,7 @@ To use one or more plugins:
 ```
 $ sudomy -pS -sC -sS -d hackerone.com
 ```
-To user all plugins: testing host status, http/https status code, subdomain takeover and screenshots
+To use all plugins: testing host status, http/https status code, subdomain takeover and screenshots
 ```
 $ sudomy --all -d hackerone.com
 ```
