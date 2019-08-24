@@ -1,6 +1,5 @@
 FROM alpine:3.9 AS builder
 LABEL maintainer="myugan59@gmail.com"
-
 ENV GOROOT=/usr/lib/go GOPATH=/go PATH=/go/bin:$PATH
 
 RUN apk add --no-cache git make musl-dev go bash bash-doc bash-completion py-pip nmap bind-tools jq curl grep nano && \
@@ -16,14 +15,11 @@ RUN pip install -r requirements.txt
 FROM builder
 
 # Create user
-RUN addgroup -S sudomy && adduser -S sudomy -G sudomy && \
-    git clone https://github.com/Screetsec/Sudomy.git /usr/lib/sudomy
+RUN git clone https://github.com/Screetsec/Sudomy.git /usr/lib/sudomy
 
 WORKDIR /usr/lib/sudomy
 COPY --from=builder /app/ ./
-RUN chown -R sudomy:sudomy .
 
-USER sudomy
 VOLUME ["/usr/lib/sudomy"]
 ENTRYPOINT [ "/usr/lib/sudomy/sudomy" ]
 CMD ["--help"]
