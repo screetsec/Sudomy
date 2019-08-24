@@ -241,7 +241,7 @@ DATE_LOG=$(date +%m-%d-%Y)
 [[ ! -e "${OUT}/${DATE_LOG}/${DOMAIN}" ]] \
   && mkdir -p "${OUT}/${DATE_LOG}/${DOMAIN}"||true
         sed 's/\*\.//g' ${OUT}/*.log | sort -u  > ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_SUBDOMAIN}
-        rm -rf ${OUT}/*.log ##REMOVE LOG
+        rm -r ${OUT}/*.log > /dev/null 2>&1 ##REMOVE LOG
 
     if [[ -f ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_SUBDOMAIN} ]] ; then
         COUNT=$(cat ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_SUBDOMAIN} | wc  -l  )
@@ -859,7 +859,7 @@ do
 
     #MAKER MORE PRETTY 
     cat ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_PINGSWEEP} | sed 's/ / ,/g' | column -t -s, > ${OUT}/${DATE_LOG}/${DOMAIN}/${FINAL_PINGSWEEP}
-    rm -rf ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_PINGSWEEP}
+    rm -r ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_PINGSWEEP} > /dev/null 2>&1
 fi  ### Ending Ping Sweep
 
 if [[ ${PLUGIN_RESOLV_SD} == true ]] ; then
@@ -884,12 +884,12 @@ do
 
    #Resolver IP = Subdomain {pars}	
    	awk '{ if (a[$3]) a[$3] = a[$3]"\n - "$1; else a[$3] ="\n - "$1;} END { for (i in a) print i, a[i]}'  < ${OUT}/${DATE_LOG}/${DOMAIN}/${TMP_RESOL} >  ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_SUB_RESOLVER}
-	rm -rf  ${OUT}/${DATE_LOG}/${DOMAIN}/${TMP_RESOL}
+	rm -r ${OUT}/${DATE_LOG}/${DOMAIN}/${TMP_RESOL} > /dev/null 2>&1
 	sort -u -o ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_IP_RESOLVER} ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_IP_RESOLVER} ## Pars duplicate resolver ip
 
   ## Make more pretty
   cat ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_SUB_TABLE} | sed 's/ / ,/g' | column -t -s, > ${OUT}/${DATE_LOG}/${DOMAIN}/${FINAL_SUBDOMAIN_REV_ALL}
-    rm -rf ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_SUB_TABLE}
+    rm -r ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_SUB_TABLE} > /dev/null 2>&1
 
 fi
 
@@ -914,7 +914,7 @@ echo -e "---------------------------------------------\n"
 
 ## Cleaning Log Files { {${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_TAKEOVER} }
 
-rm -rf ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_TAKEOVER} 
+rm -r ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_TAKEOVER} > /dev/null 2>&1
 
 for SUB_TAKEOVER_CHECK in $(cat ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_HTTPROBE}) 
 do
@@ -996,7 +996,7 @@ do
 		done ## Close
 
     cat ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_TAKEOVER} | sed 's/ / ,/g' | column -t -s, > ${OUT}/${DATE_LOG}/${DOMAIN}/${FINAL_TAKEOVER}
-    rm -rf ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_TAKEOVER}
+    rm -r ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_TAKEOVER} > /dev/null 2>&1
 
 
 fi ## Ending Subdomain TakeOver
@@ -1078,7 +1078,7 @@ echo -e "---------------------------------------------\n"
 
 
 ## Cleaning Log Files ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_HTTP_CODE}
-rm -rf ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_HTTP_CODE} ##Cleaning old results
+rm -r ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_HTTP_CODE} > /dev/null 2>&1 ##Cleaning old results
 
 for SUB_CODE_CHECK in $(cat ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_HTTPROBE}) ## GET Status Code from list of domains valid working http and https servers.
 do
@@ -1215,7 +1215,7 @@ do
 	
 	#make output more pretty 
 	cat ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_HTTP_CODE} | sed 's/ / ,/g' | column -t -s, > ${OUT}/${DATE_LOG}/${DOMAIN}/${FINAL_HTTP_CODE}
-	rm -rf ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_HTTP_CODE}
+	rm -r ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_HTTP_CODE} > /dev/null 2>&1
 
 
 fi 
@@ -1226,7 +1226,7 @@ if [[ ${PLUGIN_NMAP_PORTS} == true ]] ; then
 
 ## Cleaning Log Files ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_NMAP_HOSTS}
 
-rm -rf ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_NMAP_HOSTS}
+rm -r ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_NMAP_HOSTS} > /dev/null 2>&1
 
 	if [[ -f ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_IP_RESOLVER} ]]; then        ## Checking file resolver.txt 
 		echo -e "\n${BOLD}[${LGREEN}+${RESET}${BOLD}]${RESET} Port Scanner: Nmap Port Scanner top ports   "  ##  + Must running with argument -rS | --resolver
