@@ -95,12 +95,12 @@ git clone --recursive https://github.com/screetsec/Sudomy.git
 sudomy --help
 ```
 
-**Download Sudomy From DockerHub**
+## Running in a Docker Container
 ```bash
 # Pull an image from DockerHub
 docker pull screetsec/sudomy:v1.1.0
 
-# Run an image, you can run the image on custom directory but you must copy config sudomy.api on current directory
+# Run an image, you can run the image on custom directory but you must copy/download config sudomy.api on current directory
 docker run -v "${PWD}/output:/usr/lib/sudomy/output" -v "${PWD}/sudomy.api:/usr/lib/sudomy/sudomy.api" -it --rm screetsec/sudomy:v1.1.0 [argument]
 ```
 
