@@ -12,7 +12,7 @@ jobs:
   include:
     - stage: build
       script:
-      - docker build --squash -t screetsec/sudomy:$VERSION .
+      - docker build -t screetsec/sudomy:$VERSION .
       - docker push screetsec/sudomy:$VERSION
 
 notifications:
