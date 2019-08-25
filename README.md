@@ -70,6 +70,7 @@ $ pip install -r requirements.txt
 
 ```bash
 # Linux
+=======
 apt-get install jq nmap phantomjs
 
 # Mac
