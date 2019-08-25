@@ -390,7 +390,7 @@ local URL_DNS="https://dnsdumpster.com"
 CERTSH(){
 local URL_CERTSH="https://crt.sh\?q\="
   echo -e  "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}Certsh${RESET}${DPADDING}\t\t[${GREEN} ✔ ${RESET}]"
-    curl -s https://crt.sh\?q\=%.${DOMAIN} | awk -v pattern="<TD>.*tiket.com" '$0 ~ pattern {gsub("<[^>]*>","");gsub(//,""); print}' | sort -u | sed 's/    //' > ${OUT_CRTSH}
+    curl -s https://crt.sh\?q\=%.${DOMAIN} | awk -v pattern="<TD>.*${DOMAIN}" '$0 ~ pattern {gsub("<[^>]*>","");gsub(//,""); print}' | sort -u | sed 's/    //' > ${OUT_CRTSH}
  }
 
 current_date_time=$(date "+%Y-%m-%d %H:%M:%S")
