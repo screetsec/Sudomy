@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #-Metadata----------------------------------------------------#
-#  Filename: sudomy (v1.1.0)             (Update: 2019-08-24) #
+#  Filename: sudomy (v1.1.1)             (Update: 2019-08-24) #
 #-Info--------------------------------------------------------#
 #  Fast Subdomain Enumeration & Analysis.                     #
 #-Author(s)---------------------------------------------------#
@@ -20,7 +20,7 @@
 ### Variable Name and Version
 
 APPNAME="sud⍥my.sh"
-VERSION="1.1.0#dev"
+VERSION="1.1.1#dev"
 
 ### Calling Source
 source sudomy.api
@@ -241,7 +241,7 @@ echo -e "---------------------------------------------\n"
 DATE_LOG=$(date +%m-%d-%Y)
 [[ ! -e "${OUT}/${DATE_LOG}/${DOMAIN}" ]] \
   && mkdir -p "${OUT}/${DATE_LOG}/${DOMAIN}"||true
-        sed 's/\*\.//g' ${OUT}/*.log | sort -u  > ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_SUBDOMAIN}
+        sed 's/\*\.//g' ${OUT}/*.log | grep -e "${DOMAIN}" | sort -u  > ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_SUBDOMAIN}
         rm -r ${OUT}/*.log > /dev/null 2>&1 ##REMOVE LOG
 
     if [[ -f ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_SUBDOMAIN} ]] ; then
