@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #-Metadata----------------------------------------------------#
-#  Filename: sudomy (v1.1.1)             (Update: 2019-08-24) #
+#  Filename: sudomy (v1.1.0)             (Update: 2019-08-31) #
 #-Info--------------------------------------------------------#
 #  Fast Subdomain Enumeration & Analysis.                     #
 #-Author(s)---------------------------------------------------#
@@ -20,7 +20,7 @@
 ### Variable Name and Version
 
 APPNAME="sud⍥my.sh"
-VERSION="1.1.1#dev"
+VERSION="1.1.0#dev"
 
 ### Calling Source
 source sudomy.api
