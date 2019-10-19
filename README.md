@@ -66,7 +66,7 @@ Asciinema :
 ```
 $ pip install -r requirements.txt
 ```
-*Sudomy* requires [jq](https://stedolan.github.io/jq/download/) to run and pars. For more information, Download and install jq [here](https://stedolan.github.io/jq/download/)
+*Sudomy* requires [jq](https://stedolan.github.io/jq/download/) to run and parse. Information on how to download and install jq can be accessed [here](https://stedolan.github.io/jq/download/)
 
 ```bash
 # Linux
@@ -77,7 +77,7 @@ brew cask install phantomjs
 brew install jq nmap
 ```
 
-***If you have a Go environment ready to go, it's as easy as:***
+***If you already have a Go environment, then follow this instruction:***
 ```bash
 export GOPATH=$HOME/go
 export PATH=$PATH:$GOROOT/bin:$GOPATH/bin
@@ -85,7 +85,7 @@ go get -u github.com/tomnomnom/httprobe
 go get -u github.com/OJ/gobuster
 ```
 
-**Download Sudomy From Github**
+**To Download Sudomy From Github**
 ```bash
 # Clone this repository
 git clone --recursive https://github.com/screetsec/Sudomy.git
@@ -173,7 +173,7 @@ To use all 16 Sources and Probe for working http or https servers:
 ```
 $ sudomy -d hackerone.com
 ```
-To use one of more source:
+To use one or more source:
 ```
 $ sudomy -s shodan,dnsdumpster,webarchive -d hackerone.com
 ```
