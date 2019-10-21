@@ -13,4 +13,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 ## [1.1.0] - 2019-08-31
  -  Update
        - Filtering list subdomain result more specific - (subdomain.txt)
+
+## [1.1.0] - 2019-10-21
+ -  Update
+       - DNSDumpster update regex for retrieving csrfMiddlewaretoken values
    
