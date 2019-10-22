@@ -80,8 +80,8 @@ apt-get update
 apt-get install jq nmap phantomjs golang
 
 # Mac
-brew cask install phantomjs
-brew install jq nmap
+brew cask install phantomjs 
+brew install jq nmap go
 ```
 
 ***If you already have a Go environment, then follow this instruction:***
