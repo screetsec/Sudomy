@@ -62,7 +62,7 @@ Asciinema :
 |  [httprobe](https://github.com/tomnomnom/httprobe/) | Tom Hudson - | mandatory
 |  [nmap](https://github.com/nmap/nmap) | GNU General Public License v2.0 | not mandatory
 
-**To Download Sudomy From Github**
+### To Download Sudomy From Github
 ```bash
 # Clone this repository
 git clone --recursive https://github.com/screetsec/Sudomy.git
