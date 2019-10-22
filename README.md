@@ -62,6 +62,12 @@ Asciinema :
 |  [httprobe](https://github.com/tomnomnom/httprobe/) | Tom Hudson - | mandatory
 |  [nmap](https://github.com/nmap/nmap) | GNU General Public License v2.0 | not mandatory
 
+**To Download Sudomy From Github**
+```bash
+# Clone this repository
+git clone --recursive https://github.com/screetsec/Sudomy.git
+```
+
 ### Dependencies
 ```
 $ pip install -r requirements.txt
@@ -70,7 +76,8 @@ $ pip install -r requirements.txt
 
 ```bash
 # Linux
-apt-get install jq nmap phantomjs
+apt-get update
+apt-get install jq nmap phantomjs golang
 
 # Mac
 brew cask install phantomjs
@@ -83,15 +90,6 @@ export GOPATH=$HOME/go
 export PATH=$PATH:$GOROOT/bin:$GOPATH/bin
 go get -u github.com/tomnomnom/httprobe
 go get -u github.com/OJ/gobuster
-```
-
-**To Download Sudomy From Github**
-```bash
-# Clone this repository
-git clone --recursive https://github.com/screetsec/Sudomy.git
-
-# Go into the repository
-sudomy --help
 ```
 
 ## Running in a Docker Container
