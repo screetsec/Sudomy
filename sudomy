@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #-Metadata----------------------------------------------------#
-#  Filename: sudomy (v1.1.0)             (Update: 2019-08-31) #
+#  Filename: sudomy (v1.1.1)             (Update: 2019-11-01) #
 #-Info--------------------------------------------------------#
 #  Fast Subdomain Enumeration & Analysis.                     #
 #-Author(s)---------------------------------------------------#
@@ -11,6 +11,7 @@
 #	   	    : Parrot 				      #
 #                   : Kali Linux 			      #
 #		    : WSL Windows (10.0.17134 N/A Build 17134 #
+#		    : Arch Linux (ArcoLinux)		      #
 #		    : MacOS (Mojave)			      #
 #-Licence-----------------------------------------------------#
 #  MIT License ~ http://opensource.org/licenses/MIT           #
@@ -20,7 +21,7 @@
 ### Variable Name and Version
 
 APPNAME="sud⍥my.sh"
-VERSION="1.1.0#dev"
+VERSION="1.1.1#dev"
 
 ### Calling Source
 source sudomy.api
@@ -263,7 +264,7 @@ SHODAN(){
 local URL_SHODAN="https://api.shodan.io/shodan/host/search?key=" ## Using API Shodan
   if [[ ! -z "$SHODAN_API" ]];then
     echo -e  "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}Shodan${RESET}${DPADDING}\t\t[${GREEN} ✔ ${RESET}]"
-      MAKEFILE=$(curl --silent --request GET --url "${URL_SHODAN}${SHODAN_API}&query=hostname:${DOMAIN}" | jq --raw-output -r '.matches[] |.hostnames[]' | sort -u > ${OUT_SHODAN})
+      MAKEFILE=$(curl --tcp-fastopen --tcp-nodelay --doh-url https://cloudflare-dns.com/dns-query --silent --request GET --url "${URL_SHODAN}${SHODAN_API}&query=hostname:${DOMAIN}" | jq --raw-output -r '.matches[] |.hostnames[]' | sort -u > ${OUT_SHODAN})
   else
     echo -e  "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}Shodan${RESET}${DPADDING}\t\t[${RED} ✕ ${RESET}]"
 
@@ -276,7 +277,7 @@ VIRUSTOTAL(){
 local URL_VIRUSTOTAL="https://www.virustotal.com/vtapi/v2/domain/report?apikey=" ## Using API Virus Total
   if [[ ! -z "$VIRUSTOTAL" ]];then
     echo -e  "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}Virustotal${RESET}${DPADDING}\t[${GREEN} ✔ ${RESET}]"
-      MAKEFILE=`curl --silent --request GET --url "${URL_VIRUSTOTAL}${VIRUSTOTAL}&domain=${DOMAIN}" | jq --raw-output -r '.subdomains[]?' | sort -u > ${OUT_VIRUSTOTAL}`
+      MAKEFILE=`curl --tcp-fastopen --tcp-nodelay --doh-url https://cloudflare-dns.com/dns-query --silent --request GET --url "${URL_VIRUSTOTAL}${VIRUSTOTAL}&domain=${DOMAIN}" | jq --raw-output -r '.subdomains[]?' | sort -u > ${OUT_VIRUSTOTAL}`
   #COUNT=$(cat output/vt | wc  -l  )
   else
   echo -e  "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}Virustotal${RESET}${DPADDING}\t[${RED} ✕ ${RESET}]"
@@ -290,7 +291,7 @@ BINARYEDGE(){
 local URL_BINARY="https://api.binaryedge.io/v2/query/domains/subdomain/"
   if [[ ! -z "$BINARYEDGE" ]];then
     echo -e  "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}Binaryedge${RESET}${DPADDING}\t[${GREEN} ✔ ${RESET}]"
-      MAKEFILE=`curl --silent "${URL_BINARY}${DOMAIN}" -H 'X-Key:'${BINARYEDGE}''| jq --raw-output -r '.events[]?' | sort -u > ${OUT_BINARYEDGE}  `
+      MAKEFILE=`curl --tcp-fastopen --tcp-nodelay --doh-url https://cloudflare-dns.com/dns-query --silent "${URL_BINARY}${DOMAIN}" -H 'X-Key:'${BINARYEDGE}''| jq --raw-output -r '.events[]?' | sort -u > ${OUT_BINARYEDGE}  `
   else
     echo -e  "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}Binaryedge${RESET}${DPADDING}\t[${RED} ✕ ${RESET}]"
   fi
@@ -302,8 +303,8 @@ local URL_STRAILS="https://api.securitytrails.com/v1/domain/"
   if [[ ! -z "$SECURITY_TRAILS" ]];then
     echo -e  "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}Securitytrails${RESET}${DPADDING}\t[${GREEN} ✔ ${RESET}]"
   #rm -rf ${OUT_STRAILS}
-      MAKEFILE=`curl --silent --request GET --url "${URL_STRAILS}${DOMAIN}/subdomains?apikey=${SECURITY_TRAILS}" | jq --raw-output -r '.subdomains[]' | sort -u > ${OUT_STRAILS}  `
-  sed -i s/$/.${DOMAIN}/ ${OUT_STRAILS} 
+      MAKEFILE=`curl --tcp-fastopen --tcp-nodelay --doh-url https://cloudflare-dns.com/dns-query --silent --request GET --url "${URL_STRAILS}${DOMAIN}/subdomains?apikey=${SECURITY_TRAILS}" | jq --raw-output -r '.subdomains[]' | sort -u > ${OUT_STRAILS}  `
+  sed -i s/$/.${DOMAIN}/ ${OUT_STRAILS}
   ## SUFFIX DOMAIN
   else
     echo -e  "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}Securitytrails${RESET}${DPADDING}\t[${RED} ✕ ${RESET}]"
@@ -327,36 +328,36 @@ CERTSPOTTER(){
 local URL_CERTSPOTER="https://api.certspotter.com/v1/issuances?domain="
 #if [[ ! -z "$VIRUSTOTAL" ]];then
   echo -e  "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}Certspotter${RESET}${DPADDING}\t[${GREEN} ✔ ${RESET}]"
-    curl --silent --request GET --url "${URL_CERTSPOTER}${DOMAIN}&include_subdomains=true&expand=dns_names" | jq --raw-output -r '.[].dns_names[]' | sed 's/\*\.//g' | tr -d "\"" | sort -u > ${OUT_CERTSPOTTER}
+    curl --tcp-fastopen --tcp-nodelay --doh-url https://cloudflare-dns.com/dns-query --silent --request GET --url "${URL_CERTSPOTER}${DOMAIN}&include_subdomains=true&expand=dns_names" | jq --raw-output -r '.[].dns_names[]' | sed 's/\*\.//g' | tr -d "\"" | sort -u > ${OUT_CERTSPOTTER}
 }
 
 THREATMINER(){
 local URL_THREATMINER="https://api.threatminer.org/v2/domain.php?q="
   echo -e  "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}Threatminer${RESET}${DPADDING}\t[${GREEN} ✔ ${RESET}]"
-  curl --silent --request GET --url "${URL_THREATMINER}${DOMAIN}&rt=5" | jq --raw-output -r '.results[]' | sort -u > ${OUT_THREATMINER}
+  curl --tcp-fastopen --tcp-nodelay --doh-url https://cloudflare-dns.com/dns-query --silent --request GET --url "${URL_THREATMINER}${DOMAIN}&rt=5" | jq --raw-output -r '.results[]' | sort -u > ${OUT_THREATMINER}
 }
 
 BUFFEROVER(){
 local URL_BUFFEROVER="dns.bufferover.run/dns?q="
   echo -e  "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}Bufferover${RESET}${DPADDING}\t[${GREEN} ✔ ${RESET}]"
-   curl --silent --request GET --url "${URL_BUFFEROVER}.${DOMAIN}&rt=5" | jq --raw-output '.FDNS_A[]' | awk '{print $1}' | sed -e 's/^.*,//g' | sort -u > ${OUT_BUFFEROVER}
+   curl --tcp-fastopen --tcp-nodelay --doh-url https://cloudflare-dns.com/dns-query --silent --request GET --url "${URL_BUFFEROVER}.${DOMAIN}&rt=5" | jq --raw-output '.FDNS_A[]' | awk '{print $1}' | sed -e 's/^.*,//g' | sort -u > ${OUT_BUFFEROVER}
 }
 
 HACKERTARGET(){
 local URL_HACKERTARGET="https://api.hackertarget.com/hostsearch/?q="
   echo -e  "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}Hackertarget${RESET}${DPADDING}\t[${GREEN} ✔ ${RESET}]"
-  curl --silent --request GET --url "${URL_HACKERTARGET}${DOMAIN}" |  sed 's/,.*//' | sort -u  > ${OUT_HACKERTARGET}
+  curl --tcp-fastopen --tcp-nodelay --doh-url https://cloudflare-dns.com/dns-query --silent --request GET --url "${URL_HACKERTARGET}${DOMAIN}" |  sed 's/,.*//' | sort -u  > ${OUT_HACKERTARGET}
 }
 
 ENTRUST(){
 local URL_ENTRUST="https://ctsearch.entrust.com/api/v1/certificates?fields=subjectDN&domain="
   echo -e  "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}Entrust${RESET}${DPADDING}\t\t[${GREEN} ✔ ${RESET}]"
-   curl --silent --request GET --url "${URL_ENTRUST}${DOMAIN}&includeExpired=false&exactMatch=false&limit=5000" | jq --raw-output -r '.[].subjectDN' | sed 's/,.*//' | sed 's/\*\.//g' |  sed 's/cn=//g' | sort -u > ${OUT_ENTRUST}
+   curl --tcp-fastopen --tcp-nodelay --doh-url https://cloudflare-dns.com/dns-query --silent --request GET --url "${URL_ENTRUST}${DOMAIN}&includeExpired=false&exactMatch=false&limit=5000" | jq --raw-output -r '.[].subjectDN' | sed 's/,.*//' | sed 's/\*\.//g' |  sed 's/cn=//g' | sort -u > ${OUT_ENTRUST}
 }
 
 FINDSUBDOMAIN(){
 local _FINDSUBDOMAIN="https://findsubdomains.com/search/subdomains?domain="
-   curl --silent ${_FINDSUBDOMAIN}"${DOMAIN}&page=1&per_page=100&domain=${DOMAIN}" | sed 's/\\//g' | grep -Po '(?<=data-target=").*?(?=")' > ${OUT_FINDSUBDOMAIN}
+   curl --tcp-fastopen --tcp-nodelay --doh-url https://cloudflare-dns.com/dns-query --silent ${_FINDSUBDOMAIN}"${DOMAIN}&page=1&per_page=100&domain=${DOMAIN}" | sed 's/\\//g' | grep -Po '(?<=data-target=").*?(?=")' > ${OUT_FINDSUBDOMAIN}
   echo -e  "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}Findsubdomain${RESET}${DPADDING}\t[${GREEN} ✔ ${RESET}]"
 
 }
@@ -364,7 +365,7 @@ local _FINDSUBDOMAIN="https://findsubdomains.com/search/subdomains?domain="
 THREATCROWD(){
 local URL_THREATCROWD="https://threatcrowd.org/searchApi/v2/domain/report/?domain="
   echo -e  "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}Threatcrowd${RESET}${DPADDING}\t[${GREEN} ✔ ${RESET}]"
-    curl --silent --request GET --url  "${URL_THREATCROWD}${DOMAIN}" | jq --raw-output -r '.subdomains[]' | sort -u > ${OUT_THREATCROWD}
+    curl --tcp-fastopen --tcp-nodelay --doh-url https://cloudflare-dns.com/dns-query --silent --request GET --url  "${URL_THREATCROWD}${DOMAIN}" | jq --raw-output -r '.subdomains[]' | sort -u > ${OUT_THREATCROWD}
 }
 
 RIDDLER(){
@@ -377,21 +378,22 @@ local URL_RIDDLER="https://riddler.io/search/exportcsv?q=pld:"
 
 WEBARCHIVE(){
   echo -e  "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}Webarchive${RESET}${DPADDING}\t[${GREEN} ✔ ${RESET}]"
-      curl --silent "http://web.archive.org/cdx/search/cdx?url=*.${DOMAIN}/*&output=text&fl=original&collapse=urlkey" | sed -e 's_https*://__' -e "s/\/.*//" -e 's/:.*//' -e 's/^www\.//' | sed "/@/d" | sed -e 's/\.$//' | sort -u > ${OUT_WEBARCHIVE}
+      curl --tcp-fastopen --tcp-nodelay --silent "http://web.archive.org/cdx/search/cdx?url=*.${DOMAIN}/*&output=text&fl=original&collapse=urlkey" | sed -e 's_https*://__' -e "s/\/.*//" -e 's/:.*//' -e 's/^www\.//' | sed "/@/d" | sed -e 's/\.$//' | sort -u > ${OUT_WEBARCHIVE}
 }
 
 DNSDUMPSTER(){
 local URL_DNS="https://dnsdumpster.com"
   echo -e  "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}Dnsdumpster${RESET}${DPADDING}\t[${GREEN} ✔ ${RESET}]"
-    local CSRF=$(curl -s ${URL_DNS} | grep -P "csrfmiddlewaretoken" | grep -Po '(?<=value=")[^"]*(?=")')
-        MAKE=$(curl -s --cookie "csrftoken=$CSRF" -H "Referer: ${URL_DNS}" --data  "csrfmiddlewaretoken=$CSRF&targetip=${DOMAIN}" ${URL_DNS} | grep -Po '<td class="col-md-4">\K[^<]*' > ${OUT_DNSDUMPSTER})
+        local CSRF=$(curl -s ${URL_DNS} | grep -P "csrfmiddlewaretoken" | grep -Po '(?<=value=")[^"]*(?=")')
+        MAKE=$(curl --tcp-fastopen --tcp-nodelay --doh-url https://cloudflare-dns.com/dns-query -s --cookie "csrftoken=$CSRF" -H "Referer: ${URL_DNS}" --data  "csrfmiddlewaretoken=$CSRF&targetip=${DOMAIN}" ${URL_DNS} | grep -Po '<td class="col-md-4">\K[^<]*' > ${OUT_DNSDUMPSTER})
 }
 
 CERTSH(){
 local URL_CERTSH="https://crt.sh\?q\="
   echo -e  "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}Certsh${RESET}${DPADDING}\t\t[${GREEN} ✔ ${RESET}]"
-    curl -s https://crt.sh\?q\=%.${DOMAIN} | awk -v pattern="<TD>.*${DOMAIN}" '$0 ~ pattern {gsub("<[^>]*>","");gsub(//,""); print}' | sort -u | sed 's/    //' > ${OUT_CRTSH}
+    curl --tcp-fastopen --tcp-nodelay --doh-url https://cloudflare-dns.com/dns-query -s https://crt.sh\?q\=%.${DOMAIN} | awk -v pattern="<TD>.*${DOMAIN}" '$0 ~ pattern {gsub("<[^>]*>","");gsub(//,""); print}' | sort -u | sed 's/    //' > ${OUT_CRTSH}
  }
+
 
 current_date_time=$(date "+%Y-%m-%d %H:%M:%S")
 goBanner ## Called banner sudomy
