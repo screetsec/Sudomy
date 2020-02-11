@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #-Metadata----------------------------------------------------#
-#  Filename: sudomy (v1.1.0)             (Update: 2019-08-31) #
+#  Filename: sudomy (v1.1.1)             (Update: 2020-02-12) #
 #-Info--------------------------------------------------------#
 #  Fast Subdomain Enumeration & Analysis.                     #
 #-Author(s)---------------------------------------------------#
@@ -20,7 +20,7 @@
 ### Variable Name and Version
 
 APPNAME="sud⍥my.sh"
-VERSION="1.1.0#dev"
+VERSION="1.1.1#dev"
 
 ### Calling Source
 source sudomy.api
@@ -390,8 +390,11 @@ local URL_DNS="https://dnsdumpster.com"
 CERTSH(){
 local URL_CERTSH="https://crt.sh\?q\="
   echo -e  "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}Certsh${RESET}${DPADDING}\t\t[${GREEN} ✔ ${RESET}]"
-    curl -s https://crt.sh\?q\=%.${DOMAIN} | awk -v pattern="<TD>.*${DOMAIN}" '$0 ~ pattern {gsub("<[^>]*>","");gsub(//,""); print}' | sort -u | sed 's/    //' > ${OUT_CRTSH}
- }
+    #curl -s https://crt.sh\?q\=%.${DOMAIN} | awk -v pattern="<TD>.*${DOMAIN}" '$0 ~ pattern {gsub("<[^>]*>","");gsub(//,""); print}' | sort -u | sed 's/    //' > ${OUT_CRTSH}
+    # Fixing
+     curl -s https://crt.sh/?q\=%.${DOMAIN}\&output\=json | jq -r '.[].name_value' | sed 's/\*\.//g' | sort -u >  ${OUT_CRTSH}
+
+}
 
 current_date_time=$(date "+%Y-%m-%d %H:%M:%S")
 goBanner ## Called banner sudomy
