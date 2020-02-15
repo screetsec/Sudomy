@@ -183,7 +183,8 @@ To use one or more plugins:
 ```
 $ sudomy -pS -sC -sS -d hackerone.com
 ```
-To use all plugins: testing host status, http/https status code, subdomain takeover and screenshots (Nmap & wappalyzer Not Included)
+To use all plugins: testing host status, http/https status code, subdomain takeover and screenshots 
+Nmap,Gobuster and wappalyzer Not Included.
 ```
 $ sudomy --all -d hackerone.com
 ```
