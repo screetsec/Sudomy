@@ -183,7 +183,8 @@ To use one or more plugins:
 ```
 $ sudomy -pS -sC -sS -d hackerone.com
 ```
-To use all plugins: testing host status, http/https status code, subdomain takeover and screenshots 
+To use all plugins: testing host status, http/https status code, subdomain takeover and screenshots. 
+
 Nmap,Gobuster and wappalyzer Not Included.
 ```
 $ sudomy --all -d hackerone.com
@@ -223,5 +224,6 @@ All notable changes to this project will be documented in this [file](https://gi
 - [EdOverflow](https://github.com/EdOverflow/) - can-i-take-over-xyz
 - [jerukitumanis](https://github.com/myugan) - Docker Maintainer
 - [NgeSEC](https://ngesec.id/) Community
+- [Zerobyte](http://zerobyte.id/) Community
 - [Gauli(dot)Net](https://gauli.net/)
 - [Bugcrowd](https://www.bugcrowd.com/) & [Hackerone](https://www.hackerone.com/)
