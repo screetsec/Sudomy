@@ -1284,7 +1284,7 @@ if [[ ${PLUGIN_WAPPALYZER} == true ]] ; then
       WAPPALYZER_RAW=$(wappalyzer ${WAPPALYZER_SITE} 2> /dev/null | jq -r '.applications[] | "\(.name) \(.version)"' | sed 's/ null$//g' | sed 's/,/./g')
         if [[ ! -z ${WAPPALYZER_RAW} ]]; then
           echo -e "   ${WAPPALYZER_SITE}"
-          echo -e "${WAPPALYZER_RAW}" | sed 's/^/    - /g'
+          echo -e "${WAPPALYZER_RAW}" | sed 's/^/        - /g'
           echo ""
           echo "${WAPPALYZER_SITE};$(echo "${WAPPALYZER_RAW}" | sed ':a;N;$!ba;s/\n/, /g')" >> ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_WAPPALYZER}
         fi
