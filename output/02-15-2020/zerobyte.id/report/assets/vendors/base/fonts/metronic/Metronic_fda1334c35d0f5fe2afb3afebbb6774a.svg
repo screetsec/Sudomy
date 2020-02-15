@@ -1,0 +1,39 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd" >
+<!--
+2017-3-20: Created.
+-->
+<svg xmlns="http://www.w3.org/2000/svg">
+<metadata>
+Created by FontForge 20120731 at Mon Mar 20 15:42:31 2017
+ By icons8
+
+</metadata>
+<defs>
+<font id="Metronic" horiz-adv-x="512" >
+  <font-face 
+    font-family="Metronic"
+    font-weight="500"
+    font-stretch="normal"
+    units-per-em="512"
+    panose-1="2 0 6 3 0 0 0 0 0 0"
+    ascent="448"
+    descent="-64"
+    bbox="0 -63.9902 512 448"
+    underline-thickness="25.6"
+    underline-position="-51.2"
+    unicode-range="U+0020-F1B4"
+  />
+    <missing-glyph />
+    <glyph glyph-name="space" unicode=" " horiz-adv-x="200" 
+ />
+    <glyph glyph-name="arrows-02" unicode="&#xf1b2;" 
+d="M0 448h511.992v-5.01953s-73.1465 -1.55664 -130.489 -40.4414c-57.3535 -38.8848 -93.0889 -69.9902 -125.5 -69.9902h-0.0107422c-32.416 0 -68.1514 31.1055 -125.5 69.9902c-57.3525 38.8848 -130.492 40.4414 -130.492 40.4414v5.01953z" />
+    <glyph glyph-name="arrows-03" unicode="&#xf1b3;" 
+d="M45.4609 317.51c38.8896 -57.3525 69.9854 -93.0879 69.9854 -125.5v-0.00976562c0 -32.417 -31.0957 -68.1523 -69.9854 -125.5c-38.8848 -57.3525 -40.4414 -130.49 -40.4414 -130.49h-5.01953v511.99h5.01953s1.55664 -73.1475 40.4414 -130.49z" />
+    <glyph glyph-name="arrows-01" unicode="&#xf1b1;" 
+d="M381.505 378.01c57.3506 -38.8848 130.495 -40.4414 130.495 -40.4414v-5.01953h-512v5.01953s73.1396 1.55664 130.492 40.4414c57.3486 38.8848 93.0859 69.9902 125.503 69.9902h0.00488281c32.417 0 68.1523 -31.1055 125.505 -69.9902z" />
+    <glyph glyph-name="arrows-04" unicode="&#xf1b4;" 
+d="M110.427 448h5.01953v-511.99h-5.01953s-1.55957 73.1377 -40.4414 130.49c-38.8896 57.3477 -69.9854 93.083 -69.9854 125.5v0.00976562c0 32.4121 31.0957 68.1475 69.9854 125.5c38.8818 57.3428 40.4414 130.49 40.4414 130.49z" />
+  </font>
+</defs></svg>
