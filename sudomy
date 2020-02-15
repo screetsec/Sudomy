@@ -1271,17 +1271,6 @@ rm -r ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_NMAP_HOSTS} > /dev/null 2>&1
 
 fi
 
-if [[ ${PLUGIN_DOMAIN_SCREENSHOTS} == true ]]; then	
-
-## Cleaning Log Files : ${OUT}/${DATE_LOG}/${DOMAIN}/screenshots/
-    rm -rf ${OUT}/${DATE_LOG}/${DOMAIN}/screenshots/* ## Cleaning old file
- _webscreenshot="lib/webscreenshot/webscreenshot.py"
-		echo -e "\n${BOLD}[${LGREEN}+${RESET}${BOLD}]${RESET} Web Screenshots: from domain list    "
-		echo -e "---------------------------------------------\n"
-		python  ${_webscreenshot} -i ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_HTTPROBE} -o ${OUT}/${DATE_LOG}/${DOMAIN}/screenshots/
-
-
-fi
 
 if [[ ${PLUGIN_WAPPALYZER} == true ]] ; then
 
@@ -1303,6 +1292,19 @@ if [[ ${PLUGIN_WAPPALYZER} == true ]] ; then
 
 
 fi
+
+if [[ ${PLUGIN_DOMAIN_SCREENSHOTS} == true ]]; then	
+
+## Cleaning Log Files : ${OUT}/${DATE_LOG}/${DOMAIN}/screenshots/
+    rm -rf ${OUT}/${DATE_LOG}/${DOMAIN}/screenshots/* ## Cleaning old file
+ _webscreenshot="lib/webscreenshot/webscreenshot.py"
+		echo -e "\n${BOLD}[${LGREEN}+${RESET}${BOLD}]${RESET} Web Screenshots: from domain list    "
+		echo -e "---------------------------------------------\n"
+		python  ${_webscreenshot} -i ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_HTTPROBE} -o ${OUT}/${DATE_LOG}/${DOMAIN}/screenshots/
+
+
+fi
+
 
 source lib/template/_template
 
