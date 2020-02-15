@@ -1,5 +1,5 @@
 # Sudomy
-[![License](https://img.shields.io/badge/license-MIT-red.svg)](https://github.com/Screetsec/Sudomy/blob/master/LICENSE.md)  [![Build Status](https://travis-ci.org/Screetsec/Sudomy.svg?branch=master)](https://travis-ci.org/Screetsec/Sudomy)  [![Version](https://img.shields.io/badge/Release-1.1.1-blue.svg?maxAge=259200)]()  [![Build](https://img.shields.io/badge/Supported_OS-Linux-yellow.svg)]()  [![Build](https://img.shields.io/badge/Supported_WSL-Windows-blue.svg)]() [![Contributions Welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/screetsec/sudomy/issues)  [![Youtube](https://img.shields.io/badge/Youtube-Demo-red.svg)](https://www.youtube.com/watch?v=DpXIBUtasn0)
+[![License](https://img.shields.io/badge/license-MIT-red.svg)](https://github.com/Screetsec/Sudomy/blob/master/LICENSE.md)  [![Build Status](https://travis-ci.org/Screetsec/Sudomy.svg?branch=master)](https://travis-ci.org/Screetsec/Sudomy)  [![Version](https://img.shields.io/badge/Release-1.1.2-blue.svg?maxAge=259200)]()  [![Build](https://img.shields.io/badge/Supported_OS-Linux-yellow.svg)]()  [![Build](https://img.shields.io/badge/Supported_WSL-Windows-blue.svg)]() [![Contributions Welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/screetsec/sudomy/issues)  [![Youtube](https://img.shields.io/badge/Youtube-Demo-red.svg)](https://www.youtube.com/watch?v=DpXIBUtasn0)
 ### Subdomain Enumeration & Analysis
 ![ff](https://user-images.githubusercontent.com/17976841/63212795-b8d57300-c133-11e9-882a-f604d67819cc.png)
 
@@ -37,6 +37,7 @@
 - Performed port scanning from collected subdomains/virtualhosts IP Addresses
 - Testing Subdomain TakeOver attack
 - Taking Screenshotsof subdomains
+- Identify technologies on websites
 - Report output in HTML or CSV format
 
 ## How Sudomy Works
@@ -77,11 +78,13 @@ $ pip install -r requirements.txt
 ```bash
 # Linux
 apt-get update
-apt-get install jq nmap phantomjs golang
+apt-get install jq nmap phantomjs golang npm
+npm i -g wappalyzer
 
 # Mac
 brew cask install phantomjs 
-brew install jq nmap go
+brew install jq nmap go npm
+npm i -g wappalyzer
 ```
 
 ***If you already have a Go environment, then follow this instruction:***
@@ -140,7 +143,7 @@ SECURITY_TRAILS=""
 / __|_  _ __| (_)(_)_ __ _  _
 \__ \ || / _  / __ \  ' \ || |
 |___/\_,_\__,_\____/_|_|_\_, |
-                          |__/ v{1.1.0#dev} by @screetsec
+                          |__/ v{1.1.2#dev} by @screetsec
 Sud⍥my - Fast Subdmain Enumeration and Analyzer
 	 http://github.com/screetsec/sudomy
 
@@ -162,6 +165,7 @@ Optional Arguments:
   -rS, --resolver	 Convert domain lists to resolved IP lists without duplicates
   -sC, --status-code     Get status codes, response from domain list
   -nT, --nmap-top	 Port scanning with top-ports using nmap from domain list
+  -aI, --apps-identifier Identify technologies on websites from domain list
   -sS, --screenshot	 Screenshots a list of website
   -nP, --no-passive	 Do not perform passive subdomain enumeration
        --no-probe	 Do not perform httprobe
@@ -179,7 +183,7 @@ To use one or more plugins:
 ```
 $ sudomy -pS -sC -sS -d hackerone.com
 ```
-To use all plugins: testing host status, http/https status code, subdomain takeover and screenshots
+To use all plugins: testing host status, http/https status code, subdomain takeover and screenshots (Nmap & wappalyzer Not Included)
 ```
 $ sudomy --all -d hackerone.com
 ```
