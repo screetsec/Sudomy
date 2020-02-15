@@ -223,7 +223,7 @@ All notable changes to this project will be documented in this [file](https://gi
 - [Daniel Miessler](https://github.com/danielmiessler/) - SecList
 - [EdOverflow](https://github.com/EdOverflow/) - can-i-take-over-xyz
 - [jerukitumanis](https://github.com/myugan) - Docker Maintainer
-- [NgeSEC](https://ngesec.id/) Community
-- [Zerobyte](http://zerobyte.id/) Community
+- [NgeSEC](https://ngesec.id/) - Community
+- [Zerobyte](http://zerobyte.id/) - Community
 - [Gauli(dot)Net](https://gauli.net/)
 - [Bugcrowd](https://www.bugcrowd.com/) & [Hackerone](https://www.hackerone.com/)
