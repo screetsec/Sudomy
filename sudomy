@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #-Metadata----------------------------------------------------#
-#  Filename: sudomy (v1.1.1)             (Update: 2020-02-12) #
+#  Filename: sudomy (v1.1.2)             (Update: 2020-02-15) #
 #-Info--------------------------------------------------------#
 #  Fast Subdomain Enumeration & Analysis.                     #
 #-Author(s)---------------------------------------------------#
@@ -20,7 +20,7 @@
 ### Variable Name and Version
 
 APPNAME="sud⍥my.sh"
-VERSION="1.1.1#dev"
+VERSION="1.1.2#dev"
 
 ### Calling Source
 source sudomy.api
@@ -42,7 +42,7 @@ echo -e "\t http://github.com/screetsec/sudomy\n"
 RESET="\033[0m"			# Normal Colour
 RED="\033[0;31m" 		# Error / Issues
 GREEN="\033[0;32m"		# Successful       
-BOLD="\033[01;01m"    		#  Highlight
+BOLD="\033[01;01m"    		# Highlight
 WHITE="\033[1;37m"		# BOLD
 YELLOW="\033[1;33m"		# Warning
 PADDING="  "
@@ -76,6 +76,7 @@ goBanner;
  echo -e "${PADDING}${BOLD}-h, ${RESET} --help${DPADDING} show this help message"
  echo -e "${PADDING}${BOLD}-o, ${RESET} --html${DPADDING} Make report output into HTML "
  echo -e "${PADDING}${BOLD}-s, ${RESET} --source${DPADDING} Use source for Enumerate Subdomain"
+ echo -e "${PADDING}${BOLD}-aI,${RESET} --apps-identifier${DPADDING} Identify technologies on websites from domain list"
  echo -e "${PADDING}${BOLD}-tO,${RESET} --takeover\t Subdomain TakeOver Vulnerabilty Scanner"
  echo -e "${PADDING}${BOLD}-pS,${RESET} --ping-sweep\t Check live host using methode Ping Sweep"
  echo -e "${PADDING}${BOLD}-rS,${RESET} --resolver\t Convert domain lists to resolved IP lists without duplicates"
@@ -213,7 +214,6 @@ args="${1}";
             PLUGIN_STATUS_CODE=true
             PLUGIN_RESOLV_SD=true
             PLUGIN_PING_SWEEP=true
-            PLUGIN_WAPPALYZER=true
             shift
         ;;        
     
