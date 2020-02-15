@@ -22,3 +22,6 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
  -  Update
        - CRTSH update regex for retrieving subdomain
    
+## [1.1.2] - 2020-02-15
+ -  Update
+       - Added Identify technologies on websites from domain list
