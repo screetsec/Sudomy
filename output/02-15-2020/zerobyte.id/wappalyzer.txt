@@ -1,0 +1,24 @@
+http://it.zerobyte.id;Google Tag Manager, Nginx, jQuery 2.2.4
+http://core.zerobyte.id;Google Tag Manager, Nginx, jQuery 2.2.4
+http://flickr.com.zerobyte.id;Bootstrap, DoubleClick Ad Exchange (AdX), DoubleClick for Publishers (DFP), Font Awesome, Google AdSense, Google Tag Manager, Nginx, OWL Carousel, YouTube, jQuery 2.2.4
+http://mail.zerobyte.id;Google Tag Manager, Nginx, jQuery 2.2.4
+http://cpanel.zerobyte.id;Bootstrap, DoubleClick Ad Exchange (AdX), DoubleClick for Publishers (DFP), Font Awesome, Google AdSense, Google Tag Manager, Nginx, OWL Carousel, YouTube, jQuery 2.2.4
+http://daywalker.zerobyte.id;Bootstrap, DoubleClick Ad Exchange (AdX), DoubleClick for Publishers (DFP), Font Awesome, Google AdSense, Google Tag Manager, Nginx, OWL Carousel, YouTube, jQuery 2.2.4
+http://testing.zerobyte.id;Google Tag Manager, Nginx, jQuery 2.2.4
+http://ctf.zerobyte.id;Google Tag Manager, Nginx, jQuery 2.2.4
+http://webdisk.zerobyte.id;Bootstrap, DoubleClick Ad Exchange (AdX), DoubleClick for Publishers (DFP), Font Awesome, Google AdSense, Google Tag Manager, Nginx, OWL Carousel, YouTube, jQuery 2.2.4
+http://www.blog.zerobyte.id;Bootstrap, DoubleClick Ad Exchange (AdX), DoubleClick for Publishers (DFP), Font Awesome, Google AdSense, Google Tag Manager, Nginx, OWL Carousel, YouTube, jQuery 2.2.4
+http://webmail.zerobyte.id;Google Tag Manager, Nginx, jQuery 2.2.4
+http://www.daywalker.zerobyte.id;Bootstrap, DoubleClick Ad Exchange (AdX), DoubleClick for Publishers (DFP), Font Awesome, Google AdSense, Google Tag Manager, Nginx, OWL Carousel, YouTube, jQuery 2.2.4
+http://www.flickr.com.zerobyte.id;Google Tag Manager, Nginx, jQuery 2.2.4
+http://www.ctf.zerobyte.id;Bootstrap, DoubleClick Ad Exchange (AdX), DoubleClick for Publishers (DFP), Font Awesome, Google AdSense, Google Tag Manager, Nginx, OWL Carousel, YouTube, jQuery 2.2.4
+http://www.zerobyte.id;Bootstrap, DoubleClick Ad Exchange (AdX), DoubleClick for Publishers (DFP), Font Awesome, Google AdSense, Google Tag Manager, Nginx, OWL Carousel, YouTube, jQuery 2.2.4
+http://www.zltac.zerobyte.id;Bootstrap, DoubleClick Ad Exchange (AdX), DoubleClick for Publishers (DFP), Font Awesome, Google AdSense, Google Tag Manager, Nginx, OWL Carousel, YouTube, jQuery 2.2.4
+http://zack.zerobyte.id;Google Tag Manager, Nginx, jQuery 2.2.4
+http://zltac.zerobyte.id;Bootstrap, DoubleClick Ad Exchange (AdX), DoubleClick for Publishers (DFP), Font Awesome, Google AdSense, Google Tag Manager, Nginx, OWL Carousel, YouTube, jQuery 2.2.4
+http://zerobyte.id;Apache 2.4.18, Bootstrap 4.3.1, Font Awesome, Google Font API, Ubuntu, jQuery 3.4.1
+http://www.testing.zerobyte.id;Google Tag Manager, Nginx, jQuery 2.2.4
+http://www.zack.zerobyte.id;Google Tag Manager, Nginx, jQuery 2.2.4
+http://infosec.zerobyte.id;Fastly, GitHub Pages, Jekyll v3.8.5, Varnish, Ruby on Rails, Ruby
+http://blog.zerobyte.id;Blogger, Font Awesome, Google AdSense, Google Font API, OpenGSE, jQuery 1.11.3, jQuery Migrate, Python, Java
+https://infosec.zerobyte.id;Fastly, GitHub Pages, Jekyll v3.8.5, Varnish, Ruby on Rails, Ruby
