@@ -25,3 +25,4 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 ## [1.1.2] - 2020-02-15
  -  Update
        - Added Identify technologies on websites from domain list
+       - Fix Some Bug and Issues
