@@ -76,7 +76,7 @@ goBanner;
  echo -e "${PADDING}${BOLD}-h, ${RESET} --help${DPADDING} show this help message"
  echo -e "${PADDING}${BOLD}-o, ${RESET} --html${DPADDING} Make report output into HTML "
  echo -e "${PADDING}${BOLD}-s, ${RESET} --source${DPADDING} Use source for Enumerate Subdomain"
- echo -e "${PADDING}${BOLD}-aI,${RESET} --apps-identifier${DPADDING} Identify technologies on websites from domain list"
+ echo -e "${PADDING}${BOLD}-aI,${RESET} --apps-identifier Identify technologies on websites from domain list"
  echo -e "${PADDING}${BOLD}-tO,${RESET} --takeover\t Subdomain TakeOver Vulnerabilty Scanner"
  echo -e "${PADDING}${BOLD}-pS,${RESET} --ping-sweep\t Check live host using methode Ping Sweep"
  echo -e "${PADDING}${BOLD}-rS,${RESET} --resolver\t Convert domain lists to resolved IP lists without duplicates"
