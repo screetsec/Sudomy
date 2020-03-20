@@ -235,11 +235,14 @@ if [ -z "${DOMAIN}" ] ; then
   exit
 fi
 
-## Check depend
-command -v nmap > /dev/null 2>&1 || { echo "Error: require nmap but it's is not installed. Aborting." >&2; exit 1; }
-command -v dig > /dev/null 2>&1 || { echo "Error: require dig but it's is not installed. Aborting." >&2; exit 1; }
-command -v jq > /dev/null 2>&1 || { echo "Error: require jq but it's is not installed. Aborting." >&2; exit 1; }
-command -v httprobe > /dev/null 2>&1 || { echo "Error: require httprobe but it's is not installed. Aborting." >&2; exit 1; }
+## Check dependencies
+dependencies=(nmap dig jq httprobe)
+for dependency in "${dependencies[@]}"; do
+    type -p "$dependency" &>/dev/null || {
+        echo "error: Error: require ${dependency} but it's is not installed. Aborting." >&2
+        exit 1
+	}
+done
 
 if [[ ${PLUGIN_WAPPALYZER} == true ]] ; then
 command -v wappalyzer > /dev/null 2>&1 || { echo "Error: require wappalyzer for identify apps but it's is not installed. Aborting." >&2; exit 1; }
