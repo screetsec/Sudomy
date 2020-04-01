@@ -245,7 +245,7 @@ for dependency in "${dependencies[@]}"; do
 done
 
 if [[ ${PLUGIN_WAPPALYZER} == true ]] ; then
-command -v wappalyzer > /dev/null 2>&1 || { echo "Error: require wappalyzer for identify apps but it's is not installed. Aborting." >&2; exit 1; }
+	command -v wappalyzer > /dev/null 2>&1 || { echo "Error: require wappalyzer for identify apps but it's is not installed. Aborting." >&2; exit 1; }
 fi
 
 ARG_PARS_LIST(){
@@ -259,12 +259,12 @@ DATE_LOG=$(date +%m-%d-%Y)
 
     if [[ -f ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_SUBDOMAIN} ]] ; then
         COUNT=$(cat ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_SUBDOMAIN} | wc  -l  )
-        echo -e  "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}Total ${RESET}${DPADDING}\t\t[${GREEN}${COUNT}${RESET}]\n"
-        cat ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_SUBDOMAIN} \
+        	echo -e  "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}Total ${RESET}${DPADDING}\t\t[${GREEN}${COUNT}${RESET}]\n"
+       		cat ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_SUBDOMAIN} \
         | while read VERBOSE; do
-            echo -e ${YELLOW}"\t - ${RESET}$VERBOSE"
+            	echo -e ${YELLOW}"\t - ${RESET}$VERBOSE"
         done
-        echo -e  "\n${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}Total ${RESET}${DPADDING}\t\t[${GREEN}${COUNT}${RESET}]"
+        	echo -e  "\n${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}Total ${RESET}${DPADDING}\t\t[${GREEN}${COUNT}${RESET}]"
      fi
 
 }
@@ -446,129 +446,129 @@ for arr in $(echo ${LIST} | tr "," "\n" | tr '[:upper:]' '[:lower:]'); do
     eval "${arr}=true";
 done
     [[ ${shodan} == true ]] && {
-        SHODAN
-    if [[ -f ${OUT_SHODAN} ]];then
-    COUNT=$(cat ${OUT_SHODAN} | sort -u | wc  -l  )
-    #echo -e "\t${BLUE}-${RESET}${RESET} Subdomain total: ${COUNT}\n"
-    fi
+    SHODAN
+    	if [[ -f ${OUT_SHODAN} ]];then
+    		COUNT=$(cat ${OUT_SHODAN} | sort -u | wc  -l  )
+    		#echo -e "\t${BLUE}-${RESET}${RESET} Subdomain total: ${COUNT}\n"
+    	fi
     }
     [[ ${virustotal} == true ]] && {
-          VIRUSTOTAL
-    if [[ -f ${OUT_VIRUSTOTAL} ]];then
-    COUNT=$(cat ${OUT_VIRUSTOTAL} | sort -u | wc  -l  )
-    #echo -e "\t${BLUE}-${RESET}${RESET} Subdomain total: ${COUNT}\n"
-    fi
+    VIRUSTOTAL
+    	if [[ -f ${OUT_VIRUSTOTAL} ]];then
+   		 COUNT=$(cat ${OUT_VIRUSTOTAL} | sort -u | wc  -l  )
+   			 #echo -e "\t${BLUE}-${RESET}${RESET} Subdomain total: ${COUNT}\n"
+    	fi
     }
     [[ ${certspotter} == true ]] && {
-          CERTSPOTTER
-    if [[ -f ${OUT_CERTSPOTTER} ]];then
-    COUNT=$(cat ${OUT_CERTSPOTTER} | sort -u | wc  -l  )
-   # echo -e "\t${BLUE}-${RESET}${RESET} Subdomain total: ${COUNT}\n"
-    fi
+    CERTSPOTTER
+    	if [[ -f ${OUT_CERTSPOTTER} ]];then
+    		COUNT=$(cat ${OUT_CERTSPOTTER} | sort -u | wc  -l  )
+   			# echo -e "\t${BLUE}-${RESET}${RESET} Subdomain total: ${COUNT}\n"
+    	fi
     }
 
     [[ ${binaryedge} == true ]] && {
     BINARYEDGE
-    if [[ -f ${OUT_BINARYEDGE} ]];then
-    COUNT=$(cat ${OUT_BINARYEDGE} | sort -u | wc  -l  )
-    #echo -e "\t${BLUE}-${RESET}${RESET} Subdomain total: ${COUNT}\n"
-    fi
+    	if [[ -f ${OUT_BINARYEDGE} ]];then
+    		COUNT=$(cat ${OUT_BINARYEDGE} | sort -u | wc  -l  )
+    		#echo -e "\t${BLUE}-${RESET}${RESET} Subdomain total: ${COUNT}\n"
+    	fi
     }
 
     [[ ${hackertarget} == true ]] && {
     HACKERTARGET
-    if [[ -f ${OUT_HACKERTARGET} ]];then
-    COUNT=$(cat ${OUT_HACKERTARGET} | sort -u | wc  -l  )
-    #echo -e "\t${BLUE}-${RESET}${RESET} Subdomain total: ${COUNT}\n"
-    fi
+    	if [[ -f ${OUT_HACKERTARGET} ]];then
+    		COUNT=$(cat ${OUT_HACKERTARGET} | sort -u | wc  -l  )
+    		#echo -e "\t${BLUE}-${RESET}${RESET} Subdomain total: ${COUNT}\n"
+    	fi
     }
 
     [[ ${threatminer} == true ]] && {
     THREATMINER
-    if [[ -f ${OUT_THREATMINER} ]];then
-    COUNT=$(cat ${OUT_THREATMINER} | sort -u | wc  -l  )
-    #echo -e "\t${BLUE}-${RESET}${RESET} Subdomain total: ${COUNT}\n"
-    fi
+    	if [[ -f ${OUT_THREATMINER} ]];then
+    		COUNT=$(cat ${OUT_THREATMINER} | sort -u | wc  -l  )
+    		#echo -e "\t${BLUE}-${RESET}${RESET} Subdomain total: ${COUNT}\n"
+    	fi
     }
 
     [[ ${crtsh} == true ]] && {
     CERTSH
-    if [[ -f ${OUT_CRTSH} ]];then
-    COUNT=$(cat ${OUT_CRTSH} | sort -u | wc  -l  )
-    #echo -e "\t${BLUE}-${RESET}${RESET} Subdomain total: ${COUNT}\n"
-    fi
+    	if [[ -f ${OUT_CRTSH} ]];then
+    		COUNT=$(cat ${OUT_CRTSH} | sort -u | wc  -l  )
+    		#echo -e "\t${BLUE}-${RESET}${RESET} Subdomain total: ${COUNT}\n"
+    	fi
     }
 
     [[ ${bufferover} == true ]] && {
     BUFFEROVER
-    if [[ -f ${OUT_BUFFEROVER} ]];then
-    COUNT=$(cat ${OUT_BUFFEROVER} | sort -u | wc  -l  )
-    #echo -e "\t${BLUE}-${RESET}${RESET} Subdomain total: ${COUNT}\n"
-    fi
+    	if [[ -f ${OUT_BUFFEROVER} ]];then
+    		COUNT=$(cat ${OUT_BUFFEROVER} | sort -u | wc  -l  )
+    		#echo -e "\t${BLUE}-${RESET}${RESET} Subdomain total: ${COUNT}\n"
+    	fi
     }
 
     [[ ${entrust} == true ]] && {
     ENTRUST
-    if [[ -f ${OUT_ENTRUST} ]];then
-    COUNT=$(cat ${OUT_ENTRUST} | sort -u | wc  -l  )
-    #echo -e "\t${BLUE}-${RESET}${RESET} Subdomain total: ${COUNT}\n"
-    fi
+    	if [[ -f ${OUT_ENTRUST} ]];then
+    		COUNT=$(cat ${OUT_ENTRUST} | sort -u | wc  -l  )
+    		#echo -e "\t${BLUE}-${RESET}${RESET} Subdomain total: ${COUNT}\n"
+    	fi
     }
 
     [[ ${findsubdomain} == true ]] && {
     FINDSUBDOMAIN
-    if [[ -f ${OUT_FINDSUBDOMAIN} ]];then
-    COUNT=$(cat ${OUT_FINDSUBDOMAIN} | sort -u | wc  -l  )
-    #echo -e "\t${BLUE}-${RESET}${RESET} Subdomain total: ${COUNT}\n"
-    fi
+    	if [[ -f ${OUT_FINDSUBDOMAIN} ]];then
+    		COUNT=$(cat ${OUT_FINDSUBDOMAIN} | sort -u | wc  -l  )
+    		#echo -e "\t${BLUE}-${RESET}${RESET} Subdomain total: ${COUNT}\n"
+    	fi
     }
 
     [[ ${threatcrowd} == true ]] && {
     THREATCROWD
-    if [[ -f ${OUT_THREATCROWD} ]];then
-    COUNT=$(cat ${OUT_THREATCROWD} | sort -u | wc  -l  )
-    #echo -e "\t${BLUE}-${RESET}${RESET} Subdomain total: ${COUNT}\n"
-    fi
+    	if [[ -f ${OUT_THREATCROWD} ]];then
+    		COUNT=$(cat ${OUT_THREATCROWD} | sort -u | wc  -l  )
+    		#echo -e "\t${BLUE}-${RESET}${RESET} Subdomain total: ${COUNT}\n"
+    	fi
     }
 
     [[ ${dnsdumpster} == true ]] && {
     DNSDUMPSTER
-    if [[ -f ${OUT_DNSDUMPSTER} ]];then
-    COUNT=$(cat ${OUT_DNSDUMPSTER} | sort -u | wc  -l  )
-    #echo -e "\t${BLUE}-${RESET}${RESET} Subdomain total: ${COUNT}\n"
-    fi
+    	if [[ -f ${OUT_DNSDUMPSTER} ]];then
+    		COUNT=$(cat ${OUT_DNSDUMPSTER} | sort -u | wc  -l  )
+    		#echo -e "\t${BLUE}-${RESET}${RESET} Subdomain total: ${COUNT}\n"
+    	fi
     }
 
     [[ ${riddler} == true ]] && {
     RIDDLER
-    if [[ -f ${OUT_RIDDLER} ]];then
-    COUNT=$(cat ${OUT_RIDDLER} | sort -u | wc  -l  )
-    #echo -e "\t${BLUE}-${RESET}${RESET} Subdomain total: ${COUNT}\n"
-    fi
+    	if [[ -f ${OUT_RIDDLER} ]];then
+    		COUNT=$(cat ${OUT_RIDDLER} | sort -u | wc  -l  )
+    		#echo -e "\t${BLUE}-${RESET}${RESET} Subdomain total: ${COUNT}\n"
+    	fi
     }
 
     [[ ${webarchive} == true ]] && {
     WEBARCHIVE
-    if [[ -f ${OUT_WEBARCHIVE} ]];then
-    COUNT=$(cat ${OUT_WEBARCHIVE} | sort -u | wc  -l  )
-    #echo -e "\t${BLUE}-${RESET}${RESET} Subdomain total: ${COUNT}\n"
-    fi
+    	if [[ -f ${OUT_WEBARCHIVE} ]];then
+    		COUNT=$(cat ${OUT_WEBARCHIVE} | sort -u | wc  -l  )
+    		#echo -e "\t${BLUE}-${RESET}${RESET} Subdomain total: ${COUNT}\n"
+    	fi
     }
 
     [[ ${securitytrails} == true ]] && {
     SECURITY_TRAILS
-    if [[ -f ${OUT_STRAILS} ]];then
-    COUNT=$(cat ${OUT_STRAILS} | sort -u | wc  -l  )
-    #echo -e "\t${BLUE}-${RESET}${RESET} Subdomain total: ${COUNT}\n"
-    fi
+    	if [[ -f ${OUT_STRAILS} ]];then
+    		COUNT=$(cat ${OUT_STRAILS} | sort -u | wc  -l  )
+    		#echo -e "\t${BLUE}-${RESET}${RESET} Subdomain total: ${COUNT}\n"
+    	fi
     }
 
     [[ ${censys} == true ]] && {
     CENSYS
-    if [[ -f ${OUT_CENSYS} ]];then
-    COUNT=$(cat ${OUT_CENSYS} | sort -u | wc  -l  )
-    #echo -e "\t${BLUE}-${RESET}${RESET} Subdomain total: ${COUNT}\n"
-    fi
+    	if [[ -f ${OUT_CENSYS} ]];then
+    		COUNT=$(cat ${OUT_CENSYS} | sort -u | wc  -l  )
+    		#echo -e "\t${BLUE}-${RESET}${RESET} Subdomain total: ${COUNT}\n"
+    	fi
     }
 
 elif [[ ${SOURCE} == false ]] ; then
