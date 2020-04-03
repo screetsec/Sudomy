@@ -174,6 +174,7 @@ Optional Arguments:
   -sC, --status-code     Get status codes, response from domain list
   -nT, --nmap-top	 Port scanning with top-ports using nmap from domain list
   -aI, --apps-identifier Identify technologies on websites from domain list
+  -dP, --db-port         Collecting port from 3rd Party default=shodan 
   -sS, --screenshot	 Screenshots a list of website
   -nP, --no-passive	 Do not perform passive subdomain enumeration
        --no-probe	 Do not perform httprobe
