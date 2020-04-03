@@ -26,3 +26,15 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
  -  Update
        - Added Identify technologies on websites from domain list
        - Fix Some Bug and Issues
+
+## [1.1.3] - 2020-04-03
+ - Update
+	- Added Plugin IP DB_PORT
+	- Explain about IP DB_PORT 
+	- Data Collecting/Scraping open port from 3rd party (Default::Shodan), For right now just using Shodan [Future::Censys,Zoomeye] 
+	- More efficient and effective to collecting port from list ip on target [[ Subdomain > IP Resolver > Crawling > ASN & Open Port ]]
+	- Here we can further narrow the targeting port for checking in port scanning
+
+	- List ASN From IP List [running auto on db_port::ip_dbasn.txt]
+
+
