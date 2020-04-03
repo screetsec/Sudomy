@@ -229,6 +229,7 @@ All notable changes to this project will be documented in this [file](https://gi
 - [Tom Hudson](https://github.com/tomnomnom/) - Tomonomnom
 - [OJ Reeves](https://github.com/OJ/) - Gobuster
 - [Thomas D Maaaaz](https://github.com/maaaaz) - Webscreenshot
+- [christophetd](https://github.com/christophetd/censys-subdomain-finder) - Censys
 - [Daniel Miessler](https://github.com/danielmiessler/) - SecList
 - [EdOverflow](https://github.com/EdOverflow/) - can-i-take-over-xyz
 - [jerukitumanis](https://github.com/myugan) - Docker Maintainer
