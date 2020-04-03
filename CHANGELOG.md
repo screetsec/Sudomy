@@ -30,7 +30,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 ## [1.1.3] - 2020-04-03
  - Update
 	- Added Plugin IP DB_PORT
-	- Explain about IP DB_PORT 
+	- Explain :
 	- Data Collecting/Scraping open port from 3rd party (Default::Shodan), For right now just using Shodan [Future::Censys,Zoomeye] 
 	- So we do not perfom active scan, who collect the port ? Third-party sites (Shodan,Zoomeye,Censys) doing that and perfom active scan and then, we just collected the port from their result   
 	- More efficient and effective to collecting port from list ip on target [[ Subdomain > IP Resolver > Crawling > ASN & Open Port ]]
