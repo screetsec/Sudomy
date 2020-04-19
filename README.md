@@ -93,18 +93,14 @@ brew install jq nmap go npm
 npm i -g wappalyzer
 ```
 
-***If you don't already have a Go environment, then follow this instruction:***
+***If you already have a Go environment, then follow this instruction:***
 
-Installing the packages Go Enviroment
-```bash
-#Package management[apt::debian]
-apt-get install golang -y
-
-```
 Add the following lines to ~/.bashrc (Of your user)
 ```
+nano ~/.bashrc
 export GOPATH=$HOME/go
 export PATH=$PATH:$GOROOT/bin:$GOPATH/bin
+source ~/.bashrc
 ```
 Then Install the dependencies
 ```
