@@ -39,3 +39,12 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 		- List ASN From IP List [running auto on db_port::ip_dbasn.txt]
 
 
+## [1.1.4] - 2020-04-19
+ - Update
+	- Added Plugin for Extract URL parameter from domain (--extract-params/-ep)
+	- Explain :
+		- Data Collecting & Scraping URL Parameter from Passive scan (Default::Web Archive) 
+		- Regex using DFA Engine (awk,sed)
+		- Support and Collecting URL with multi Parameter to Fuzzing
+		- Removing Duplicate Parameter & URL
+	- Fixing Bug in statement Plugin --db-port
