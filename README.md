@@ -1,12 +1,12 @@
 # Sudomy
-[![License](https://img.shields.io/badge/license-MIT-red.svg)](https://github.com/Screetsec/Sudomy/blob/master/LICENSE.md)  [![Build Status](https://travis-ci.org/Screetsec/Sudomy.svg?branch=master)](https://travis-ci.org/Screetsec/Sudomy)  [![Version](https://img.shields.io/badge/Release-1.1.3-blue.svg?maxAge=259200)]()  [![Build](https://img.shields.io/badge/Supported_OS-Linux-yellow.svg)]()  [![Build](https://img.shields.io/badge/Supported_WSL-Windows-blue.svg)]() [![Contributions Welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/screetsec/sudomy/issues)  [![Youtube](https://img.shields.io/badge/Youtube-Demo-red.svg)](https://www.youtube.com/watch?v=DpXIBUtasn0)
+[![License](https://img.shields.io/badge/license-MIT-red.svg)](https://github.com/Screetsec/Sudomy/blob/master/LICENSE.md)  [![Build Status](https://travis-ci.org/Screetsec/Sudomy.svg?branch=master)](https://travis-ci.org/Screetsec/Sudomy)  [![Version](https://img.shields.io/badge/Release-1.1.4-blue.svg?maxAge=259200)]()  [![Build](https://img.shields.io/badge/Supported_OS-Linux-yellow.svg)]()  [![Build](https://img.shields.io/badge/Supported_WSL-Windows-blue.svg)]() [![Contributions Welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/screetsec/sudomy/issues)  [![Youtube](https://img.shields.io/badge/Youtube-Demo-red.svg)](https://www.youtube.com/watch?v=DpXIBUtasn0)
 ### Subdomain Enumeration & Analysis
 ![ff](https://user-images.githubusercontent.com/17976841/63212795-b8d57300-c133-11e9-882a-f604d67819cc.png)
 
 ***Sudomy*** is a subdomain enumeration tool, created using a bash script, to analyze domains and collect subdomains in fast and comprehensive way.
 
 ## Features !
-##### For recent time, ***Sudomy*** has these 9 features:
+##### For recent time, ***Sudomy*** has these 12 features:
 -  Easy, light, fast and powerful. Bash script is available by default in almost all Linux distributions. By using bash script multiprocessing feature, all processors will be utilized optimally.
 -  Subdomain enumeration process can be achieved by using **active** method or **passive** method
     - **Active Method**
@@ -38,6 +38,8 @@
 - Testing Subdomain TakeOver attack
 - Taking Screenshotsof subdomains
 - Identify technologies on websites
+- Data Collecting/Scraping open port from 3rd party (Default::Shodan), For right now just using Shodan [Future::Censys,Zoomeye]. More efficient and effective to collecting port from list ip on target [[ Subdomain > IP Resolver > Crawling > ASN & Open Port ]]
+- Collecting & Extract URL Parameter 
 - Report output in HTML or CSV format
 
 ## How Sudomy Works
@@ -162,22 +164,23 @@ Example: sud⍥my.sh -d example.com
          sud⍥my.sh -pS -rS -sC -nT -sS -d example.com
 
 Optional Arguments:
-  -a,  --all		 Running all Enumeration, no nmap & gobuster
-  -b,  --bruteforce	 Bruteforce Subdomain Using Gobuster (Wordlist: ALL Top SecList DNS)
-  -d,  --domain		 domain of the website to scan
-  -h,  --help		 show this help message
-  -o,  --html		 Make report output into HTML
-  -s,  --source		 Use source for Enumerate Subdomain
-  -tO, --takeover	 Subdomain TakeOver Vulnerabilty Scanner
-  -pS, --ping-sweep	 Check live host using methode Ping Sweep
-  -rS, --resolver	 Convert domain lists to resolved IP lists without duplicates
-  -sC, --status-code     Get status codes, response from domain list
-  -nT, --nmap-top	 Port scanning with top-ports using nmap from domain list
+  -a,  --all             Running all Enumeration, no nmap & gobuster 
+  -b,  --bruteforce      Bruteforce Subdomain Using Gobuster (Wordlist: ALL Top SecList DNS) 
+  -d,  --domain          domain of the website to scan
+  -h,  --help            show this help message
+  -o,  --html            Make report output into HTML 
+  -s,  --source          Use source for Enumerate Subdomain
   -aI, --apps-identifier Identify technologies on websites from domain list
-  -dP, --db-port         Collecting port from 3rd Party default=shodan 
-  -sS, --screenshot	 Screenshots a list of website
-  -nP, --no-passive	 Do not perform passive subdomain enumeration
-       --no-probe	 Do not perform httprobe
+  -dP, --db-port         Collecting port from 3rd Party default=shodan
+  -eP, --extract-params  Collecting port from 3rd Party default=shodan
+  -tO, --takeover        Subdomain TakeOver Vulnerabilty Scanner
+  -pS, --ping-sweep      Check live host using methode Ping Sweep
+  -rS, --resolver        Convert domain lists to resolved IP lists without duplicates
+  -sC, --status-code     Get status codes, response from domain list
+  -nT, --nmap-top        Port scanning with top-ports using nmap from domain list
+  -sS, --screenshot      Screenshots a list of website
+  -nP, --no-passive      Do not perform passive subdomain enumeration 
+       --no-probe        Do not perform httprobe 
 
 ```
 To use all 16 Sources and Probe for working http or https servers:
