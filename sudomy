@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #-Metadata----------------------------------------------------#
-#  Filename: sudomy (v1.1.3)             (Update: 2020-04-03) #
+#  Filename: sudomy (v1.1.4)             (Update: 2020-04-19) #
 #-Info--------------------------------------------------------#
 #  Fast Subdomain Enumeration & Analysis.                     #
 #-Author(s)---------------------------------------------------#
@@ -20,7 +20,7 @@
 ### Variable Name and Version
 
 APPNAME="sud⍥my.sh"
-VERSION="1.1.3#dev"
+VERSION="1.1.4#dev"
 
 ### Calling Source
 source sudomy.api
@@ -78,6 +78,7 @@ goBanner;
  echo -e "${PADDING}${BOLD}-s, ${RESET} --source${DPADDING} Use source for Enumerate Subdomain"
  echo -e "${PADDING}${BOLD}-aI,${RESET} --apps-identifier Identify technologies on websites from domain list"
  echo -e "${PADDING}${BOLD}-dP,${RESET} --db-port\t Collecting port from 3rd Party default=shodan"
+ echo -e "${PADDING}${BOLD}-eP,${RESET} --extract-params\t Collecting URL Parameter from Engine default=webarchive"
  echo -e "${PADDING}${BOLD}-tO,${RESET} --takeover\t Subdomain TakeOver Vulnerabilty Scanner"
  echo -e "${PADDING}${BOLD}-pS,${RESET} --ping-sweep\t Check live host using methode Ping Sweep"
  echo -e "${PADDING}${BOLD}-rS,${RESET} --resolver\t Convert domain lists to resolved IP lists without duplicates"
@@ -183,6 +184,12 @@ args="${1}";
 	   shift
 	;;
 
+        "-ep"|"--extract-params")
+           PLUGIN_EXTRACT_PARAMS=true
+           shift
+        ;;
+
+
         "-ss"|"--screenshot")
             PLUGIN_DOMAIN_SCREENSHOTS=true
             shift
@@ -220,6 +227,7 @@ args="${1}";
             PLUGIN_RESOLV_SD=true
             PLUGIN_PING_SWEEP=true
 	    PLUGIN_DB_PORT=true
+	    PLUGIN_EXTRACT_PARAMS=true
             shift
         ;;        
     
@@ -396,7 +404,10 @@ local URL_RIDDLER="https://riddler.io/search/exportcsv?q=pld:"
 
 WEBARCHIVE(){
   echo -e  "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}Webarchive${RESET}${DPADDING}\t[${GREEN} ✔ ${RESET}]"
-      curl --silent "http://web.archive.org/cdx/search/cdx?url=*.${DOMAIN}/*&output=text&fl=original&collapse=urlkey" | sed -e 's_https*://__' -e "s/\/.*//" -e 's/:.*//' -e 's/^www\.//' | sed "/@/d" | sed -e 's/\.$//' | sort -u > ${OUT_WEBARCHIVE}
+
+      RAW_WEBARCHIVE=$(curl --silent "http://web.archive.org/cdx/search/cdx?url=*.${DOMAIN}/*&output=text&fl=original&collapse=urlkey" > ${OUT_RAW_WEBARCHIVE} ) 
+	# Extract Subdomain
+		cat ${OUT_RAW_WEBARCHIVE} | sed -e 's_https*://__' -e "s/\/.*//" -e 's/:.*//' -e 's/^www\.//' | sed "/@/d" | sed -e 's/\.$//' | sort -u > ${OUT_WEBARCHIVE}
 }
 
 DNSDUMPSTER(){
@@ -825,7 +836,7 @@ if [[ ${PLUGIN_HTTPROBE} == true ]];then
                         echo -e  "\n${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}Total ${RESET}${DPADDING}\t\t[${GREEN}${COUNT}${RESET}]\n"
                      #cat ${OUT_GOBUSTER} | awk '{print $2}' > ${RESULT_GOBUSTER} ; rm -rf ${OUT_GOBUSTER}
         else 
-               echo -e "${BOLD}[${LGREEN}+${RESET}${BOLD}]${RESET} Running Bruterforce DNS: Gobuster    "
+	       echo -e "\n${BOLD}[${LGREEN}+${RESET}${BOLD}]${RESET} Probe subdomain for working on http/https   "
                echo -e "---------------------------------------------\n"
                echo -e "${PADDING}${RESET}${PADDING}${LRED}x${RESET} This Plugin need httprobe, ${RED}install it${RESET}"
 
@@ -1314,15 +1325,61 @@ rm -r ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_DB_PORT} > /dev/null 2>&1
 		else
 			 echo -e  "${PADDING}${RED}${PADDING}!${PADDING}${RESET}Shodan API required,settings on Sudomy.api${RESET}\n"
 		fi
-	fi
 
 	else
 		echo -e "\n${BOLD}[${LGREEN}+${RESET}${BOLD}]${RESET} DB Port Crawl: Port Collecting from 3rd party   "
         	echo -e "---------------------------------------------\n"
         	echo -e  "${PADDING}${RED}${PADDING}!${PADDING}${RESET}Run together with arg -rS${RESET}\t[${RED}FAIL${RESET}]\n"
+	fi
 fi
 
+# Plugin for Extract parameter from URL (--extract-params/-ep)
+# Data Collecting & Scraping URL Parameter from Passive scan (Default::Web Archive) 
+# Regex using DFA Engine (awk,sed)
+# Support and Collecting URL with multi Parameter to Fuzzing
+# Removing Duplicate Parameter & URL
 
+if [[ ${PLUGIN_EXTRACT_PARAMS} == true ]]; then
+# Clean Old File
+rm -r ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_EXTRACT_PARAM} > /dev/null 2>&1
+rm -r ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_EXTRACT_PARAM_UNIQ} > /dev/null 2>&1 
+	if [[ -f ${OUT_RAW_WEBARCHIVE} ]]; then #Check Raw Data 
+		echo -ne "\n${BOLD}[${LGREEN}+${RESET}${BOLD}]${RESET} Collecting URL Parameter from Engine \n"  ## 
+		echo -e "---------------------------------------------\n"  
+		cat ${OUT_RAW_WEBARCHIVE} | grep -P "=" | sed  "/\b\(jpg\|png\|js\|svg\|css\|gif\|jpeg\|woff\|woff2\)\b/d" > ${OUT_RAW_WEBARCHIVE_PARS} 
+			for i in $(cat ${OUT_RAW_WEBARCHIVE_PARS}); do
+				URL="${i}"
+				LIST_DOM=(${URL//[=&]/=FUZZ&})
+					#echo "${URL}"
+					echo ${LIST_DOM} | awk -F'=' -vOFS='=' '{$NF="FUZZ"}1;' >> ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_EXTRACT_PARAM}
+			done
+		# Remove Raw Data  
+		# rm -r ${OUT_RAW_WEBARCHIVE} ${OUT_RAW_WEBARCHIVE_PARS} > /dev/null 2>&1
+
+		# Make another output, Sorting Duplicate Parameter
+		sort -u ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_EXTRACT_PARAM} > ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_EXTRACT_PARAM_UNIQ} 
+		
+		# Count & Print Output
+		COUNT_URL_PARAM_UNIQ=$(cat ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_EXTRACT_PARAM_UNIQ} | wc  -l  )
+		echo -e  "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}Total ${RESET}${DPADDING}\t\t[${GREEN}${COUNT_URL_PARAM_UNIQ}${RESET}]\n"
+                #cat ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_EXTRACT_PARAM_UNIQ} \
+		# | while read VERBOSE; do
+                #	echo -e ${YELLOW}"\t - ${RESET}$VERBOSE"
+       		#   done
+		#echo -e  "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}Total ${RESET}${DPADDING}\t\t[${GREEN}${COUNT_URL_PARAM_UNIQ}${RESET}]\n"
+	else
+		echo -e "\n${BOLD}[${LGREEN}+${RESET}${BOLD}]${RESET} Collecting URL Parameter from Engine   "
+                echo -e "---------------------------------------------\n"
+                echo -e  "${PADDING}${RED}${PADDING}!${PADDING}${RESET}Please, run it again with source WebArchive${RESET}\t[${RED}FAIL${RESET}]\n"
+
+	fi
+fi
+
+#Remove Temporary RAW DATA []
+rm -r ${OUT_RAW_WEBARCHIVE} ${OUT_RAW_WEBARCHIVE_PARS} > /dev/null 2>&1
+
+
+# Identify technology on websites
 if [[ ${PLUGIN_WAPPALYZER} == true ]] ; then
 
     rm -r ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_WAPPALYZER} > /dev/null 2>&1
