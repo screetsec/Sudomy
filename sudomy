@@ -971,9 +971,6 @@ do
         elif [[ $HTML =~ "Trying to access your account?" ]]; then
           echo -e "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}[${GREEN}VULNS${RESET}]\t Campaign     ${SUB_TAKEOVER_CHECK} ${RESET}"  ## CMAMPAIGN MONITOR
           echo -e "${SUB_TAKEOVER_CHECK} Campaign_Monitor Vulnerable"  | tee -a ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_TAKEOVER} > /dev/null 2>&1
-        elif [[ $HTML =~ "404 Not Found" ]]; then
-          echo -e "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}[${GREEN}VULNS${RESET}]\t Fly.io       ${SUB_TAKEOVER_CHECK} ${RESET}"  ##  FLY.IO
-          echo -e "${SUB_TAKEOVER_CHECK} Fly.io Vulnerable"  | tee -a ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_TAKEOVER} > /dev/null 2>&1
         elif [[ $HTML =~ "Fastly error: unknown domain:" ]]; then
           echo -e "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}[${GREEN}VULNS${RESET}]\t Fastly       ${SUB_TAKEOVER_CHECK} ${RESET}"  ##  FASTLY
           echo -e "${SUB_TAKEOVER_CHECK} Fastly Vulnerable"  | tee -a ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_TAKEOVER} > /dev/null 2>&1
