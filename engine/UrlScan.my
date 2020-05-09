@@ -1,0 +1,18 @@
+#-Metadata----------------------------------------------------#
+#  Filename: Sudomy - Subdomain Enumeration & Analysis        #
+#-Author(s)---------------------------------------------------#
+#  Edo maland ~ @screetsec                                    #
+#-Info--------------------------------------------------------#
+#  This file is part of Sudomy project                        #
+#  Engine UrlScanIo : Update = 2020-05-09                     #
+#-Licence-----------------------------------------------------#
+#  MIT License ~ http://opensource.org/licenses/MIT           #
+#-------------------------------------------------------------#
+
+URLSCAN(){
+local URL="https://urlscan.io/api/v1/search/"
+        echo -e  "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}UrlScan${RESET}${DPADDING}\t\t[${GREEN} ✔ ${RESET}]"
+        MAKE_RAW_FILE=$(curl -s "${URL}/?q=${DOMAIN}" | jq --raw-output '.results[].page.url?' | grep -e "${DOMAIN}" | sort -u > ${OUT_RAW_URLSCAN})
+		# Extract Subdomain
+			cat ${OUT_RAW_URLSCAN} | sed -e 's_https*://__' -e "s/\/.*//" -e 's/:.*//' -e 's/^www\.//'  | sed "/@/d" | sed -e 's/\.$//' | sort -u > ${OUT_URLSCAN}
+} 

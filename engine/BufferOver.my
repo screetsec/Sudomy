@@ -1,0 +1,16 @@
+#-Metadata----------------------------------------------------#
+#  Filename: Sudomy - Subdomain Enumeration & Analysis	      #
+#-Author(s)---------------------------------------------------#
+#  Edo maland ~ @screetsec                                    #
+#-Info--------------------------------------------------------#
+#  This file is part of Sudomy project                        #
+#  Engine BufferOver : Update = 2020-05-08                    #
+#-Licence-----------------------------------------------------#
+#  MIT License ~ http://opensource.org/licenses/MIT           #
+#-------------------------------------------------------------#
+
+BUFFEROVER(){
+local URL_BUFFEROVER="dns.bufferover.run/dns?q="
+  echo -e  "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}Bufferover${RESET}${DPADDING}\t[${GREEN} ✔ ${RESET}]"
+   curl --silent --request GET --url "${URL_BUFFEROVER}.${DOMAIN}&rt=5" | jq --raw-output '.FDNS_A[]' | awk '{print $1}' | sed -e 's/^.*,//g' | sort -u > ${OUT_BUFFEROVER}
+}

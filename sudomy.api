@@ -1,0 +1,26 @@
+# Shodan
+# URL :  http://developer.shodan.io
+# Example :
+#      - SHODAN_API="VGhpc1M0bXBsZWwKVGhmcGxlbAo"
+
+SHODAN_API=""
+
+# Censys
+# URL : https://censys.io/register
+
+CENSYS_API=""
+CENSYS_SECRET=""
+
+# Virustotal
+# URL : https://www.virustotal.com/gui/
+VIRUSTOTAL=""
+
+
+# Binaryedge
+# URL : https://app.binaryedge.io/login
+BINARYEDGE=""
+
+
+# SecurityTrails
+# URL : https://securitytrails.com/
+SECURITY_TRAILS=""

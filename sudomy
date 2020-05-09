@@ -1,0 +1,1549 @@
+#!/usr/bin/env bash
+#-Metadata----------------------------------------------------#
+#  Filename: sudomy (v1.1.5)             (Update: 2020-05-10) #
+#-Info--------------------------------------------------------#
+#  Fast Subdomain Enumeration & Analysis.                     #
+#-Author(s)---------------------------------------------------#
+#  Edo maland ~ @screetsec                                    #
+#-Operating System--------------------------------------------#
+#  Designed for & tested on: Linux 	                      #
+#  Reported working : Ubuntu 18                               #
+#	   	    : Parrot 				      #
+#                   : Kali Linux 			      #
+#		    : WSL Windows (10.0.17134 N/A Build 17134 #
+#		    : MacOS (Mojave)			      #
+#-Licence-----------------------------------------------------#
+#  MIT License ~ http://opensource.org/licenses/MIT           #
+#-------------------------------------------------------------#
+
+
+### Variable Name and Version
+
+APPNAME="sud⍥my.sh"
+VERSION="1.1.5#dev"
+
+### Calling Source
+source sudomy.api
+source sudomy.conf
+
+#### Command calling
+goBanner(){
+echo -e ${RED}" ___         _${YELLOW} _  _ ${GREEN}          ${RESET}";
+echo -e ${RED}"/ __|_  _ __| ${YELLOW}(_)(_)${GREEN}_ __ _  _ ${RESET}";
+echo -e ${RED}"\__ \ || / _  ${YELLOW}/ __ \ ${GREEN} ' \ || |${RESET}";
+echo -e ${RED}"|___/\_,_\__,_${YELLOW}\____/${GREEN}_|_|_\_, |${RESET}";
+echo -e ${RED}"              ${YELLOW}      ${GREEN}      |__/${RESET} v{${RED}${VERSION}${RESET}} by ${GREEN}@screetsec ${RESET}";
+echo -e "${YELLOW}Sud⍥my ${RESET}- Fast Subdmain Enumeration and Analyzer ${RESET}     "
+echo -e "\t http://github.com/screetsec/sudomy\n"
+}
+
+#### Colors Output
+
+RESET="\033[0m"			# Normal Colour
+RED="\033[0;31m" 		# Error / Issues
+GREEN="\033[0;32m"		# Successful       
+BOLD="\033[01;01m"    		# Highlight
+WHITE="\033[1;37m"		# BOLD
+YELLOW="\033[1;33m"		# Warning
+PADDING="  "
+DPADDING="\t\t"
+
+
+#### Other Colors / Status Code
+
+LGRAY="\033[0;37m"		# Light Gray
+LRED="\033[1;31m"		# Light Red
+LGREEN="\033[1;32m"		# Light GREEN
+LBLUE="\033[1;34m"		# Light Blue
+LPURPLE="\033[1;35m"		# Light Purple
+LCYAN="\033[1;36m"		# Light Cyan
+SORANGE="\033[0;33m"		# Standar Orange
+SBLUE="\033[0;34m"		# Standar Blue
+SPURPLE="\033[0;35m"		# Standar Purple      
+SCYAN="\033[0;36m"		# Standar Cyan
+DGRAY="\033[1;30m"		# Dark Gray
+
+goHelp(){
+goBanner;
+ echo -e "${BOLD}Usage${RESET}: ${APPNAME} [${BOLD}-h [--help]$RESET] [${BOLD}-s[--source]${RESET}][${BOLD}-d[--domain=]${RESET}] \n"
+ echo -e "${BOLD}Example${RESET}: ${APPNAME} ${BOLD}-d ${RESET}example.com${PADDING} "
+ echo -e "${PADDING}${PADDING}${PADDING}${PADDING} ${APPNAME} ${BOLD}-s${RESET} Shodan,VirusTotal ${BOLD}-d ${RESET}example.com"
+ echo -e "${PADDING}${PADDING}${PADDING}${PADDING} ${APPNAME} ${BOLD}-pS -rS -sC -nT -sS -d ${RESET}example.com "
+ echo -e "\n${BOLD}Optional Arguments:${RESET}"
+ echo -e "${PADDING}${BOLD}-a, ${RESET} --all${DPADDING} Running all Enumeration, no nmap & gobuster "
+ echo -e "${PADDING}${BOLD}-b, ${RESET} --bruteforce\t Bruteforce Subdomain Using Gobuster (Wordlist: ALL Top SecList DNS) "
+ echo -e "${PADDING}${BOLD}-d, ${RESET} --domain${DPADDING} domain of the website to scan"
+ echo -e "${PADDING}${BOLD}-h, ${RESET} --help${DPADDING} show this help message"
+ echo -e "${PADDING}${BOLD}-o, ${RESET} --outfile\t specify an output file when completed "
+ echo -e "${PADDING}${BOLD}-s, ${RESET} --source${DPADDING} Use source for Enumerate Subdomain"
+ echo -e "${PADDING}${BOLD}-aI,${RESET} --apps-identifier Identify technologies on websites from domain list"
+ echo -e "${PADDING}${BOLD}-dP,${RESET} --db-port\t Collecting port from 3rd Party default=shodan"
+ echo -e "${PADDING}${BOLD}-eP,${RESET} --extract-params\t Collecting URL Parameter from Engine default=webarchive"
+ echo -e "${PADDING}${BOLD}-tO,${RESET} --takeover\t Subdomain TakeOver Vulnerabilty Scanner"
+ echo -e "${PADDING}${BOLD}-pS,${RESET} --ping-sweep\t Check live host using methode Ping Sweep"
+ echo -e "${PADDING}${BOLD}-rS,${RESET} --resolver\t Convert domain lists to resolved IP lists without duplicates"
+ echo -e "${PADDING}${BOLD}-sC,${RESET} --status-code\t Get status codes, response from domain list"
+ echo -e "${PADDING}${BOLD}-nT,${RESET} --nmap-top\t Port scanning with top-ports using nmap from domain list"
+ echo -e "${PADDING}${BOLD}-sS,${RESET} --screenshot\t Screenshots a list of website"
+ echo -e "${PADDING}${BOLD}-nP,${RESET} --no-passive\t Do not perform passive subdomain enumeration "
+ echo -e "${PADDING}${BOLD}    ${RESET} --no-probe\t Do not perform httprobe "
+ echo -e "${PADDING}${BOLD}    ${RESET} --html${DPADDING} Make report output into HTML " 
+ echo -e "\n${BOLD}Sources:${RESET}"
+ echo -e "${PADDING}${YELLOW}+${RESET} Shodan${DPADDING} http://developer.shodan.io/billing/"
+ echo -e "${PADDING}${YELLOW}+${RESET} VirusTotal${PADDING}\t https://www.virustotal.com/vtapi/v2/domain/"
+ echo -e "${PADDING}${YELLOW}+${RESET} Censys${DPADDING} http://censys.io/"
+ echo -e "${PADDING}${YELLOW}+${RESET} Certspotter${DPADDING} https://api.certspotter.com"
+ echo -e "${PADDING}${YELLOW}+${RESET} BinaryEdge${DPADDING} https://docs.binaryedge.io/api-v2/"
+ echo -e "${PADDING}${YELLOW}+${RESET} Hackertarget${PADDING}\t https://api.hackertarget.com/"
+ echo -e "${PADDING}${YELLOW}+${RESET} Threatminer${DPADDING} https://api.threatminer.org"
+ echo -e "${PADDING}${YELLOW}+${RESET} CrtSH${DPADDING} https://crt.sh/"
+ echo -e "${PADDING}${YELLOW}+${RESET} DnsDB${DPADDING} https://www.dnsdb.info/"
+ echo -e "${PADDING}${YELLOW}+${RESET} BufferOver${DPADDING} http://dns.bufferover.run"
+ echo -e "${PADDING}${YELLOW}+${RESET} Findsubdomains\t http://findsubdomains.com/"
+ echo -e "${PADDING}${YELLOW}+${RESET} Threatcrowd${DPADDING} http://threatcrowd.org/"
+ echo -e "${PADDING}${YELLOW}+${RESET} Dnsdumpster${DPADDING} https://dnsdumpster.com/"
+ echo -e "${PADDING}${YELLOW}+${RESET} Riddler${DPADDING} http://riddler.io/"
+ echo -e "${PADDING}${YELLOW}+${RESET} Entrust${DPADDING} https://ctsearch.entrust.com/"
+ echo -e "${PADDING}${YELLOW}+${RESET} Webarchive${DPADDING} http://web.archive.org/"
+ echo -e "${PADDING}${YELLOW}+${RESET} SecurityTrails\t http://securitytrails.com/"
+ echo -e "${PADDING}${YELLOW}+${RESET} RapidDNS${DPADDING} https://rapiddns.io/"
+ echo -e "${PADDING}${YELLOW}+${RESET} AlienVault${DPADDING} https://https://otx.alienvault.com/"
+ echo -e "${PADDING}${YELLOW}+${RESET} CommonCrawl${DPADDING} http://index.commoncrawl.org/"
+ echo -e "${PADDING}${YELLOW}+${RESET} URLScan${DPADDING} https://urlscan.io/\n"
+
+}
+
+[[ "${#}" == 0 ]] && {
+	goHelp && exit 1
+}
+
+## Check Folder Results
+[[ ! -e "${OUT}" ]] \
+  && mkdir -p "${OUT}"||true
+
+# COMMAND LINE SWITCHES
+while [[ "${#}" -gt 0  ]]; do
+args="${1}";
+  case "$( echo ${args} | tr '[:upper:]' '[:lower:]' )" in
+        # Target
+        "-d" | "--domain")
+            DOMAIN="${2}"
+             shift
+             shift
+        ;;
+        "--domain="*)
+            DOMAIN="${1#*=}";
+             shift 1
+        ;;
+        # Help
+        "-h"|"--help")
+            goHelp
+            exit 1
+        ;;
+
+      	# sources
+      	"-s"|"--sources")
+        	  SOURCE=true
+        	  LIST=${2}
+        	  shift
+        	  shift
+
+      	;;
+       # Verbose
+        "-v"|"--verbose")
+            verbose=true
+            shift
+        ;;
+
+      	"-ps"|"--ping-sweep")
+          	PLUGIN_PING_SWEEP=true
+          	shift
+      	;;
+
+      	"-rs"|"--resolver")
+          	PLUGIN_RESOLV_SD=true
+          	shift
+      	;;
+      	
+      	"-sc"|"--status-code")
+          	PLUGIN_STATUS_CODE=true
+          	shift
+      	;;
+
+        "-nt"|"--nmap-top")
+            PLUGIN_NMAP_PORTS=true
+            shift
+        ;;
+
+        "-to"|"--takeover")
+            PLUGIN_TAKEOVER=true
+            shift
+        ;;
+
+        "-ai"|"--apps-identifier")
+            PLUGIN_WAPPALYZER=true
+            shift
+        ;;
+	
+	"-dp"|"--db-port")
+	   PLUGIN_DB_PORT=true
+	   shift
+	;;
+
+        "-ep"|"--extract-params")
+           PLUGIN_EXTRACT_PARAMS=true
+           shift
+        ;;
+
+
+        "-ss"|"--screenshot")
+            PLUGIN_DOMAIN_SCREENSHOTS=true
+            shift
+        ;; 
+
+
+        "-b"|"--bruteforce")
+            PLUGIN_GOBUSTER=true
+            shift
+        ;; 
+
+        "-np"|"--no-passive")
+            SOURCE=none
+            shift
+        ;; 
+
+
+        "--no-probe")
+            PLUGIN_HTTPROBE=false
+            shift
+        ;;
+
+        "-o"|"--outfile")
+            DESTINATION=true
+	    OUTFILE=$2
+	    shift
+            shift
+        ;;
+
+
+        "--html")
+            REPORTS=1
+            shift
+        ;;       
+
+
+        "-a"|"--all")
+            PLUGIN_DOMAIN_SCREENSHOTS=true
+            PLUGIN_TAKEOVER=true
+            PLUGIN_STATUS_CODE=true
+            PLUGIN_RESOLV_SD=true
+            PLUGIN_PING_SWEEP=true
+	    PLUGIN_DB_PORT=true
+	    PLUGIN_EXTRACT_PARAMS=true
+            shift
+        ;;        
+    
+
+
+        "-"*)
+            echo -e " ${YELLOW}[i]${RESET} Invalid option: ${RED}${1}${RESET}" && shift && exit 1
+        ;;
+        *)
+            echo -e " ${YELLOW}[i]${RESET} Invalid: Unknown option ${RED}${1}${RESET}" && shift && exit
+            exit
+        ;;
+    esac
+done
+
+
+if [ -z "${DOMAIN}" ] ; then
+  echo "You need to specify a target to use. Type --help for command usage."
+  exit
+fi
+
+## Check dependencies
+dependencies=(nmap dig jq httprobe)
+for dependency in "${dependencies[@]}"; do
+    type -p "$dependency" &>/dev/null || {
+        echo "error: Error: require ${dependency} but it's is not installed. Aborting." >&2
+        exit 1
+	}
+done
+
+if [[ ${PLUGIN_WAPPALYZER} == true ]] ; then
+	command -v wappalyzer > /dev/null 2>&1 || { echo "Error: require wappalyzer for identify apps but it's is not installed. Aborting." >&2; exit 1; }
+fi
+
+ARG_PARS_LIST(){
+echo -e "\n${BOLD}[${LGREEN}+${RESET}${BOLD}]${RESET} Parsing & Sorting list Domain "
+echo -e "---------------------------------------------\n"
+DATE_LOG=$(date +%m-%d-%Y)
+[[ ! -e "${OUT}/${DATE_LOG}/${DOMAIN}" ]] \
+  && mkdir -p "${OUT}/${DATE_LOG}/${DOMAIN}"||true
+        sed 's/\*\.//g' ${OUT}/*.log | grep -e "${DOMAIN}" | sort -u  > ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_SUBDOMAIN}
+        rm -r ${OUT}/*.log > /dev/null 2>&1 ##REMOVE LOG
+
+    if [[ -f ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_SUBDOMAIN} ]] ; then
+        COUNT=$(cat ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_SUBDOMAIN} | wc  -l  )
+        	echo -e  "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}Total ${RESET}${DPADDING}\t\t[${GREEN}${COUNT}${RESET}]\n"
+       		cat ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_SUBDOMAIN} \
+        | while read VERBOSE; do
+            	echo -e ${YELLOW}"\t - ${RESET}$VERBOSE"
+        done
+        	echo -e  "\n${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}Total ${RESET}${DPADDING}\t\t[${GREEN}${COUNT}${RESET}]"
+     fi
+
+}
+
+
+## Calling Engine (Third Party-Sites) Total 18 
+## Selecting the good third-party sites, the enumeration process can be optimized
+
+source ${Engine_Shodan}
+source ${Engine_VirusTotal}
+source ${Engine_Censys}
+source ${Engine_Certspotter}
+source ${Engine_BinaryEdge}
+source ${Engine_Hackertarget}
+source ${Engine_Threatminer}
+source ${Engine_CrtSH}
+source ${Engine_Findsubdomains}
+source ${Engine_BufferOver}
+source ${Engine_Threatcrowd}
+source ${Engine_Dnsdumpster}
+source ${Engine_Riddler}
+source ${Engine_Entrust}
+source ${Engine_Webarchive}
+source ${Engine_SecurityTrails}
+source ${Engine_RapidDNS}
+source ${Engine_AlienVault}
+source ${Engine_CommonCrawl}
+source ${Engine_UrlScan}
+
+# Timestamp
+current_date_time=$(date "+%Y-%m-%d %H:%M:%S")
+
+goBanner ## Called banner sudomy
+echo -e "\n${BOLD}[${YELLOW}!${RESET}${BOLD}]${RESET} This tool is for ${BOLD}educational${RESET} purpose only.   "
+echo -e "${BOLD} ${LGREEN} ${RESET}${BOLD} ${RESET} Usage of sudomy for ${BOLD}attacking${RESET} targets ${BOLD}without ${RESET}prior mutual consent is ${RED}illegal${RESET}   "
+echo -e "${BOLD} ${LGREEN} ${RESET}${BOLD} ${RESET} developers assume no liability and are not responsible for any misuse or damage cause by this program   "
+echo -e "\n${BOLD}[${LCYAN}⍥${RESET}${BOLD}]${RESET} Perfoming Sud⍥my scans  "
+echo -e "\n${BOLD}[${LBLUE}*${RESET}${BOLD}]${RESET} Load target domain: ${LGREEN}${DOMAIN}${RESET}  "
+echo -e "${BOLD}${PADDING}${PADDING}-${RESET}${BOLD}${RESET} ${LGREEN}starting${RESET} scanning @ ${current_date_time} "
+echo -e "\n${BOLD}[${LGREEN}+${RESET}${BOLD}]${RESET} Running & Checking source to be used  "
+echo -e "---------------------------------------------\n"
+
+# Running Source for enumarte subdomain
+## This List for check if one of source get errors
+
+#SHODAN               ##  http://developer.shodan.io/billing/
+#WEBARCHIVE           ##  http://web.archive.org/
+#DNSDUMPSTER          ##  https://dnsdumpster.com/
+#VIRUSTOTAL           ##  https://www.virustotal.com/vtapi/v2/domain/
+#CERTSPOTTER          ##  https://api.certspotter.com     
+#CERTSH               ##  https://crt.sh/
+#BINARYEDGE           ##  https://docs.binaryedge.io/api-v2/
+#SECURITY_TRAILS      ##  http://securitytrails.com/
+#CENSYS               ##  http://censys.io/
+#THREATMINER          ##  https://api.threatminer.org
+#FINDSUBDOMAIN        ##  http://findsubdomains.com/
+#BUFFEROVER           ##  http://dns.bufferover.run
+#HACKERTARGET         ##  https://api.hackertarget.com/
+#ENTRUST              ##  https://ctsearch.entrust.com/
+#THREATCROWD          ##  http://threatcrowd.org/
+#RIDDLER              ##  http://riddler.io/
+
+
+if [[ ${SOURCE} == true ]] ; then
+for arr in $(echo ${LIST} | tr "," "\n" | tr '[:upper:]' '[:lower:]'); do
+    eval "${arr}=true";
+done
+    [[ ${shodan} == true ]] && {
+    SHODAN
+    	if [[ -f ${OUT_SHODAN} ]];then
+    		COUNT=$(cat ${OUT_SHODAN} | sort -u | wc  -l  )
+    		#echo -e "\t${BLUE}-${RESET}${RESET} Subdomain total: ${COUNT}\n"
+    	fi
+    }
+    [[ ${virustotal} == true ]] && {
+    VIRUSTOTAL
+    	if [[ -f ${OUT_VIRUSTOTAL} ]];then
+   		 COUNT=$(cat ${OUT_VIRUSTOTAL} | sort -u | wc  -l  )
+   			 #echo -e "\t${BLUE}-${RESET}${RESET} Subdomain total: ${COUNT}\n"
+    	fi
+    }
+    [[ ${certspotter} == true ]] && {
+    CERTSPOTTER
+    	if [[ -f ${OUT_CERTSPOTTER} ]];then
+    		COUNT=$(cat ${OUT_CERTSPOTTER} | sort -u | wc  -l  )
+   			# echo -e "\t${BLUE}-${RESET}${RESET} Subdomain total: ${COUNT}\n"
+    	fi
+    }
+
+    [[ ${binaryedge} == true ]] && {
+    BINARYEDGE
+    	if [[ -f ${OUT_BINARYEDGE} ]];then
+    		COUNT=$(cat ${OUT_BINARYEDGE} | sort -u | wc  -l  )
+    		#echo -e "\t${BLUE}-${RESET}${RESET} Subdomain total: ${COUNT}\n"
+    	fi
+    }
+
+    [[ ${hackertarget} == true ]] && {
+    HACKERTARGET
+    	if [[ -f ${OUT_HACKERTARGET} ]];then
+    		COUNT=$(cat ${OUT_HACKERTARGET} | sort -u | wc  -l  )
+    		#echo -e "\t${BLUE}-${RESET}${RESET} Subdomain total: ${COUNT}\n"
+    	fi
+    }
+
+    [[ ${threatminer} == true ]] && {
+    THREATMINER
+    	if [[ -f ${OUT_THREATMINER} ]];then
+    		COUNT=$(cat ${OUT_THREATMINER} | sort -u | wc  -l  )
+    		#echo -e "\t${BLUE}-${RESET}${RESET} Subdomain total: ${COUNT}\n"
+    	fi
+    }
+
+    [[ ${crtsh} == true ]] && {
+    CERTSH
+    	if [[ -f ${OUT_CRTSH} ]];then
+    		COUNT=$(cat ${OUT_CRTSH} | sort -u | wc  -l  )
+    		#echo -e "\t${BLUE}-${RESET}${RESET} Subdomain total: ${COUNT}\n"
+    	fi
+    }
+
+    [[ ${bufferover} == true ]] && {
+    BUFFEROVER
+    	if [[ -f ${OUT_BUFFEROVER} ]];then
+    		COUNT=$(cat ${OUT_BUFFEROVER} | sort -u | wc  -l  )
+    		#echo -e "\t${BLUE}-${RESET}${RESET} Subdomain total: ${COUNT}\n"
+    	fi
+    }
+
+    [[ ${entrust} == true ]] && {
+    ENTRUST
+    	if [[ -f ${OUT_ENTRUST} ]];then
+    		COUNT=$(cat ${OUT_ENTRUST} | sort -u | wc  -l  )
+    		#echo -e "\t${BLUE}-${RESET}${RESET} Subdomain total: ${COUNT}\n"
+    	fi
+    }
+
+    [[ ${findsubdomain} == true ]] && {
+    FINDSUBDOMAIN
+    	if [[ -f ${OUT_FINDSUBDOMAIN} ]];then
+    		COUNT=$(cat ${OUT_FINDSUBDOMAIN} | sort -u | wc  -l  )
+    		#echo -e "\t${BLUE}-${RESET}${RESET} Subdomain total: ${COUNT}\n"
+    	fi
+    }
+
+    [[ ${threatcrowd} == true ]] && {
+    THREATCROWD
+    	if [[ -f ${OUT_THREATCROWD} ]];then
+    		COUNT=$(cat ${OUT_THREATCROWD} | sort -u | wc  -l  )
+    		#echo -e "\t${BLUE}-${RESET}${RESET} Subdomain total: ${COUNT}\n"
+    	fi
+    }
+
+    [[ ${dnsdumpster} == true ]] && {
+    DNSDUMPSTER
+    	if [[ -f ${OUT_DNSDUMPSTER} ]];then
+    		COUNT=$(cat ${OUT_DNSDUMPSTER} | sort -u | wc  -l  )
+    		#echo -e "\t${BLUE}-${RESET}${RESET} Subdomain total: ${COUNT}\n"
+    	fi
+    }
+
+    [[ ${riddler} == true ]] && {
+    RIDDLER
+    	if [[ -f ${OUT_RIDDLER} ]];then
+    		COUNT=$(cat ${OUT_RIDDLER} | sort -u | wc  -l  )
+    		#echo -e "\t${BLUE}-${RESET}${RESET} Subdomain total: ${COUNT}\n"
+    	fi
+    }
+
+    [[ ${webarchive} == true ]] && {
+    WEBARCHIVE
+    	if [[ -f ${OUT_WEBARCHIVE} ]];then
+    		COUNT=$(cat ${OUT_WEBARCHIVE} | sort -u | wc  -l  )
+    		#echo -e "\t${BLUE}-${RESET}${RESET} Subdomain total: ${COUNT}\n"
+    	fi
+    }
+
+    [[ ${securitytrails} == true ]] && {
+    SECURITY_TRAILS
+    	if [[ -f ${OUT_STRAILS} ]];then
+    		COUNT=$(cat ${OUT_STRAILS} | sort -u | wc  -l  )
+    		#echo -e "\t${BLUE}-${RESET}${RESET} Subdomain total: ${COUNT}\n"
+    	fi
+    }
+
+    [[ ${censys} == true ]] && {
+    CENSYS
+    	if [[ -f ${OUT_CENSYS} ]];then
+    		COUNT=$(cat ${OUT_CENSYS} | sort -u | wc  -l  )
+    		#echo -e "\t${BLUE}-${RESET}${RESET} Subdomain total: ${COUNT}\n"
+    	fi
+    }
+
+    [[ ${rapiddns} == true ]] && {
+    RAPIDDNS
+        if [[ -f ${OUT_RAPIDDNS} ]];then
+                COUNT=$(cat ${OUT_RAPIDDNS} | sort -u | wc  -l  )
+                #echo -e "\t${BLUE}-${RESET}${RESET} Subdomain total: ${COUNT}\n"
+        fi
+    }
+
+    [[ ${alienvault} == true ]] && {
+    ALIENVAULT
+        if [[ -f ${OUT_ALIENVAULT} ]];then
+                COUNT=$(cat ${OUT_ALIENVAULT} | sort -u | wc  -l  )
+                #echo -e "\t${BLUE}-${RESET}${RESET} Subdomain total: ${COUNT}\n"
+        fi
+    }
+
+
+    [[ ${commoncrawl} == true ]] && {
+    COMMONCRAWL
+        if [[ -f ${OUT_COMMONCRAWL} ]];then
+                COUNT=$(cat ${OUT_COMMONCRAWL} | sort -u | wc  -l  )
+                #echo -e "\t${BLUE}-${RESET}${RESET} Subdomain total: ${COUNT}\n"
+        fi
+    }
+
+
+
+    [[ ${urlscan} == true ]] && {
+    URLSCAN
+        if [[ -f ${OUT_URLSCAN} ]];then
+                COUNT=$(cat ${OUT_URLSCAN} | sort -u | wc  -l  )
+                #echo -e "\t${BLUE}-${RESET}${RESET} Subdomain total: ${COUNT}\n"
+        fi
+    }
+
+
+elif [[ ${SOURCE} == false ]] ; then
+	args_source=(SHODAN WEBARCHIVE DNSDUMPSTER VIRUSTOTAL CERTSPOTTER CERTSH BINARYEDGE SECURITY_TRAILS CENSYS THREATMINER BUFFEROVER HACKERTARGET ENTRUST FINDSUBDOMAIN THREATCROWD RIDDLER RAPIDDNS ALIENVAULT COMMONCRAWL URLSCAN)
+	for i in "${!args_source[@]}"; do
+   		"${args_source[i]}" &
+	done
+	     wait
+fi
+echo -e "\n${BOLD}[${LGREEN}+${RESET}${BOLD}]${RESET} Get & Count subdomain total From source   "
+echo -e "---------------------------------------------\n"
+if [[ ${verbose} == true ]] ; then
+    if [[ -f ${OUT_SHODAN} ]] ; then
+      COUNT=$(cat ${OUT_SHODAN} | sort -u | wc  -l  )
+      echo -e  "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}Shodan${RESET}${DPADDING}\t\t[${GREEN}${COUNT}${RESET}]"
+      cat ${OUT_SHODAN} \
+      | while read VERBOSE; do
+          echo -e "\t - $VERBOSE"
+      done
+    fi
+
+    if [[ -f ${OUT_HACKERTARGET} ]] ; then
+      COUNT=$(cat ${OUT_HACKERTARGET} | sort -u | wc  -l  )
+      echo -e  "\n${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}Hackertarget${RESET}${DPADDING}\t[${GREEN}${COUNT}${RESET}]"
+      cat ${OUT_HACKERTARGET} \
+      | while read VERBOSE; do
+          echo -e "\t - $VERBOSE"
+      done
+    fi
+    if [[ -f ${OUT_FINDSUBDOMAIN} ]] ; then
+      COUNT=$(cat ${OUT_FINDSUBDOMAIN} | sort -u | wc  -l  )
+      echo -e  "\n${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}Findsubdomain${RESET}${DPADDING}\t[${GREEN}${COUNT}${RESET}]"
+      cat ${OUT_FINDSUBDOMAIN} \
+      | while read VERBOSE; do
+          echo -e "\t - $VERBOSE"
+      done
+    fi
+    if [[ -f ${OUT_VIRUSTOTAL} ]] ; then
+      COUNT=$(cat ${OUT_VIRUSTOTAL} | sort -u | wc  -l  )
+      echo -e  "\n${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}Virustotal${RESET}${DPADDING}\t\t[${GREEN}${COUNT}${RESET}]"
+      cat ${OUT_VIRUSTOTAL} \
+      | while read VERBOSE; do
+          echo -e "\t - $VERBOSE"
+      done
+    fi
+    if [[ -f ${OUT_CERTSPOTTER} ]] ; then
+      COUNT=$(cat ${OUT_CERTSPOTTER} | sort -u | wc  -l  )
+      echo -e  "\n${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}Certspotter${RESET}${DPADDING}\t[${GREEN}${COUNT}${RESET}]"
+      cat ${OUT_CERTSPOTTER} \
+      | while read VERBOSE; do
+          echo -e "\t - $VERBOSE"
+      done
+    fi
+    if [[ -f ${OUT_BINARYEDGE} ]] ; then
+      COUNT=$(cat ${OUT_BINARYEDGE} | sort -u | wc  -l  )
+      echo -e  "\n${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}BinaryEdge${RESET}${DPADDING}\t[${GREEN}${COUNT}${RESET}]"
+      cat ${OUT_BINARYEDGE} \
+      | while read VERBOSE; do
+          echo -e "\t - $VERBOSE"
+      done
+    fi
+    if [[ -f ${OUT_THREATMINER} ]] ; then
+      COUNT=$(cat ${OUT_THREATMINER} | sort -u | wc  -l  )
+      echo -e  "\n${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}Threatminer${RESET}${DPADDING}\t[${GREEN}${COUNT}${RESET}]"
+      cat ${OUT_THREATMINER} \
+      | while read VERBOSE; do
+          echo -e "\t - $VERBOSE"
+      done
+    fi
+    if [[ -f ${OUT_CRTSH} ]] ; then
+        COUNT=$(cat ${OUT_CRTSH} | sort -u | wc  -l  )
+        echo -e  "\n${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}CrtSH${RESET}${DPADDING}\t\t[${GREEN}${COUNT}${RESET}]"
+        cat ${OUT_CRTSH} \
+        | while read VERBOSE; do
+            echo -e "\t - $VERBOSE"
+        done
+      fi
+    if [[ -f ${OUT_BUFFEROVER} ]] ; then
+        COUNT=$(cat ${OUT_BUFFEROVER} | sort -u | wc  -l  )
+        echo -e  "\n${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}BufferOver${RESET}${DPADDING}\t[${GREEN}${COUNT}${RESET}]"
+        cat ${OUT_BUFFEROVER} \
+        | while read VERBOSE; do
+            echo -e "\t - $VERBOSE"
+        done
+      fi
+    if [[ -f ${OUT_ENTRUST} ]] ; then
+        COUNT=$(cat ${OUT_ENTRUST} | sort -u | wc  -l  )
+        echo -e  "\n${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}Entrust${RESET}${DPADDING}\t\t[${GREEN}${COUNT}${RESET}]"
+        cat ${OUT_ENTRUST} \
+        | while read VERBOSE; do
+            echo -e "\t - $VERBOSE"
+        done
+      fi
+    if [[ -f ${OUT_FINDSUBDOMAIN} ]] ; then
+        COUNT=$(cat ${OUT_FINDSUBDOMAIN} | sort -u | wc  -l  )
+        echo -e  "\n${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}Findsubdomain${RESET}${DPADDING}\t[${GREEN}${COUNT}${RESET}]"
+        cat ${OUT_FINDSUBDOMAIN} \
+        | while read VERBOSE; do
+            echo -e "\t - $VERBOSE"
+        done
+      fi
+    if [[ -f ${OUT_THREATCROWD} ]] ; then
+        COUNT=$(cat ${OUT_THREATCROWD} | sort -u | wc  -l  )
+        echo -e  "\n${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}Threatcrowd${RESET}${DPADDING}\t[${GREEN}${COUNT}${RESET}]"
+        cat ${OUT_THREATCROWD} \
+        | while read VERBOSE; do
+            echo -e "\t - $VERBOSE"
+        done
+      fi
+    if [[ -f ${OUT_DNSDUMPSTER} ]] ; then
+        COUNT=$(cat ${OUT_DNSDUMPSTER} | sort -u | wc  -l  )
+        echo -e  "\n${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}Dnsdumpster${RESET}${DPADDING}\t[${GREEN}${COUNT}${RESET}]"
+        cat ${OUT_DNSDUMPSTER} \
+        | while read VERBOSE; do
+            echo -e "\t - $VERBOSE"
+        done
+      fi
+    if [[ -f ${OUT_RIDDLER} ]] ; then
+        COUNT=$(cat ${OUT_RIDDLER} | sort -u | wc  -l  )
+        echo -e  "\n${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}Riddler${RESET}${DPADDING}\t\t[${GREEN}${COUNT}${RESET}]"
+        cat ${OUT_RIDDLER} \
+        | while read VERBOSE; do
+            echo -e "\t - $VERBOSE"
+        done
+      fi
+    if [[ -f ${OUT_WEBARCHIVE} ]] ; then
+        COUNT=$(cat ${OUT_WEBARCHIVE} | sort -u | wc  -l  )
+        echo -e  "\n${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}Webarchive${RESET}${DPADDING}\t[${GREEN}${COUNT}${RESET}]"
+        cat ${OUT_WEBARCHIVE} \
+        | while read VERBOSE; do
+            echo -e "\t - $VERBOSE"
+        done
+      fi
+    if [[ -f ${OUT_STRAILS} ]] ; then
+        COUNT=$(cat ${OUT_STRAILS} | sort -u | wc  -l  )
+        echo -e  "\n${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}Securitytrails${RESET}${DPADDING}\t[${GREEN}${COUNT}${RESET}]"
+        cat ${OUT_STRAILS} \
+        | while read VERBOSE; do
+            echo -e "\t - $VERBOSE"
+        done
+      fi
+    if [[ -f ${OUT_CENSYS} ]] ; then
+        COUNT=$(cat ${OUT_CENSYS} | sort -u | wc  -l  )
+        echo -e  "\n${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}Censys${RESET}${DPADDING}\t\t[${GREEN}${COUNT}${RESET}]"
+        cat ${OUT_CENSYS} \
+        | while read VERBOSE; do
+            echo -e "\t - $VERBOSE"
+        done
+      fi
+
+    if [[ -f ${OUT_RAPIDDNS} ]] ; then
+        COUNT=$(cat ${OUT_RAPIDDNS} | sort -u | wc  -l  )
+        echo -e  "\n${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}RapidDNS${RESET}${DPADDING}\t\t[${GREEN}${COUNT}${RESET}]"
+        cat ${OUT_RAPIDDNS} \
+        | while read VERBOSE; do
+            echo -e "\t - $VERBOSE"
+        done
+      fi
+
+    if [[ -f ${OUT_ALIENVAULT} ]] ; then
+        COUNT=$(cat ${OUT_ALIENVAULT} | sort -u | wc  -l  )
+        echo -e  "\n${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}AlienVault${RESET}${DPADDING}\t\t[${GREEN}${COUNT}${RESET}]"
+        cat ${OUT_ALIENVAULT} \
+        | while read VERBOSE; do
+            echo -e "\t - $VERBOSE"
+        done
+      fi
+
+    if [[ -f ${OUT_COMMONCRAWL} ]] ; then
+        COUNT=$(cat ${OUT_COMMONCRAWL} | sort -u | wc  -l  )
+        echo -e  "\n${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}CommonCrawl${RESET}${DPADDING}\t\t[${GREEN}${COUNT}${RESET}]"
+        cat ${OUT_COMMONCRAWL} \
+        | while read VERBOSE; do
+            echo -e "\t - $VERBOSE"
+        done
+      fi
+
+
+    if [[ -f ${OUT_URLSCAN} ]] ; then
+        COUNT=$(cat ${OUT_URLSCAN} | sort -u | wc  -l  )
+        echo -e  "\n${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}UrlScan${RESET}${DPADDING}\t\t[${GREEN}${COUNT}${RESET}]"
+        cat ${OUT_URLSCAN} \
+        | while read VERBOSE; do
+            echo -e "\t - $VERBOSE"
+        done
+      fi
+
+	
+	ARG_PARS_LIST
+else
+        if [[ -f ${OUT_SHODAN} ]] ; then
+          COUNT=$(cat ${OUT_SHODAN} | sort -u | wc  -l  )
+          echo -e  "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}Shodan: Total Subdomain (${COUNT})${RESET}"
+        fi
+
+        if [[ -f ${OUT_HACKERTARGET} ]] ; then
+     	    COUNT=$(cat ${OUT_HACKERTARGET} | sort -u | wc  -l  )
+          echo -e  "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}Hackertarget: Total Subdomain (${COUNT})${RESET}"
+        fi
+
+        if [[ -f ${OUT_FINDSUBDOMAIN} ]] ; then
+     	    COUNT=$(cat ${OUT_FINDSUBDOMAIN} | sort -u | wc  -l  )
+          echo -e  "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}Findsubdomain: Total Subdomain (${COUNT})${RESET}"
+        fi
+
+        if [[ -f ${OUT_VIRUSTOTAL} ]] ; then
+     	    COUNT=$(cat ${OUT_VIRUSTOTAL} | sort -u | wc  -l  )
+          echo -e  "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}Virustotal: Total Subdomain (${COUNT})${RESET}"
+        fi
+
+        if [[ -f ${OUT_CERTSPOTTER} ]] ; then
+     	    COUNT=$(cat ${OUT_CERTSPOTTER} | sort -u | wc  -l  )
+          echo -e  "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}Certspotter: Total Subdomain (${COUNT})${RESET}"
+        fi
+
+        if [[ -f ${OUT_BINARYEDGE} ]] ; then
+     	    COUNT=$(cat ${OUT_BINARYEDGE} | sort -u | wc  -l  )
+          echo -e  "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}Binaryedge: Total Subdomain (${COUNT})${RESET}"
+        fi
+
+        if [[ -f ${OUT_THREATMINER} ]] ; then
+     	    COUNT=$(cat ${OUT_THREATMINER} | sort -u | wc  -l  )
+          echo -e  "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}Threatminer: Total Subdomain (${COUNT})${RESET}"
+        fi
+
+        if [[ -f ${OUT_CRTSH} ]] ; then
+       	  COUNT=$(cat ${OUT_CRTSH} | sort -u | wc  -l  )
+          echo -e  "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}Certsh: Total Subdomain (${COUNT})${RESET}"
+        fi
+
+        if [[ -f ${OUT_BUFFEROVER} ]] ; then
+       	  COUNT=$(cat ${OUT_BUFFEROVER} | sort -u | wc  -l  )
+          echo -e  "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}BufferOver: Total Subdomain (${COUNT})${RESET}"
+        fi
+
+        if [[ -f ${OUT_ENTRUST} ]] ; then
+       	  COUNT=$(cat ${OUT_ENTRUST} | sort -u | wc  -l  )
+          echo -e  "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}Entrust: Total Subdomain (${COUNT})${RESET}"
+        fi
+
+        if [[ -f ${OUT_THREATCROWD} ]] ; then
+       	  COUNT=$(cat ${OUT_THREATCROWD} | sort -u | wc  -l  )
+          echo -e  "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}Threatcrowd: Total Subdomain (${COUNT})${RESET}"
+        fi
+
+        if [[ -f ${OUT_DNSDUMPSTER} ]] ; then
+       	  COUNT=$(cat ${OUT_DNSDUMPSTER} | sort -u | wc  -l  )
+          echo -e  "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}Dnsdumpster: Total Subdomain (${COUNT})${RESET}"
+        fi
+
+        if [[ -f ${OUT_RIDDLER} ]] ; then
+       	  COUNT=$(cat ${OUT_RIDDLER} | sort -u | wc  -l  )
+          echo -e  "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}Riddler: Total Subdomain (${COUNT})${RESET}"
+        fi
+
+        if [[ -f ${OUT_WEBARCHIVE} ]] ; then
+       	  COUNT=$(cat ${OUT_WEBARCHIVE} | sort -u | wc  -l  )
+          echo -e  "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}Webarchive: Total Subdomain (${COUNT})${RESET}"
+        fi
+
+        if [[ -f ${OUT_STRAILS} ]] ; then
+       	  COUNT=$(cat ${OUT_STRAILS} | sort -u | wc  -l  )
+          echo -e  "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}SecurityTrails: Total Subdomain (${COUNT})${RESET}"
+        fi
+
+        if [[ -f ${OUT_CENSYS} ]] ; then
+       	  COUNT=$(cat ${OUT_CENSYS} | sort -u | wc  -l  )
+          echo -e  "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}Censys: Total Subdomain (${COUNT})${RESET}"
+        fi
+
+        if [[ -f ${OUT_RAPIDDNS} ]] ; then
+          COUNT=$(cat ${OUT_RAPIDDNS} | sort -u | wc  -l  )
+          echo -e  "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}RapidDNS: Total Subdomain (${COUNT})${RESET}"
+        fi
+
+        if [[ -f ${OUT_ALIENVAULT} ]] ; then
+          COUNT=$(cat ${OUT_ALIENVAULT} | sort -u | wc  -l  )
+          echo -e  "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}AlienVault: Total Subdomain (${COUNT})${RESET}"
+        fi
+
+        if [[ -f ${OUT_COMMONCRAWL} ]] ; then
+          COUNT=$(cat ${OUT_COMMONCRAWL} | sort -u | wc  -l  )
+          echo -e  "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}CommonCrawl: Total Subdomain (${COUNT})${RESET}"
+        fi
+
+        if [[ -f ${OUT_URLSCAN} ]] ; then
+          COUNT=$(cat ${OUT_URLSCAN} | sort -u | wc  -l  )
+          echo -e  "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}UrlScanIo: Total Subdomain (${COUNT})${RESET}"
+        fi
+
+	ARG_PARS_LIST
+fi
+
+if [[ ${PLUGIN_HTTPROBE} == true ]];then
+     #_HTTPROBE=httprobe
+          which ${_HTTPROBE} > /dev/null
+             if  [[ "$?" -eq "0" ]];then
+                 echo -e "\n${BOLD}[${LGREEN}+${RESET}${BOLD}]${RESET} Probe subdomain for working on http/https   "
+                   echo -e "---------------------------------------------\n"
+                    cat ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_SUBDOMAIN} | ${_HTTPROBE} > ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_HTTPROBE} & 
+                    
+                    #Print
+
+                     cat ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_SUBDOMAIN} | ${_HTTPROBE} | sed -e 's/^/\t - /'
+                     wait 
+                        COUNT=$(cat ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_HTTPROBE} | wc  -l  )
+                        echo -e  "\n${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}Total ${RESET}${DPADDING}\t\t[${GREEN}${COUNT}${RESET}]\n"
+                     #cat ${OUT_GOBUSTER} | awk '{print $2}' > ${RESULT_GOBUSTER} ; rm -rf ${OUT_GOBUSTER}
+        else 
+	       echo -e "\n${BOLD}[${LGREEN}+${RESET}${BOLD}]${RESET} Probe subdomain for working on http/https   "
+               echo -e "---------------------------------------------\n"
+               echo -e "${PADDING}${RESET}${PADDING}${LRED}x${RESET} This Plugin need httprobe, ${RED}install it${RESET}"
+
+        fi
+fi  
+
+
+if [[ ${PLUGIN_GOBUSTER} == true ]];then
+     _GOBUSTER=gobuster
+          which ${_GOBUSTER} > /dev/null
+             if  [[ "$?" -eq "0" ]];then
+                 echo -e "\n${BOLD}[${LGREEN}+${RESET}${BOLD}]${RESET} Running Bruterforce DNS: Gobuster    "
+                   echo -e "---------------------------------------------\n"
+                    ${_GOBUSTER} dns -d ${DOMAIN} --wildcard  -qw ${_GOWORDLIST} -o ${OUT_GOBUSTER} | awk '{print $2}' | sed -e 's/^/\t - /'
+                    cat ${OUT_GOBUSTER} | awk '{print $2}' > ${RESULT_GOBUSTER} ; rm -rf ${OUT_GOBUSTER}
+        else 
+               echo -e "${BOLD}[${LGREEN}+${RESET}${BOLD}]${RESET} Running Bruterforce DNS: Gobuster    "
+               echo -e "---------------------------------------------\n"
+               echo -e "${PADDING}${RESET}${PADDING}${LRED}x${RESET} This Plugin need Gobuster, ${RED}install it${RESET}"
+
+        fi
+
+fi  
+
+
+#LIVE_HOST
+
+if [[ ${PLUGIN_PING_SWEEP} == true ]] ; then
+# Ping sweep (ICMP sweep)
+
+## A ping sweep (also known as an ICMP sweep) is a basic network scanning technique used
+## to determine which of a range of IP addresses map to live hosts (computers). Whereas a
+## Single ping will tell you whether one specified host computer exists on the network, a ping 
+## Sweep consists of ICMP (Internet Control Message Protocol) ECHO requests sent to multiple
+## hosts. If a given address is live, it will return an ICMP ECHO reply. Ping sweeps are among
+## the older and slower methods used to scan a network. 
+
+echo -e "\n${BOLD}[${LGREEN}+${RESET}${BOLD}]${RESET} Check Live Host: Ping Sweep - ICMP PING  "  ### Reference : https://searchnetworking.techtarget.com/definition/ping-sweep-ICMP-sweep
+echo -e "---------------------------------------------\n"
+for SUB_LIVE_CHECK in $(cat ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_SUBDOMAIN}) 
+do
+  ping -c1 -W2 ${SUB_LIVE_CHECK} > /dev/null 2>&1
+    if [[ $? -eq 0 ]];
+    then
+        echo -e "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}[${GREEN}LIVE${RESET}]\t ${SUB_LIVE_CHECK} ${RESET}"
+        echo -e "${SUB_LIVE_CHECK}  LIVE" | tee -a ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_PINGSWEEP} > /dev/null 2>&1
+
+    else
+	echo -e "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}[${RED}DEAD${RESET}]\t ${SUB_LIVE_CHECK} ${RESET}"
+        echo -e "${SUB_LIVE_CHECK}  DEAD" | tee -a ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_PINGSWEEP} > /dev/null 2>&1
+    fi
+
+	done
+
+    #MAKER MORE PRETTY 
+    cat ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_PINGSWEEP} | sed 's/ / ,/g' | column -t -s, > ${OUT}/${DATE_LOG}/${DOMAIN}/${FINAL_PINGSWEEP}
+    rm -r ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_PINGSWEEP} > /dev/null 2>&1
+fi  ### Ending Ping Sweep
+
+if [[ ${PLUGIN_RESOLV_SD} == true ]] ; then
+
+echo -e "\n${BOLD}[${LGREEN}+${RESET}${BOLD}]${RESET} Check Resolving: Subdomains & Domains  "
+echo -e "---------------------------------------------\n"
+TMP_RESOL=temp_resolver.lst
+
+for SUB_RESOLV in $(cat ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_SUBDOMAIN}) 
+do
+    RESOLVER=$(dig +short ${SUB_RESOLV} |grep -oE "\b([0-9]{1,3}\.){3}[0-9]{1,3}\b"|head -1)
+    if [[ -n "${RESOLVER}" ]];
+    then
+        echo -e "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}Resolving domains to:${LGREEN} ${RESOLVER} ${RESET}"		## INFO
+	echo -e "${SUB_RESOLV} = ${RESOLVER} " | tee -a ${OUT}/${DATE_LOG}/${DOMAIN}/${TMP_RESOL} > /dev/null 2>&1	## Temporary for pars
+	echo -e "${RESOLVER}" |  tee -a ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_IP_RESOLVER} > /dev/null 2>&1		## Host for parsing
+	echo -e "${SUB_RESOLV} ${RESOLVER}" | tee -a ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_SUB_TABLE} > /dev/null 2>&1  ## For pars html table
+    else
+	echo -e "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}Resolving${RESET} domains to: ${RED}RESOLVE ERROR ${RESET}"
+    fi
+	done
+
+   #Resolver IP = Subdomain {pars}	
+   	awk '{ if (a[$3]) a[$3] = a[$3]"\n - "$1; else a[$3] ="\n - "$1;} END { for (i in a) print i, a[i]}'  < ${OUT}/${DATE_LOG}/${DOMAIN}/${TMP_RESOL} >  ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_SUB_RESOLVER}
+	rm -r ${OUT}/${DATE_LOG}/${DOMAIN}/${TMP_RESOL} > /dev/null 2>&1
+	sort -u -o ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_IP_RESOLVER} ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_IP_RESOLVER} ## Pars duplicate resolver ip
+
+  ## Make more pretty
+  cat ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_SUB_TABLE} | sed 's/ / ,/g' | column -t -s, > ${OUT}/${DATE_LOG}/${DOMAIN}/${FINAL_SUBDOMAIN_REV_ALL}
+    rm -r ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_SUB_TABLE} > /dev/null 2>&1
+
+fi
+
+
+if [[ ${PLUGIN_TAKEOVER} == true ]] ; then
+# Subdomain takeover vulnerabilities occur when a subdomain (subdomain.example.com) is pointing to a service 
+# (e.g. GitHub pages, Heroku, etc.) that has been removed or deleted. This allows an attacker to set up a page on the 
+# service that was being used and point their page to that subdomain. For example, if subdomain.example.com was 
+# Pointing to a GitHub page and the user decided to delete their GitHub page, an attacker can now create a GitHub 
+# page, add a CNAME file containing subdomain.example.com, and claim subdomain.example.com.
+
+#can read up more about subdomain takeovers here:
+
+#    https://labs.detectify.com/2014/10/21/hostile-subdomain-takeover-using-herokugithubdesk-more/
+#    https://www.hackerone.com/blog/Guide-Subdomain-Takeovers
+#    https://0xpatrik.com/subdomain-takeover-ns/
+
+
+
+echo -e "\n${BOLD}[${LGREEN}+${RESET}${BOLD}]${RESET} Subdomain TakeOver - Check Possible Vulns  "  # Reference : https://github.com/EdOverflow/can-i-take-over-xyz                      
+echo -e "---------------------------------------------\n"     
+
+## Cleaning Log Files { {${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_TAKEOVER} }
+
+rm -r ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_TAKEOVER} > /dev/null 2>&1
+
+for SUB_TAKEOVER_CHECK in $(cat ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_HTTPROBE}) 
+do
+  HTML=$(curl -Lks ${SUB_TAKEOVER_CHECK} --max-time 4)  ## GET RESPONE HTML USE CURL -LKS {LIST DOMAINS }
+	if [[ $HTML =~ "If you're the owner of this store" ]] || [[ $HTML =~ "Sorry, this shop is currently unavailable." ]] ; then 
+		      echo -e "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}[${GREEN}VULNS${RESET}]\t Shopify      ${SUB_TAKEOVER_CHECK} ${RESET}"  ## SHOPIFY   
+        	echo -e "${SUB_TAKEOVER_CHECK} Shopify Vulnerable"  | tee -a ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_TAKEOVER} > /dev/null 2>&1
+        elif [[ $HTML =~ "Repository not found" ]]; then
+          echo -e "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}[${GREEN}VULNS${RESET}]\t BitBucket    ${SUB_TAKEOVER_CHECK} ${RESET}"  ## BITBUCKET
+          echo -e "${SUB_TAKEOVER_CHECK} BitBucket Vulnerable"  | tee -a ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_TAKEOVER} > /dev/null 2>&1
+        elif [[ $HTML =~ "The specified bucket does not exit" ]]; then
+          echo -e "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}[${GREEN}VULNS${RESET}]\t AWS/S3       ${SUB_TAKEOVER_CHECK} ${RESET}"  ## AWS/S3
+          echo -e "${SUB_TAKEOVER_CHECK} AWS/S3 Vulnerable"  | tee -a ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_TAKEOVER} > /dev/null 2>&1    
+        elif [[ $HTML =~ "The request could not be satisfied" ]] || [[ $HTML =~ "ViewerCertificateException" ]] ; then
+          echo -e "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}[${GREEN}VULNS${RESET}]\t CloudFront   ${SUB_TAKEOVER_CHECK} ${RESET}"  ## CLOUD FRONT
+          echo -e "${SUB_TAKEOVER_CHECK} CloudFront Vulnerable"  | tee -a ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_TAKEOVER} > /dev/null 2>&1
+        elif [[ $HTML =~ "There isn't a Github Pages site here." ]]; then
+          echo -e "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}[${GREEN}VULNS${RESET}]\t Github       ${SUB_TAKEOVER_CHECK} ${RESET}"  ## GITHUB
+          echo -e "${SUB_TAKEOVER_CHECK} Github Vulnerable"  | tee -a ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_TAKEOVER} > /dev/null 2>&1
+        elif [[ $HTML =~ "Trying to access your account?" ]]; then
+          echo -e "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}[${GREEN}VULNS${RESET}]\t Campaign     ${SUB_TAKEOVER_CHECK} ${RESET}"  ## CMAMPAIGN MONITOR
+          echo -e "${SUB_TAKEOVER_CHECK} Campaign_Monitor Vulnerable"  | tee -a ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_TAKEOVER} > /dev/null 2>&1
+        elif [[ $HTML =~ "Fastly error: unknown domain:" ]]; then
+          echo -e "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}[${GREEN}VULNS${RESET}]\t Fastly       ${SUB_TAKEOVER_CHECK} ${RESET}"  ##  FASTLY
+          echo -e "${SUB_TAKEOVER_CHECK} Fastly Vulnerable"  | tee -a ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_TAKEOVER} > /dev/null 2>&1
+        elif [[ $HTML =~ "The feed has not been found." ]]; then
+          echo -e "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}[${GREEN}VULNS${RESET}]\t Feedpress    ${SUB_TAKEOVER_CHECK} ${RESET}"  ## FEEDPRESS
+          echo -e "${SUB_TAKEOVER_CHECK} Feedpress Vulnerable"  | tee -a ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_TAKEOVER} > /dev/null 2>&1
+        elif [[ $HTML =~ "The thing you were looking for is no longer here, or never" ]]; then
+          echo -e "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}[${GREEN}VULNS${RESET}]\t Ghost        ${SUB_TAKEOVER_CHECK} ${RESET}"  ##  GHOST
+          echo -e "${SUB_TAKEOVER_CHECK} Ghost Vulnerable"  | tee -a ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_TAKEOVER} > /dev/null 2>&1
+        elif [[ $HTML =~ "We could not find what you're looking for" ]]; then
+          echo -e "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}[${GREEN}VULNS${RESET}]\t Help Juice   ${SUB_TAKEOVER_CHECK} ${RESET}"  ##  HELP JUICE
+          echo -e "${SUB_TAKEOVER_CHECK} Help_Juice Vulnerable"  | tee -a ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_TAKEOVER} > /dev/null 2>&1
+        elif [[ $HTML =~ "No settings were found for this company" ]]; then
+          echo -e "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}[${GREEN}VULNS${RESET}]\t Help Scout   ${SUB_TAKEOVER_CHECK} ${RESET}"  ##  HELP SCOUT
+          echo -e "${SUB_TAKEOVER_CHECK} Help_Scout Vulnerable"  | tee -a ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_TAKEOVER} > /dev/null 2>&1
+        elif [[ $HTML =~ "404 Blog is not found" ]]; then
+          echo -e "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}[${GREEN}VULNS${RESET}]\t HatenaBlog   ${SUB_TAKEOVER_CHECK} ${RESET}"  ## HATENA BLOG
+          echo -e "${SUB_TAKEOVER_CHECK} HatenaBlog Vulnerable"  | tee -a ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_TAKEOVER} > /dev/null 2>&1
+        elif [[ $HTML =~ "Uh oh. That page doesn't exist." ]]; then
+          echo -e "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}[${GREEN}VULNS${RESET}]\t Intercom     ${SUB_TAKEOVER_CHECK} ${RESET}"  ## INTERCOM
+          echo -e "${SUB_TAKEOVER_CHECK} Intercom Vulnerable"  | tee -a ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_TAKEOVER} > /dev/null 2>&1
+        elif [[ $HTML =~ "is not a registered InCloud YouTrack" ]]; then
+          echo -e "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}[${GREEN}VULNS${RESET}]\t JetBrains    ${SUB_TAKEOVER_CHECK} ${RESET}"  ## JETBRAINS
+          echo -e "${SUB_TAKEOVER_CHECK} JetBrains Vulnerable"  | tee -a ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_TAKEOVER} > /dev/null 2>&1
+        elif [[ $HTML =~ "No Site For Domain" ]]; then
+          echo -e "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}[${GREEN}VULNS${RESET}]\t Kinsta       ${SUB_TAKEOVER_CHECK} ${RESET}"  ## KINSTA
+          echo -e "${SUB_TAKEOVER_CHECK} Kinsta Vulnerable"  | tee -a ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_TAKEOVER} > /dev/null 2>&1
+        elif [[ $HTML =~ "It looks like you may have taken a wrong turn somewhere. Don't worry...it happens to all of us." ]]; then
+          echo -e "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}[${GREEN}VULNS${RESET}]\t LaunchRock   ${SUB_TAKEOVER_CHECK} ${RESET}"  ## LAUNCHROCK
+          echo -e "${SUB_TAKEOVER_CHECK} LaunchRock Vulnerable"  | tee -a ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_TAKEOVER} > /dev/null 2>&1
+        elif [[ $HTML =~ "404 error unknown site!" ]]; then
+          echo -e "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}[${GREEN}VULNS${RESET}]\t Pantheon     ${SUB_TAKEOVER_CHECK} ${RESET}"  ## PANTHEON
+          echo -e "${SUB_TAKEOVER_CHECK} Pantheon Vulnerable"  | tee -a ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_TAKEOVER} > /dev/null 2>&1
+        elif [[ $HTML =~ "Project doesnt exist... yet!" ]]; then
+          echo -e "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}[${GREEN}VULNS${RESET}]\t Readme.io    ${SUB_TAKEOVER_CHECK} ${RESET}"  ## README>.IO
+          echo -e "${SUB_TAKEOVER_CHECK} Readme.io Vulnerable"  | tee -a ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_TAKEOVER} > /dev/null 2>&1        
+        elif [[ $HTML =~ "Whatever you were looking for doesn't currently exist at this address" ]]; then
+          echo -e "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}[${GREEN}VULNS${RESET}]\t Tumblr       ${SUB_TAKEOVER_CHECK} ${RESET}"  ## TUMBLR
+          echo -e "${SUB_TAKEOVER_CHECK} Tumblr Vulnerable"  | tee -a ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_TAKEOVER} > /dev/null 2>&1
+        elif [[ $HTML =~ "This UserVoice subdomain is currently available!" ]]; then
+          echo -e "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}[${GREEN}VULNS${RESET}]\t UserVoice    ${SUB_TAKEOVER_CHECK} ${RESET}"  ## USERVOICE
+          echo -e "${SUB_TAKEOVER_CHECK} UserVoice Vulnerable"  | tee -a ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_TAKEOVER} > /dev/null 2>&1
+        elif [[ $HTML =~ "Domain is not configured" ]]; then
+          echo -e "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}[${GREEN}VULNS${RESET}]\t Smartling    ${SUB_TAKEOVER_CHECK} ${RESET}"  ## SMARTLING
+          echo -e "${SUB_TAKEOVER_CHECK} Smartling Vulnerable"  | tee -a ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_TAKEOVER} > /dev/null 2>&1
+        elif [[ $HTML =~ "You may have mistyped the address or the page may have moved." ]]; then
+          echo -e "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}[${GREEN}VULNS${RESET}]\t Thinkific    ${SUB_TAKEOVER_CHECK} ${RESET}"  ## THINKIFIC
+          echo -e "${SUB_TAKEOVER_CHECK} Thinkific Vulnerable"  | tee -a ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_TAKEOVER} > /dev/null 2>&1
+	else	
+	        echo -e "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}[${RED}FAILS${RESET}]\t En: Unknown  ${SUB_TAKEOVER_CHECK} ${RESET}"  ## UKOWN 
+		      echo -e "${SUB_TAKEOVER_CHECK} Unknown Not.Vuln"  | tee -a ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_TAKEOVER} > /dev/null 2>&1   
+        fi
+	
+		done ## Close
+
+    cat ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_TAKEOVER} | sed 's/ / ,/g' | column -t -s, > ${OUT}/${DATE_LOG}/${DOMAIN}/${FINAL_TAKEOVER}
+    rm -r ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_TAKEOVER} > /dev/null 2>&1
+
+
+fi ## Ending Subdomain TakeOver
+
+
+
+#if [[ ${OUT_HTML} == true ]] ; then	
+if [[ ${PLUGIN_STATUS_CODE} == true ]]; then
+
+# Explain Reponse status Code
+#
+#       __________ 10.1 Informational 1xx
+#  
+#  This class of status code indicates a provisional response, consisting only of
+#  the Status-Line and optional headers, and is terminated by an empty line.
+#  There are no required headers for this class of status code. Since HTTP/1.0
+#  did not define any 1xx status codes, servers MUST NOT send a 1xx response to
+#  an HTTP/1.0 client except under experimental conditions.
+#  
+#  A client MUST be prepared to accept one or more 1xx status responses prior to
+#  a regular response, even if the client does not expect a 100 (Continue) status
+#  message. Unexpected 1xx status responses MAY be ignored by a user agent.
+#  
+#  Proxies MUST forward 1xx responses, unless the connection between the proxy
+#  and its client has been closed, or unless the proxy itself requested the
+#  generation of the 1xx response. (For example, if a proxy adds a "Expect:
+#  100-continue" field when it forwards a request, then it need not forward the
+#  corresponding 100 (Continue) response(s).) 
+#
+#       __________ 10.2 Successful 2xx
+#  
+#  This class of status code indicates that the client's request was successfully
+#  received, understood, and accepted.
+#
+#       __________ 10.3 Redirection 3xx
+#  
+#  This class of status code indicates that further action needs to be taken by
+#  the user agent in order to fulfill the request. The action required MAY be
+#  carried out by the user agent without interaction with the user if and only if
+#  the method used in the second request is GET or HEAD. A client SHOULD detect
+#  infinite redirection loops, since such loops generate network traffic for each
+#  redirection.
+#  
+#        Note: previous versions of this specification recommended a maximum of
+#        five redirections. Content developers should be aware that there might
+#        be clients that implement such a fixed limitation
+#
+#       __________ 10.4 Client Error 4xx
+#  
+#  The 4xx class of status code is intended for cases in which the client seems
+#  to have erred. Except when responding to a HEAD request, the server SHOULD
+#  include an entity containing an explanation of the error situation, and
+#  whether it is a temporary or permanent condition. These status codes are
+#  applicable to any request method. User agents SHOULD display any included
+#  entity to the user.
+#  
+#  If the client is sending data, a server implementation using TCP SHOULD be
+#  careful to ensure that the client acknowledges receipt of the packet(s)
+#  containing the response, before the server closes the input connection. If the
+#  client continues sending data to the server after the close, the server's TCP
+#  stack will send a reset packet to the client, which may erase the client's
+#  unacknowledged input buffers before they can be read and interpreted by the
+#  HTTP application.
+#
+#       __________ 10.5 Server Error 5xx
+#  
+#  Response status codes beginning with the digit "5" indicate cases in which the
+#  server is aware that it has erred or is incapable of performing the request.
+#  Except when responding to a HEAD request, the server SHOULD include an entity
+#  containing an explanation of the error situation, and whether it is a
+#  temporary or permanent condition. User agents SHOULD display any included
+#  entity to the user. These response codes are applicable to any request method.
+  
+
+
+
+echo -e "\n${BOLD}[${LGREEN}+${RESET}${BOLD}]${RESET}  Checks status code on port 80 and 443 "  
+echo -e "---------------------------------------------\n"
+
+
+## Cleaning Log Files ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_HTTP_CODE}
+rm -r ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_HTTP_CODE} > /dev/null 2>&1 ##Cleaning old results
+
+for SUB_CODE_CHECK in $(cat ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_HTTPROBE}) ## GET Status Code from list of domains valid working http and https servers.
+do
+  RESPONSE=$(curl --write-out %{http_code} --silent --output /dev/null ${SUB_CODE_CHECK})
+
+	if [[ ${RESPONSE} == 000 ]]; then
+		INFO="Not-responding"	
+	        echo -e "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}[${BOLD}${RESPONSE}${RESET}]\t ${SUB_CODE_CHECK} ${RESET}"; echo -e "${SUB_CODE_CHECK} ${RESPONSE} ${INFO}"  | tee -a ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_HTTP_CODE} > /dev/null 2>&1
+	elif [[ ${RESPONSE} == 100 ]]; then ## 
+		INFO="Informational:Continue"	
+	        echo -e "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}[${LPURPLE}${RESPONSE}${RESET}]\t ${SUB_CODE_CHECK} ${RESET}"; echo -e "${SUB_CODE_CHECK} ${RESPONSE} ${INFO}"  | tee -a ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_HTTP_CODE} > /dev/null 2>&1
+	elif [[ ${RESPONSE} == 101 ]]; then
+		INFO="Informational:Switching_Protocols"
+	        echo -e "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}[${LPURPLE}${RESPONSE}${RESET}]\t ${SUB_CODE_CHECK} ${RESET}"; echo -e "${SUB_CODE_CHECK} ${RESPONSE} ${INFO}"  | tee -a ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_HTTP_CODE} > /dev/null 2>&1
+	elif [[ ${RESPONSE} == 200 ]]; then
+		INFO="Successful:OK"
+	        echo -e "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}[${GREEN}${RESPONSE}${RESET}]\t ${SUB_CODE_CHECK} ${RESET}"; echo -e "${SUB_CODE_CHECK} ${RESPONSE} ${INFO}"  | tee -a ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_HTTP_CODE} > /dev/null 2>&1
+	elif [[ ${RESPONSE} == 201 ]]; then
+		INFO="Successful:Created"
+	        echo -e "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}[${GREEN}${RESPONSE}${RESET}]\t ${SUB_CODE_CHECK} ${RESET}"; echo -e "${SUB_CODE_CHECK} ${RESPONSE} ${INFO}"  | tee -a ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_HTTP_CODE} > /dev/null 2>&1
+	elif [[ ${RESPONSE} == 202 ]]; then
+		INFO="Successful:Accepted"
+	        echo -e "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}[${GREEN}${RESPONSE}${RESET}]\t ${SUB_CODE_CHECK} ${RESET}"; echo -e "${SUB_CODE_CHECK} ${RESPONSE} ${INFO}"  | tee -a ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_HTTP_CODE} > /dev/null 2>&1
+	elif [[ ${RESPONSE} == 203 ]]; then
+		INFO="Successful:Non-Authoritative"
+	        echo -e "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}[${GREEN}${RESPONSE}${RESET}]\t ${SUB_CODE_CHECK} ${RESET}"; echo -e "${SUB_CODE_CHECK} ${RESPONSE} ${INFO}"  | tee -a ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_HTTP_CODE} > /dev/null 2>&1
+	elif [[ ${RESPONSE} == 204 ]]; then
+		INFO="Successful:No-Content"
+	        echo -e "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}[${GREEN}${RESPONSE}${RESET}]\t ${SUB_CODE_CHECK} ${RESET}"; echo -e "${SUB_CODE_CHECK} ${RESPONSE} ${INFO}"  | tee -a ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_HTTP_CODE} > /dev/null 2>&1
+	elif [[ ${RESPONSE} == 205 ]]; then
+		INFO="Successful:Reset-Content"
+	        echo -e "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}[${GREEN}${RESPONSE}${RESET}]\t ${SUB_CODE_CHECK} ${RESET}"; echo -e "${SUB_CODE_CHECK} ${RESPONSE} ${INFO}"  | tee -a ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_HTTP_CODE} > /dev/null 2>&1
+	elif [[ ${RESPONSE} == 206 ]]; then
+		INFO="Successful:Partial:Content"
+	        echo -e "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}[${GREEN}${RESPONSE}${RESET}]\t ${SUB_CODE_CHECK} ${RESET}"; echo -e "${SUB_CODE_CHECK} ${RESPONSE} ${INFO}"  | tee -a ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_HTTP_CODE} > /dev/null 2>&1
+	elif [[ ${RESPONSE} == 300 ]]; then
+		INFO="Redirection:Multiple-Choice"
+	        echo -e "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}[${LBLUE}${RESPONSE}${RESET}]\t ${SUB_CODE_CHECK} ${RESET}"; echo -e "${SUB_CODE_CHECK} ${RESPONSE} ${INFO}"  | tee -a ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_HTTP_CODE} > /dev/null 2>&1
+	elif [[ ${RESPONSE} == 301 ]]; then
+		INFO="Redirection:Moved-Permanently"
+	        echo -e "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}[${LBLUE}${RESPONSE}${RESET}]\t ${SUB_CODE_CHECK} ${RESET}"; echo -e "${SUB_CODE_CHECK} ${RESPONSE} ${INFO}"  | tee -a ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_HTTP_CODE} > /dev/null 2>&1
+	elif [[ ${RESPONSE} == 302 ]]; then
+		INFO="Redirection:Found:Residing"
+	        echo -e "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}[${LBLUE}${RESPONSE}${RESET}]\t ${SUB_CODE_CHECK} ${RESET}"; echo -e "${SUB_CODE_CHECK} ${RESPONSE} ${INFO}"  | tee -a ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_HTTP_CODE} > /dev/null 2>&1
+	elif [[ ${RESPONSE} == 303 ]]; then
+		INFO="Redirection:See-Other"
+	        echo -e "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}[${LBLUE}${RESPONSE}${RESET}]\t ${SUB_CODE_CHECK} ${RESET}"; echo -e "${SUB_CODE_CHECK} ${RESPONSE} ${INFO}"  | tee -a ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_HTTP_CODE} > /dev/null 2>&1
+	elif [[ ${RESPONSE} == 304 ]]; then
+		INFO="Redirection:Not-Modified"
+	        echo -e "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}[${LBLUE}${RESPONSE}${RESET}]\t ${SUB_CODE_CHECK} ${RESET}"; echo -e "${SUB_CODE_CHECK} ${RESPONSE} ${INFO}"  | tee -a ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_HTTP_CODE} > /dev/null 2>&1
+	elif [[ ${RESPONSE} == 305 ]]; then
+		INFO="Redirection:Use-Proxy"
+	        echo -e "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}[${LBLUE}${RESPONSE}${RESET}]\t ${SUB_CODE_CHECK} ${RESET}"; echo -e "${SUB_CODE_CHECK} ${RESPONSE} ${INFO}"  | tee -a ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_HTTP_CODE} > /dev/null 2>&1
+	elif [[ ${RESPONSE} == 306 ]]; then
+		INFO="Redirection:Status-notdefined"
+	        echo -e "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}[${LBLUE}${RESPONSE}${RESET}]\t ${SUB_CODE_CHECK} ${RESET}"; echo -e "${SUB_CODE_CHECK} ${RESPONSE} ${INFO}"  | tee -a ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_HTTP_CODE} > /dev/null 2>&1
+	elif [[ ${RESPONSE} == 307 ]]; then
+		INFO="Redirection:Temporary-redirect"
+	        echo -e "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}[${LBLUE}${RESPONSE}${RESET}]\t ${SUB_CODE_CHECK} ${RESET}"; echo -e "${SUB_CODE_CHECK} ${RESPONSE} ${INFO}"  | tee -a ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_HTTP_CODE} > /dev/null 2>&1
+	elif [[ ${RESPONSE} == 400 ]]; then
+		INFO="ClientError:Bad-Request"
+	        echo -e "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}[${YELLOW}${RESPONSE}${RESET}]\t ${SUB_CODE_CHECK} ${RESET}"; echo -e "${SUB_CODE_CHECK} ${RESPONSE} ${INFO}"  | tee -a ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_HTTP_CODE} > /dev/null 2>&1
+	elif [[ ${RESPONSE} == 401 ]]; then
+		INFO="ClientError:Unauthorized"
+	        echo -e "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}[${YELLOW}${RESPONSE}${RESET}]\t ${SUB_CODE_CHECK} ${RESET}"; echo -e "${SUB_CODE_CHECK} ${RESPONSE} ${INFO}"  | tee -a ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_HTTP_CODE} > /dev/null 2>&1
+	elif [[ ${RESPONSE} == 402 ]]; then
+		INFO="ClientError:Payment-Required"
+	        echo -e "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}[${YELLOW}${RESPONSE}${RESET}]\t ${SUB_CODE_CHECK} ${RESET}"; echo -e "${SUB_CODE_CHECK} ${RESPONSE} ${INFO}"  | tee -a ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_HTTP_CODE} > /dev/null 2>&1
+	elif [[ ${RESPONSE} == 403 ]]; then
+		INFO="ClientError:Forbidden"
+	        echo -e "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}[${YELLOW}${RESPONSE}${RESET}]\t ${SUB_CODE_CHECK} ${RESET}"; echo -e "${SUB_CODE_CHECK} ${RESPONSE} ${INFO}"  | tee -a ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_HTTP_CODE} > /dev/null 2>&1
+	elif [[ ${RESPONSE} == 404 ]]; then
+		INFO="ClientError:NotFound"
+	        echo -e "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}[${YELLOW}${RESPONSE}${RESET}]\t ${SUB_CODE_CHECK} ${RESET}"; echo -e "${SUB_CODE_CHECK} ${RESPONSE} ${INFO}"  | tee -a ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_HTTP_CODE} > /dev/null 2>&1
+	elif [[ ${RESPONSE} == 405 ]]; then
+		INFO="ClientError:Not-Allowed"
+	        echo -e "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}[${YELLOW}${RESPONSE}${RESET}]\t ${SUB_CODE_CHECK} ${RESET}"; echo -e "${SUB_CODE_CHECK} ${RESPONSE} ${INFO}"  | tee -a ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_HTTP_CODE} > /dev/null 2>&1
+	elif [[ ${RESPONSE} == 406 ]]; then
+		INFO="ClientError:Not-Accepted"
+	        echo -e "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}[${YELLOW}${RESPONSE}${RESET}]\t ${SUB_CODE_CHECK} ${RESET}"; echo -e "${SUB_CODE_CHECK} ${RESPONSE} ${INFO}"  | tee -a ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_HTTP_CODE} > /dev/null 2>&1
+	elif [[ ${RESPONSE} == 407 ]]; then
+		INFO="ClientError:Proxy-Auth-Required"
+	        echo -e "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}[${YELLOW}${RESPONSE}${RESET}]\t ${SUB_CODE_CHECK} ${RESET}"; echo -e "${SUB_CODE_CHECK} ${RESPONSE} ${INFO}"  | tee -a ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_HTTP_CODE} > /dev/null 2>&1
+	elif [[ ${RESPONSE} == 408 ]]; then
+		INFO="ClientError:Request-timeout"
+	        echo -e "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}[${YELLOW}${RESPONSE}${RESET}]\t ${SUB_CODE_CHECK} ${RESET}"; echo -e "${SUB_CODE_CHECK} ${RESPONSE} ${INFO}"  | tee -a ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_HTTP_CODE} > /dev/null 2>&1
+	elif [[ ${RESPONSE} == 409 ]]; then
+		INFO="ClientError:Conflict"
+	        echo -e "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}[${YELLOW}${RESPONSE}${RESET}]\t ${SUB_CODE_CHECK} ${RESET}"; echo -e "${SUB_CODE_CHECK} ${RESPONSE} ${INFO}"  | tee -a ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_HTTP_CODE} > /dev/null 2>&1
+	elif [[ ${RESPONSE} == 410 ]]; then
+		INFO="ClientError:Gone"
+	        echo -e "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}[${YELLOW}${RESPONSE}${RESET}]\t ${SUB_CODE_CHECK} ${RESET}"; echo -e "${SUB_CODE_CHECK} ${RESPONSE} ${INFO}"  | tee -a ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_HTTP_CODE} > /dev/null 2>&1
+	elif [[ ${RESPONSE} == 411 ]]; then
+		INFO="ClientError:Lenght-required"
+	        echo -e "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}[${YELLOW}${RESPONSE}${RESET}]\t ${SUB_CODE_CHECK} ${RESET}"; echo -e "${SUB_CODE_CHECK} ${RESPONSE} ${INFO}"  | tee -a ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_HTTP_CODE} > /dev/null 2>&1
+	elif [[ ${RESPONSE} == 412 ]]; then
+		INFO="ClientError:Precondition-Failed"
+	        echo -e "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}[${YELLOW}${RESPONSE}${RESET}]\t ${SUB_CODE_CHECK} ${RESET}"; echo -e "${SUB_CODE_CHECK} ${RESPONSE} ${INFO}"  | tee -a ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_HTTP_CODE} > /dev/null 2>&1
+	elif [[ ${RESPONSE} == 413 ]]; then
+		INFO="ClientError:Request-Entity-Too-Large"
+	        echo -e "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}[${YELLOW}${RESPONSE}${RESET}]\t ${SUB_CODE_CHECK} ${RESET}"; echo -e "${SUB_CODE_CHECK} ${RESPONSE} ${INFO}"  | tee -a ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_HTTP_CODE} > /dev/null 2>&1
+	elif [[ ${RESPONSE} == 414 ]]; then
+		INFO="ClientError:Request-URI-Too-Long"
+	        echo -e "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}[${YELLOW}${RESPONSE}${RESET}]\t ${SUB_CODE_CHECK} ${RESET}"; echo -e "${SUB_CODE_CHECK} ${RESPONSE} ${INFO}"  | tee -a ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_HTTP_CODE} > /dev/null 2>&1
+	elif [[ ${RESPONSE} == 415 ]]; then
+		INFO="ClientError:Unsupported-Media-Type"
+	        echo -e "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}[${YELLOW}${RESPONSE}${RESET}]\t ${SUB_CODE_CHECK} ${RESET}"; echo -e "${SUB_CODE_CHECK} ${RESPONSE} ${INFO}"  | tee -a ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_HTTP_CODE} > /dev/null 2>&1
+	elif [[ ${RESPONSE} == 416 ]]; then
+		INFO="ClientError:Request-Range-Not"
+	        echo -e "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}[${YELLOW}${RESPONSE}${RESET}]\t ${SUB_CODE_CHECK} ${RESET}"; echo -e "${SUB_CODE_CHECK} ${RESPONSE} ${INFO}"  | tee -a ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_HTTP_CODE} > /dev/null 2>&1
+	elif [[ ${RESPONSE} == 417 ]]; then
+		INFO="ClientError:Expectation-Failed"
+	        echo -e "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}[${YELLOW}${RESPONSE}${RESET}]\t ${SUB_CODE_CHECK} ${RESET}"; echo -e "${SUB_CODE_CHECK} ${RESPONSE} ${INFO}"  | tee -a ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_HTTP_CODE} > /dev/null 2>&1
+	elif [[ ${RESPONSE} == 500 ]]; then
+		INFO="ServerError:Internal-Server-Error"
+	        echo -e "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}[${RED}${RESPONSE}${RESET}]\t ${SUB_CODE_CHECK} ${RESET}"; echo -e "${SUB_CODE_CHECK} ${RESPONSE} ${INFO}"  | tee -a ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_HTTP_CODE} > /dev/null 2>&1
+	elif [[ ${RESPONSE} == 501 ]]; then
+		INFO="ServerError:Not-Implemented"
+	        echo -e "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}[${RED}${RESPONSE}${RESET}]\t ${SUB_CODE_CHECK} ${RESET}"; echo -e "${SUB_CODE_CHECK} ${RESPONSE} ${INFO}"  | tee -a ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_HTTP_CODE} > /dev/null 2>&1
+	elif [[ ${RESPONSE} == 502 ]]; then
+		INFO="ServerError:Bad-Gateway"
+	        echo -e "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}[${RED}${RESPONSE}${RESET}]\t ${SUB_CODE_CHECK} ${RESET}"; echo -e "${SUB_CODE_CHECK} ${RESPONSE} ${INFO}"  | tee -a ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_HTTP_CODE} > /dev/null 2>&1
+	elif [[ ${RESPONSE} == 503 ]]; then
+		INFO="ServerError:Service-Unavailable"
+	        echo -e "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}[${RED}${RESPONSE}${RESET}]\t ${SUB_CODE_CHECK} ${RESET}"; echo -e "${SUB_CODE_CHECK} ${RESPONSE} ${INFO}"  | tee -a ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_HTTP_CODE} > /dev/null 2>&1
+	elif [[ ${RESPONSE} == 504 ]]; then
+		INFO="ServerError:Gateway-Timeout"
+	        echo -e "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}[${RED}${RESPONSE}${RESET}]\t ${SUB_CODE_CHECK} ${RESET}"; echo -e "${SUB_CODE_CHECK} ${RESPONSE} ${INFO}"  | tee -a ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_HTTP_CODE} > /dev/null 2>&1
+	elif [[ ${RESPONSE} == 505 ]]; then
+		INFO="ServerError:HTTPv-Not-Support"
+	        echo -e "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}[${RED}${RESPONSE}${RESET}]\t ${SUB_CODE_CHECK} ${RESET}"; echo -e "${SUB_CODE_CHECK} ${RESPONSE} ${INFO}"  | tee -a ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_HTTP_CODE} > /dev/null 2>&1
+	fi
+	     done
+	
+	#make output more pretty 
+	cat ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_HTTP_CODE} | sed 's/ / ,/g' | column -t -s, > ${OUT}/${DATE_LOG}/${DOMAIN}/${FINAL_HTTP_CODE}
+	rm -r ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_HTTP_CODE} > /dev/null 2>&1
+
+
+fi 
+
+
+
+if [[ ${PLUGIN_NMAP_PORTS} == true ]] ; then
+
+## Cleaning Log Files ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_NMAP_HOSTS}
+
+rm -r ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_NMAP_HOSTS} > /dev/null 2>&1
+
+	if [[ -f ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_IP_RESOLVER} ]]; then        ## Checking file resolver.txt 
+		echo -e "\n${BOLD}[${LGREEN}+${RESET}${BOLD}]${RESET} Port Scanner: Nmap Port Scanner top ports   "  ##  + Must running with argument -rS | --resolver
+		echo -e "---------------------------------------------\n"                 ###   Example : Sudomy -rS -nP/ --nmap 
+
+		for SUB_RESOLV in $(cat ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_IP_RESOLVER}) 
+		do
+		echo -e "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}Scan host ${SUB_RESOLV} "
+		
+		Open_Ports=$(nmap --top-ports 1024 ${SUB_RESOLV} -T4 |   awk '/^Nmap scan report/{}/open/ { split($1,a,"/"); result[Host][a[1]]=""}
+		       END {
+		       for (i in result) {
+		         printf i;
+		         for (j in result[i])
+		           printf ",%s", j ;
+		         print ""} }' |   sed -e 's/,/\t/' )
+		
+		echo -e "${SUB_RESOLV} ${Open_Ports}" | tee -a ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_NMAP_HOSTS} > /dev/null 2>&1
+		done 
+
+	else
+		echo -e "\n${BOLD}[${LGREEN}+${RESET}${BOLD}]${RESET} Host Resolver: Nmap Port Scanner   "
+		echo -e "---------------------------------------------\n"
+ 		echo -e  "${PADDING}${RED}${PADDING}!${PADDING}${RESET}Run together with arg -rS${RESET}\t[${RED}FAIL${RESET}]\n"
+
+	fi
+ 
+
+fi
+
+
+
+# Explain about IP DB_PORT
+# Data Collecting/Scraping open port from 3rd party (Default::Shodan), For right now just using Shodan [Future::Censys,Zoomeye] 
+# More efficient and effective to collecting port from list ip on target [[ Subdomain > IP Resolver > Crawling > Open Port ]]
+# Here we can further narrow the targeting port for checking in port scanning
+
+if [[ ${PLUGIN_DB_PORT} == true ]]; then
+## Cleaning Log Files ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_NMAP_HOSTS}
+rm -r ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_DB_PORT} > /dev/null 2>&1
+	if [[ -f ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_IP_RESOLVER} ]]; then        ## Checking file resolver.txt
+	    echo -ne "\n${BOLD}[${LGREEN}+${RESET}${BOLD}]${RESET} Collecting/Scraping open port from Engine \n"  ##  + Must running with argument -rS | --resolver
+	     echo -e "---------------------------------------------\n"
+ 
+		if [[ ! -z "${SHODAN_API}" ]];then
+			 for HOSTS in $(cat ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_IP_RESOLVER});do
+			    DBS=$(curl -s  https://api.shodan.io/shodan/host/${HOSTS}?key=${SHODAN_API})
+			    DB_PORT=$(echo ${DBS} | jq --raw-output -r '.data[]? | .port, .transport' |  sed -e 's/tcp/\/tcp /g' | sed -e 's/udp/\/udp /g'  | tr -d '\n' ) 
+			    DB_ASN=$(echo ${DBS} | jq --raw-output -r '.data[]? | .asn'  | sort -u)
+			    #DB_PORT=$(curl -s  https://api.shodan.io/shodan/host/${HOSTS}?key=${SHODAN_API} | jq --raw-output -r '.data[]? | .port, .transport' |  sed -e 's/tcp/\/tcp /g' | sed -e 's/udp/\/udp /g'  | tr -d '\n' )
+				if [[ -z "${DB_PORT}" ]]; then
+					echo -ne "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}${HOSTS}${RESET} \n        - false\n"
+				else
+					echo -ne "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}${HOSTS}${RESET} \n        - ${DB_PORT}\n" #${DB_PORT// /,}
+					echo -ne "${HOSTS} \n  - ${DB_PORT}\n" | tee -a ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_DB_PORT} > /dev/null 2>&1 #> ${OUT}/$HOSTS.dbport
+					#awk 'FNR==1{print ""}1' *.dbport > ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_DB_PORT} ; rm -r ${OUT}/$HOSTS.dbport > /dev/null 2>&1
+					
+					# ASN Filtering
+					echo -ne "${DB_ASN}" >> ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_DB_ASN} ; sort -u -o ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_DB_ASN} ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_DB_ASN}
+				fi
+			 done
+		else
+			 echo -e  "${PADDING}${RED}${PADDING}!${PADDING}${RESET}Shodan API required,settings on Sudomy.api${RESET}\n"
+		fi
+
+	else
+		echo -e "\n${BOLD}[${LGREEN}+${RESET}${BOLD}]${RESET} DB Port Crawl: Port Collecting from 3rd party   "
+        	echo -e "---------------------------------------------\n"
+        	echo -e  "${PADDING}${RED}${PADDING}!${PADDING}${RESET}Run together with arg -rS${RESET}\t[${RED}FAIL${RESET}]\n"
+	fi
+fi
+
+# Plugin for Extract parameter from URL (--extract-params/-ep)
+# Data Collecting & Scraping URL Parameter from Passive scan (Default::Web Archive, CommonCrawl, UrlScanIO) 
+# Regex using DFA Engine (awk,sed)
+# Support and Collecting URL with multi Parameter to Fuzzing
+# Removing Duplicate Parameter & URL
+
+if [[ ${PLUGIN_EXTRACT_PARAMS} == true ]]; then
+# Clean Old File
+rm -r ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_EXTRACT_PARAM_FULL} ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_EXTRACT_PARAM_UNIQ} > /dev/null 2>&1
+
+# Collecting RAW 
+cat ${OUT}/*.raw > ${OUT_JUICY_URL_RAW}
+	if [[ -f ${OUT_JUICY_URL_RAW} ]]; then #Check Full Raw Data 
+		echo -ne "\n${BOLD}[${LGREEN}+${RESET}${BOLD}]${RESET} Collecting URL Parameter from Engine \n"  ## 
+		echo -e "---------------------------------------------\n"  
+		cat ${OUT_JUICY_URL_RAW} | grep --colour=always -P "=" | sed  "/\b\(jpg\|png\|js\|svg\|css\|gif\|jpeg\|woff\|woff2\)\b/d" > ${OUT_PARAM_URL_PARSING} 
+			for i in $(cat ${OUT_PARAM_URL_PARSING}); do
+				URL="${i}"
+				LIST_DOM=(${URL//[=&]/=FUZZ&})
+					#echo "${URL}"
+					echo ${LIST_DOM} | awk -F'=' -vOFS='=' '{$NF="FUZZ"}1;' >> ${OUT}/${RESULT_EXTRACT_PARAM}
+			done
+		# Remove Raw Data  
+		# rm -r ${OUT_RAW_WEBARCHIVE} ${OUT_RAW_WEBARCHIVE_PARS} > /dev/null 2>&1
+
+		# Make another output, Sorting Duplicate Parameter
+		sort -u ${OUT}/${RESULT_EXTRACT_PARAM} > ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_EXTRACT_PARAM_UNIQ} 
+
+		# Full URL Paramaeter no parsing
+		mv ${OUT_PARAM_URL_PARSING} ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_EXTRACT_PARAM_FULL}
+
+		# Full Juicy URL 
+
+		mv ${OUT_JUICY_URL_RAW} ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_JUICY_URL_FULL}
+
+		# Count & Print Output
+		COUNT_JUICY_URL_FULL=$(cat ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_JUICY_URL_FULL} | wc -l)
+		COUNT_URL_PARAM_FULL=$(cat ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_EXTRACT_PARAM_FULL} | wc -l )
+		COUNT_URL_PARAM_UNIQ=$(cat ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_EXTRACT_PARAM_UNIQ} | wc -l )
+		
+		echo -e  "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}Total Juicy URL${RESET}${DPADDING}\t[${GREEN}${COUNT_JUICY_URL_FULL}${RESET}]"
+		echo -e  "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}Total Full Parameter${RESET}${DPADDING}[${GREEN}${COUNT_URL_PARAM_FULL}${RESET}]"
+		echo -e  "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}Total Uniq Parameter${RESET}${DPADDING}[${GREEN}${COUNT_URL_PARAM_UNIQ}${RESET}]"
+
+		#mv ${OUT_RAW_WEBARCHIVE_PARS} ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_EXTRACT_PARAM}
+                #cat ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_EXTRACT_PARAM_UNIQ} \
+		# | while read VERBOSE; do
+                #	echo -e ${YELLOW}"\t - ${RESET}$VERBOSE"
+       		#   done
+		#echo -e  "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}Total ${RESET}${DPADDING}\t\t[${GREEN}${COUNT_URL_PARAM_UNIQ}${RESET}]\n"
+	else
+		echo -e "\n${BOLD}[${LGREEN}+${RESET}${BOLD}]${RESET} Collecting URL Parameter from Engine   "
+                echo -e "---------------------------------------------\n"
+                echo -e  "${PADDING}${RED}${PADDING}!${PADDING}${RESET}Please, run it again with source WebArchive,CommonCrawl,UrlScan${RESET}\t[${RED}FAIL${RESET}]\n"
+
+	fi
+fi
+
+#Remove Temporary RAW DATA []
+rm -r ${OUT_RAW_WEBARCHIVE} ${OUT_RAW_COMMONCRAWL} ${OUT_RAW_URLSCAN} ${OUT}/${RESULT_EXTRACT_PARAM} > /dev/null 2>&1
+
+
+# Identify technology on websites
+if [[ ${PLUGIN_WAPPALYZER} == true ]] ; then
+
+    rm -r ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_WAPPALYZER} > /dev/null 2>&1
+
+    echo -e "\n${BOLD}[${LGREEN}+${RESET}${BOLD}]${RESET} Apps Identifier "
+    echo -e "---------------------------------------------\n"
+
+    for WAPPALYZER_SITE in $(cat ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_HTTPROBE}) 
+    do
+      WAPPALYZER_RAW=$(wappalyzer ${WAPPALYZER_SITE} 2> /dev/null | jq -r '.applications[] | "\(.name) \(.version)"' | sed 's/ null$//g' | sed 's/,/./g')
+        if [[ ! -z ${WAPPALYZER_RAW} ]]; then
+          echo -e "   ${WAPPALYZER_SITE}"
+          echo -e "${WAPPALYZER_RAW}" | sed 's/^/        - /g'
+          echo ""
+          echo "${WAPPALYZER_SITE};$(echo "${WAPPALYZER_RAW}" | sed ':a;N;$!ba;s/\n/, /g')" >> ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_WAPPALYZER}
+        fi
+    done
+
+
+fi
+
+if [[ ${PLUGIN_DOMAIN_SCREENSHOTS} == true ]]; then	
+
+## Cleaning Log Files : ${OUT}/${DATE_LOG}/${DOMAIN}/screenshots/
+    rm -rf ${OUT}/${DATE_LOG}/${DOMAIN}/screenshots/* ## Cleaning old file
+ _webscreenshot="lib/webscreenshot/webscreenshot.py"
+		echo -e "\n${BOLD}[${LGREEN}+${RESET}${BOLD}]${RESET} Web Screenshots: from domain list    "
+		echo -e "---------------------------------------------\n"
+		python  ${_webscreenshot} -i ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_HTTPROBE} -o ${OUT}/${DATE_LOG}/${DOMAIN}/screenshots/
+
+
+fi
+
+
+source lib/template/_template
+
+if [[ ${REPORTS} == 1 ]]; then
+
+echo -e "\n${BOLD}[${LGREEN}+${RESET}${BOLD}]${RESET} Generate Reports: Make report into HTML"  
+echo -e "---------------------------------------------\n"
+## Copy template to file log foler 
+#echo -e "\n${BOLD}[${LBLUE}*${RESET}${BOLD}]${RESET} Make template for reports ${LGREEN}${DOMAIN}${RESET}  "
+#echo -e "${BOLD}${PADDING}${PADDING}-${RESET}${BOLD}${RESET} ${LGREEN}Copy template:  output/${DATE_LOG}/${DOMAIN}/reports${RESET}"
+echo -e "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}Make template for reports"
+cp -R ${TEMPLATE_REPORT} ${OUT}/${DATE_LOG}/${DOMAIN}/
+echo -e "${BOLD}${PADDING}${PADDING}\t-${RESET}${BOLD}${RESET}${LGREEN} output/${DATE_LOG}/${DOMAIN}/reports ${RESET} "
+
+
+        if [[ ! -e "${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_IP_RESOLVER}" ]] ; then
+
+          COUNT_TOTAL_RESOLVER=0 
+              _template >> ${OUT}/${DATE_LOG}/${DOMAIN}/report/resolver2.html
+        else
+          COUNT_TOTAL_RESOLVER=$(cat ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_IP_RESOLVER} | wc  -l )
+              MAKE_TABLE=$(awk 'BEGIN{print ""} {print "<tr>";for(i=1;i<=NF;i++)print "<td>" $i"</td>";print "</tr>"} END{print ""}' ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_IP_RESOLVER})
+              echo ${MAKE_TABLE} >> ${OUT}/${DATE_LOG}/${DOMAIN}/report/resolver2.html 
+              _template >> ${OUT}/${DATE_LOG}/${DOMAIN}/report/resolver2.html;fi 
+        if [[ ! -e "${OUT}/${DATE_LOG}/${DOMAIN}/${FINAL_SUBDOMAIN_REV_ALL}" ]] ; then
+          COUNT_TOTAL_RESOLVER2=0 
+              _template >> ${OUT}/${DATE_LOG}/${DOMAIN}/report/resolver.html
+        else
+          COUNT_TOTAL_RESOLVER2=$(cat ${OUT}/${DATE_LOG}/${DOMAIN}/${FINAL_SUBDOMAIN_REV_ALL} | wc  -l )
+              MAKE_TABLE=$(awk 'BEGIN{print ""} {print "<tr>";for(i=1;i<=NF;i++)print "<td>" $i"</td>";print "</tr>"} END{print ""}' ${OUT}/${DATE_LOG}/${DOMAIN}/${FINAL_SUBDOMAIN_REV_ALL})
+              echo ${MAKE_TABLE} >> ${OUT}/${DATE_LOG}/${DOMAIN}/report/resolver.html 
+              _template >> ${OUT}/${DATE_LOG}/${DOMAIN}/report/resolver.html;fi 
+        if [[ ! -e "${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_SUBDOMAIN}" ]] ; then
+          COUNT_TOTAL_SUBDOMAINS=0 
+              _template >> ${OUT}/${DATE_LOG}/${DOMAIN}/report/subdomains.html
+        else
+           COUNT_TOTAL_SUBDOMAINS=$(cat ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_SUBDOMAIN} | wc  -l  );
+              MAKE_TABLE=$(awk 'BEGIN{print ""} {print "<tr>";for(i=1;i<=NF;i++)print "<td>" $i"</td>";print "</tr>"} END{print ""}' ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_SUBDOMAIN})
+              echo ${MAKE_TABLE} >> ${OUT}/${DATE_LOG}/${DOMAIN}/report/subdomains.html 
+          _template >> ${OUT}/${DATE_LOG}/${DOMAIN}/report/subdomains.html;fi 
+
+        if [[ ! -e "${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_HTTPROBE}" ]] ; then
+          COUNT_TOTAL_HTTPROBE=0 
+              _template >> ${OUT}/${DATE_LOG}/${DOMAIN}/report/subdomains.html
+        else
+           COUNT_TOTAL_HTTPROBE=$(cat ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_HTTPROBE} | wc  -l  );
+              MAKE_TABLE=$(awk 'BEGIN{print ""} {print "<tr>";for(i=1;i<=NF;i++)print "<td>" $i"</td>";print "</tr>"} END{print ""}' ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_HTTPROBE})
+              echo ${MAKE_TABLE} >> ${OUT}/${DATE_LOG}/${DOMAIN}/report/valid_probe.html 
+          _template >> ${OUT}/${DATE_LOG}/${DOMAIN}/report/valid_probe.html;fi 
+
+        if [[ ! -e "${OUT}/${DATE_LOG}/${DOMAIN}/${FINAL_HTTP_CODE}" ]] ; then
+          COUNT_TOTAL_200=0 
+               _template >> ${OUT}/${DATE_LOG}/${DOMAIN}/report/status_code.html
+        else
+          COUNT_TOTAL_200=$(grep -c "200" ${OUT}/${DATE_LOG}/${DOMAIN}/${FINAL_HTTP_CODE})
+              MAKE_TABLE=$(awk 'BEGIN{print ""} {print "<tr>";for(i=1;i<=NF;i++)print "<td>" $i"</td>";print "</tr>"} END{print ""}' ${OUT}/${DATE_LOG}/${DOMAIN}/${FINAL_HTTP_CODE})
+              echo ${MAKE_TABLE} >> ${OUT}/${DATE_LOG}/${DOMAIN}/report/status_code.html 
+              _template >> ${OUT}/${DATE_LOG}/${DOMAIN}/report/status_code.html;fi
+
+        if [[ ! -e "${OUT}/${DATE_LOG}/${DOMAIN}/${FINAL_TAKEOVER}" ]] ; then
+          COUNT_TOTAL_TAKEOVER=0 
+              _template >> ${OUT}/${DATE_LOG}/${DOMAIN}/report/takeover.html
+        else
+          COUNT_TOTAL_TAKEOVER=$(grep -c "Vulnerable" ${OUT}/${DATE_LOG}/${DOMAIN}/${FINAL_TAKEOVER}); 
+              MAKE_TABLE=$(awk 'BEGIN{print ""} {print "<tr>";for(i=1;i<=NF;i++)print "<td>" $i"</td>";print "</tr>"} END{print ""}' ${OUT}/${DATE_LOG}/${DOMAIN}/${FINAL_TAKEOVER})
+              echo ${MAKE_TABLE} >> ${OUT}/${DATE_LOG}/${DOMAIN}/report/takeover.html 
+              _template >> ${OUT}/${DATE_LOG}/${DOMAIN}/report/takeover.html;fi
+
+        if [[ ! -e "${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_NMAP_HOSTS}" ]] ; then
+          COUNT_TOTAL_NMAP=0 
+              _template >> ${OUT}/${DATE_LOG}/${DOMAIN}/report/nmap_tops.html
+        else
+              MAKE_TABLE=$(awk 'BEGIN{print ""} {print "<tr>";for(i=1;i<=NF;i++)print "<td>" $i"</td>";print "</tr>"} END{print ""}' ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_NMAP_HOSTS})
+              echo ${MAKE_TABLE} >> ${OUT}/${DATE_LOG}/${DOMAIN}/report/nmap_tops.html 
+              _template >> ${OUT}/${DATE_LOG}/${DOMAIN}/report/nmap_tops.html;fi
+
+        if [[ ! -e "${OUT}/${DATE_LOG}/${DOMAIN}/${FINAL_PINGSWEEP}" ]] ; then
+          COUNT_TOTAL_PINGSWEEP=0 
+              _template >> ${OUT}/${DATE_LOG}/${DOMAIN}/report/pingsweep.html
+        else
+          COUNT_TOTAL_PINGSWEEP=$(grep -c "LIVE" ${OUT}/${DATE_LOG}/${DOMAIN}/${FINAL_PINGSWEEP})
+              MAKE_TABLE=$(awk 'BEGIN{print ""} {print "<tr>";for(i=1;i<=NF;i++)print "<td>" $i"</td>";print "</tr>"} END{print ""}' ${OUT}/${DATE_LOG}/${DOMAIN}/${FINAL_PINGSWEEP})
+              echo ${MAKE_TABLE} >> ${OUT}/${DATE_LOG}/${DOMAIN}/report/pingsweep.html 
+              _template >> ${OUT}/${DATE_LOG}/${DOMAIN}/report/pingsweep.html
+        fi
+
+        if [[ ! -e "${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_WAPPALYZER}" ]]; then
+              _template >> ${OUT}/${DATE_LOG}/${DOMAIN}/report/apps_identifier.html
+        else
+              MAKE_TABLE=$(awk -F ';' '{print "<tr>\n<td>"$1"</td>\n<td>"$2"</td>\n</tr>"}' ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_WAPPALYZER})
+              echo -e "${MAKE_TABLE}" >> ${OUT}/${DATE_LOG}/${DOMAIN}/report/apps_identifier.html
+              _template >> ${OUT}/${DATE_LOG}/${DOMAIN}/report/apps_identifier.html
+        fi
+
+# INDEX HTML
+          sed -i "s/@TOTAL_SUBDOMAIN@/${COUNT_TOTAL_SUBDOMAINS}/" ${OUT}/${DATE_LOG}/${DOMAIN}/report/index.html        
+           sed -i "s/@TOTAL_RESOLVER@/${COUNT_TOTAL_RESOLVER}/"  ${OUT}/${DATE_LOG}/${DOMAIN}/report/index.html
+              sed -i "s/@TOTAL_TAKEOVER@/${COUNT_TOTAL_TAKEOVER}/"  ${OUT}/${DATE_LOG}/${DOMAIN}/report/index.html
+                sed -i "s/@TOTAL_LIVE_HTTPROBE@/${COUNT_TOTAL_HTTPROBE}/"  ${OUT}/${DATE_LOG}/${DOMAIN}/report/index.html
+                  sed -i "s/@TOTAL_LIVE_PINGSWEEP@/${COUNT_TOTAL_PINGSWEEP}/ " ${OUT}/${DATE_LOG}/${DOMAIN}/report/index.html
+                    sed -i "s/@TOTAL_200@/${COUNT_TOTAL_200}/ " ${OUT}/${DATE_LOG}/${DOMAIN}/report/index.html
+
+                      sed -i "s/@PINGSWEEP_VALUE@/${COUNT_TOTAL_PINGSWEEP}/" ${OUT}/${DATE_LOG}/${DOMAIN}/${CHART2}
+                        sed -i "s/@HTTPROBE_VALUE@/${COUNT_TOTAL_HTTPROBE}/" ${OUT}/${DATE_LOG}/${DOMAIN}/${CHART2}
+                          sed -i "s/@STATUS_VALUE@/${COUNT_TOTAL_200}/" ${OUT}/${DATE_LOG}/${DOMAIN}/${CHART2}
+## END
+    echo -e "\n${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}Successful Created .. "
+fi
+
+if [[ $DESTINATION == true ]];then
+		echo -e "\n${BOLD}[${LGREEN}+${RESET}${BOLD}]${RESET} Sud⍥my has been sucessfully ${GRENN}completed${RESET}"
+		echo -e "---------------------------------------------\n"
+		echo -e "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}Location output: "
+		[[ ! -e "${OUTFILE}/${OUT_NAME}" ]] \
+  			&& mkdir -p "${OUTFILE}/${OUT_NAME}"||true 
+			cp -r  ${OUT}/${DATE_LOG}/${DOMAIN} ${OUTFILE}/${OUT_NAME}/ ; rm -r ${OUT}/${DATE_LOG}/
+
+		echo -e "${BOLD}${PADDING}${PADDING}\t-${RESET}${BOLD}${RESET}${LGREEN} ${OUTFILE}/${OUT_NAME}/${DOMAIN} ${RESET} "
+		echo -e "${BOLD}${PADDING}${PADDING}\t-${RESET}${BOLD}${RESET}${LGREEN} ${OUTFILE}/${OUT_NAME}/${DOMAIN}/report ${RESET} "
+		echo -e "${BOLD}${PADDING}${PADDING}\t-${RESET}${BOLD}${RESET}${LGREEN} ${OUTFILE}/${OUT_NAME}/${DOMAIN}/screenshots ${RESET} \n\n"
+
+else
+		echo -e "\n${BOLD}[${LGREEN}+${RESET}${BOLD}]${RESET} Sud⍥my has been sucessfully ${GRENN}completed${RESET}"  
+		echo -e "---------------------------------------------\n"
+		echo -e "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}Location output:"
+		echo -e "${BOLD}${PADDING}${PADDING}\t-${RESET}${BOLD}${RESET}${LGREEN} output/${DATE_LOG}/${DOMAIN} ${RESET} "
+		echo -e "${BOLD}${PADDING}${PADDING}\t-${RESET}${BOLD}${RESET}${LGREEN} output/${DATE_LOG}/${DOMAIN}/report ${RESET} "
+		echo -e "${BOLD}${PADDING}${PADDING}\t-${RESET}${BOLD}${RESET}${LGREEN} output/${DATE_LOG}/${DOMAIN}/screenshots ${RESET} \n\n"
+fi
+

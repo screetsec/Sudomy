@@ -1,0 +1,17 @@
+#-Metadata----------------------------------------------------#
+#  Filename: Sudomy - Subdomain Enumeration & Analysis        #
+#-Author(s)---------------------------------------------------#
+#  Edo maland ~ @screetsec                                    #
+#-Info--------------------------------------------------------#
+#  This file is part of Sudomy project                        #
+#  Engine AlienVault : Update = 2020-05-08                    #
+#-Licence-----------------------------------------------------#
+#  MIT License ~ http://opensource.org/licenses/MIT           #
+#-------------------------------------------------------------#
+
+ALIENVAULT(){
+local URL_AlienVault="https://otx.alienvault.com/api/v1/indicators/domain"
+  echo -e  "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}AlienVault${RESET}${DPADDING}\t[${GREEN} ✔ ${RESET}]"
+  # Extract Subdomain
+	curl -s "${URL_AlienVault}/${DOMAIN}/passive_dns" | jq --raw-output '.passive_dns[]?.hostname' | sort -u > ${OUT_ALIENVAULT}
+}

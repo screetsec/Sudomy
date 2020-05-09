@@ -1,0 +1,25 @@
+#-Metadata----------------------------------------------------#
+#  Filename: Sudomy - Subdomain Enumeration & Analysis        #
+#-Author(s)---------------------------------------------------#
+#  Edo maland ~ @screetsec                                    #
+#-Info--------------------------------------------------------#
+#  This file is part of Sudomy project                        #
+#  Engine SecurityTrails : Update = 2020-05-08                #
+#-Licence-----------------------------------------------------#
+#  MIT License ~ http://opensource.org/licenses/MIT           #
+#-------------------------------------------------------------#
+
+SECURITY_TRAILS(){
+## Using API Key
+local URL_STRAILS="https://api.securitytrails.com/v1/domain/"
+  if [[ ! -z "$SECURITY_TRAILS" ]];then
+    echo -e  "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}Securitytrails${RESET}${DPADDING}\t[${GREEN} ✔ ${RESET}]"
+  #rm -rf ${OUT_STRAILS}
+      MAKEFILE=`curl --silent --request GET --url "${URL_STRAILS}${DOMAIN}/subdomains?apikey=${SECURITY_TRAILS}" | jq --raw-output -r '.subdomains[]' | sort -u > ${OUT_STRAILS}  `
+  sed -i s/$/.${DOMAIN}/ ${OUT_STRAILS} 
+  ## SUFFIX DOMAIN
+  else
+    echo -e  "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}Securitytrails${RESET}${DPADDING}\t[${RED} ✕ ${RESET}]"
+  fi
+
+}

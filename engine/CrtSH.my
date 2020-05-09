@@ -1,0 +1,19 @@
+#-Metadata----------------------------------------------------#
+#  Filename: Sudomy - Subdomain Enumeration & Analysis        #
+#-Author(s)---------------------------------------------------#
+#  Edo maland ~ @screetsec                                    #
+#-Info--------------------------------------------------------#
+#  This file is part of Sudomy project                        #
+#  Engine CertSH : Update = 2020-05-08                        #
+#-Licence-----------------------------------------------------#
+#  MIT License ~ http://opensource.org/licenses/MIT           #
+#-------------------------------------------------------------#
+
+CERTSH(){
+local URL_CERTSH="https://crt.sh\?q\="
+  echo -e  "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}Certsh${RESET}${DPADDING}\t\t[${GREEN} ✔ ${RESET}]"
+    #curl -s https://crt.sh\?q\=%.${DOMAIN} | awk -v pattern="<TD>.*${DOMAIN}" '$0 ~ pattern {gsub("<[^>]*>","");gsub(//,""); print}' | sort -u | sed 's/    //' > ${OUT_CRTSH}
+    # Fixing
+     curl -s https://crt.sh/?q\=%.${DOMAIN}\&output\=json | jq -r '.[].name_value' | sed 's/\*\.//g' | sort -u >  ${OUT_CRTSH}
+
+}

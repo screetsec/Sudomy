@@ -1,0 +1,17 @@
+#-Metadata----------------------------------------------------#
+#  Filename: Sudomy - Subdomain Enumeration & Analysis        #
+#-Author(s)---------------------------------------------------#
+#  Edo maland ~ @screetsec                                    #
+#-Info--------------------------------------------------------#
+#  This file is part of Sudomy project                        #
+#  Engine CertSpotter : Update = 2020-05-08                   #
+#-Licence-----------------------------------------------------#
+#  MIT License ~ http://opensource.org/licenses/MIT           #
+#-------------------------------------------------------------#
+
+CERTSPOTTER(){
+local URL_CERTSPOTER="https://api.certspotter.com/v1/issuances?domain="
+#if [[ ! -z "$VIRUSTOTAL" ]];then
+  echo -e  "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}Certspotter${RESET}${DPADDING}\t[${GREEN} ✔ ${RESET}]"
+    curl --silent --request GET --url "${URL_CERTSPOTER}${DOMAIN}&include_subdomains=true&expand=dns_names" | jq --raw-output -r '.[].dns_names[]' | sed 's/\*\.//g' | tr -d "\"" | sort -u > ${OUT_CERTSPOTTER}
+}
