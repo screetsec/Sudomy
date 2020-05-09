@@ -107,7 +107,7 @@ goBanner;
  echo -e "${PADDING}${YELLOW}+${RESET} Webarchive${DPADDING} http://web.archive.org/"
  echo -e "${PADDING}${YELLOW}+${RESET} SecurityTrails\t http://securitytrails.com/"
  echo -e "${PADDING}${YELLOW}+${RESET} RapidDNS${DPADDING} https://rapiddns.io/"
- echo -e "${PADDING}${YELLOW}+${RESET} AlienVault${DPADDING} https://https://otx.alienvault.com/"
+ echo -e "${PADDING}${YELLOW}+${RESET} AlienVault${DPADDING} https://otx.alienvault.com/"
  echo -e "${PADDING}${YELLOW}+${RESET} CommonCrawl${DPADDING} http://index.commoncrawl.org/"
  echo -e "${PADDING}${YELLOW}+${RESET} URLScan${DPADDING} https://urlscan.io/\n"
 
