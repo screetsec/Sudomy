@@ -1,10 +1,6 @@
 #!/usr/bin/env bash
 #-Metadata----------------------------------------------------#
-<<<<<<< HEAD
 #  Filename: sudomy (v1.1.5)             (Update: 2020-05-10) #
-=======
-#  Filename: sudomy (v1.1.4)             (Update: 2020-04-19) #
->>>>>>> 92e6c17f15b8a28e1a37d233c89a6673ad8ce318
 #-Info--------------------------------------------------------#
 #  Fast Subdomain Enumeration & Analysis.                     #
 #-Author(s)---------------------------------------------------#
@@ -24,11 +20,7 @@
 ### Variable Name and Version
 
 APPNAME="sud⍥my.sh"
-<<<<<<< HEAD
 VERSION="1.1.5#dev"
-=======
-VERSION="1.1.4#dev"
->>>>>>> 92e6c17f15b8a28e1a37d233c89a6673ad8ce318
 
 ### Calling Source
 source sudomy.api
@@ -82,11 +74,7 @@ goBanner;
  echo -e "${PADDING}${BOLD}-b, ${RESET} --bruteforce\t Bruteforce Subdomain Using Gobuster (Wordlist: ALL Top SecList DNS) "
  echo -e "${PADDING}${BOLD}-d, ${RESET} --domain${DPADDING} domain of the website to scan"
  echo -e "${PADDING}${BOLD}-h, ${RESET} --help${DPADDING} show this help message"
-<<<<<<< HEAD
  echo -e "${PADDING}${BOLD}-o, ${RESET} --outfile\t specify an output file when completed "
-=======
- echo -e "${PADDING}${BOLD}-o, ${RESET} --html${DPADDING} Make report output into HTML "
->>>>>>> 92e6c17f15b8a28e1a37d233c89a6673ad8ce318
  echo -e "${PADDING}${BOLD}-s, ${RESET} --source${DPADDING} Use source for Enumerate Subdomain"
  echo -e "${PADDING}${BOLD}-aI,${RESET} --apps-identifier Identify technologies on websites from domain list"
  echo -e "${PADDING}${BOLD}-dP,${RESET} --db-port\t Collecting port from 3rd Party default=shodan"
@@ -99,10 +87,7 @@ goBanner;
  echo -e "${PADDING}${BOLD}-sS,${RESET} --screenshot\t Screenshots a list of website"
  echo -e "${PADDING}${BOLD}-nP,${RESET} --no-passive\t Do not perform passive subdomain enumeration "
  echo -e "${PADDING}${BOLD}    ${RESET} --no-probe\t Do not perform httprobe "
-<<<<<<< HEAD
  echo -e "${PADDING}${BOLD}    ${RESET} --html${DPADDING} Make report output into HTML " 
-=======
->>>>>>> 92e6c17f15b8a28e1a37d233c89a6673ad8ce318
  echo -e "\n${BOLD}Sources:${RESET}"
  echo -e "${PADDING}${YELLOW}+${RESET} Shodan${DPADDING} http://developer.shodan.io/billing/"
  echo -e "${PADDING}${YELLOW}+${RESET} VirusTotal${PADDING}\t https://www.virustotal.com/vtapi/v2/domain/"
@@ -120,16 +105,12 @@ goBanner;
  echo -e "${PADDING}${YELLOW}+${RESET} Riddler${DPADDING} http://riddler.io/"
  echo -e "${PADDING}${YELLOW}+${RESET} Entrust${DPADDING} https://ctsearch.entrust.com/"
  echo -e "${PADDING}${YELLOW}+${RESET} Webarchive${DPADDING} http://web.archive.org/"
-<<<<<<< HEAD
  echo -e "${PADDING}${YELLOW}+${RESET} SecurityTrails\t http://securitytrails.com/"
  echo -e "${PADDING}${YELLOW}+${RESET} RapidDNS${DPADDING} https://rapiddns.io/"
  echo -e "${PADDING}${YELLOW}+${RESET} AlienVault${DPADDING} https://https://otx.alienvault.com/"
  echo -e "${PADDING}${YELLOW}+${RESET} CommonCrawl${DPADDING} http://index.commoncrawl.org/"
  echo -e "${PADDING}${YELLOW}+${RESET} URLScan${DPADDING} https://urlscan.io/\n"
 
-=======
- echo -e "${PADDING}${YELLOW}+${RESET} SecurityTrails$\t http://securitytrails.com/\n"
->>>>>>> 92e6c17f15b8a28e1a37d233c89a6673ad8ce318
 }
 
 [[ "${#}" == 0 ]] && {
@@ -138,11 +119,7 @@ goBanner;
 
 ## Check Folder Results
 [[ ! -e "${OUT}" ]] \
-<<<<<<< HEAD
   && mkdir -p "${OUT}"||true
-=======
-  && mkdir -vp "${OUT}"||true
->>>>>>> 92e6c17f15b8a28e1a37d233c89a6673ad8ce318
 
 # COMMAND LINE SWITCHES
 while [[ "${#}" -gt 0  ]]; do
@@ -239,7 +216,6 @@ args="${1}";
         "--no-probe")
             PLUGIN_HTTPROBE=false
             shift
-<<<<<<< HEAD
         ;;
 
         "-o"|"--outfile")
@@ -251,13 +227,6 @@ args="${1}";
 
 
         "--html")
-=======
-        ;; 
-
-
-
-        "-o"|"--html")
->>>>>>> 92e6c17f15b8a28e1a37d233c89a6673ad8ce318
             REPORTS=1
             shift
         ;;       
@@ -327,7 +296,6 @@ DATE_LOG=$(date +%m-%d-%Y)
 }
 
 
-<<<<<<< HEAD
 ## Calling Engine (Third Party-Sites) Total 18 
 ## Selecting the good third-party sites, the enumeration process can be optimized
 
@@ -355,151 +323,6 @@ source ${Engine_UrlScan}
 # Timestamp
 current_date_time=$(date "+%Y-%m-%d %H:%M:%S")
 
-=======
-
-SHODAN(){
-## Using API Key
-local URL_SHODAN="https://api.shodan.io/shodan/host/search?key=" ## Using API Shodan
-  if [[ ! -z "$SHODAN_API" ]];then
-    echo -e  "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}Shodan${RESET}${DPADDING}\t\t[${GREEN} ✔ ${RESET}]"
-      MAKEFILE=$(curl --silent --request GET --url "${URL_SHODAN}${SHODAN_API}&query=hostname:${DOMAIN}" | jq --raw-output -r '.matches[] |.hostnames[]' | sort -u > ${OUT_SHODAN})
-  else
-    echo -e  "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}Shodan${RESET}${DPADDING}\t\t[${RED} ✕ ${RESET}]"
-
-  fi
-}
-
-
-VIRUSTOTAL(){
-## Using API Key
-local URL_VIRUSTOTAL="https://www.virustotal.com/vtapi/v2/domain/report?apikey=" ## Using API Virus Total
-  if [[ ! -z "$VIRUSTOTAL" ]];then
-    echo -e  "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}Virustotal${RESET}${DPADDING}\t[${GREEN} ✔ ${RESET}]"
-      MAKEFILE=`curl --silent --request GET --url "${URL_VIRUSTOTAL}${VIRUSTOTAL}&domain=${DOMAIN}" | jq --raw-output -r '.subdomains[]?' | sort -u > ${OUT_VIRUSTOTAL}`
-  #COUNT=$(cat output/vt | wc  -l  )
-  else
-  echo -e  "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}Virustotal${RESET}${DPADDING}\t[${RED} ✕ ${RESET}]"
-
-  fi
-}
-
-BINARYEDGE(){
-## Using API Key
-
-local URL_BINARY="https://api.binaryedge.io/v2/query/domains/subdomain/"
-  if [[ ! -z "$BINARYEDGE" ]];then
-    echo -e  "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}Binaryedge${RESET}${DPADDING}\t[${GREEN} ✔ ${RESET}]"
-      MAKEFILE=`curl --silent "${URL_BINARY}${DOMAIN}" -H 'X-Key:'${BINARYEDGE}''| jq --raw-output -r '.events[]?' | sort -u > ${OUT_BINARYEDGE}  `
-  else
-    echo -e  "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}Binaryedge${RESET}${DPADDING}\t[${RED} ✕ ${RESET}]"
-  fi
-}
-
-SECURITY_TRAILS(){
-## Using API Key
-local URL_STRAILS="https://api.securitytrails.com/v1/domain/"
-  if [[ ! -z "$SECURITY_TRAILS" ]];then
-    echo -e  "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}Securitytrails${RESET}${DPADDING}\t[${GREEN} ✔ ${RESET}]"
-  #rm -rf ${OUT_STRAILS}
-      MAKEFILE=`curl --silent --request GET --url "${URL_STRAILS}${DOMAIN}/subdomains?apikey=${SECURITY_TRAILS}" | jq --raw-output -r '.subdomains[]' | sort -u > ${OUT_STRAILS}  `
-  sed -i s/$/.${DOMAIN}/ ${OUT_STRAILS} 
-  ## SUFFIX DOMAIN
-  else
-    echo -e  "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}Securitytrails${RESET}${DPADDING}\t[${RED} ✕ ${RESET}]"
-  fi
-
-}
-
-
-CENSYS(){
-## Using API Key
-local _CENSYS="lib/censys/censys_subdomain_finder.py"
-  if [[ ! -z "$CENSYS_API" ]] && [[ ! -z "$CENSYS_SECRET" ]] ;then
-    echo -e  "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}Censys${RESET}${DPADDING}\t\t[${GREEN} ✔ ${RESET}]"
-      MAKEFILE=$(python ${_CENSYS} --censys-api-id ${CENSYS_API} --censys-api-secret ${CENSYS_SECRET} ${DOMAIN}> ${OUT_CENSYS})
-  else
-    echo -e  "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}Censys${RESET}${DPADDING}\t\t[${RED} ✕ ${RESET}]"
-  fi
-}
-
-CERTSPOTTER(){
-local URL_CERTSPOTER="https://api.certspotter.com/v1/issuances?domain="
-#if [[ ! -z "$VIRUSTOTAL" ]];then
-  echo -e  "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}Certspotter${RESET}${DPADDING}\t[${GREEN} ✔ ${RESET}]"
-    curl --silent --request GET --url "${URL_CERTSPOTER}${DOMAIN}&include_subdomains=true&expand=dns_names" | jq --raw-output -r '.[].dns_names[]' | sed 's/\*\.//g' | tr -d "\"" | sort -u > ${OUT_CERTSPOTTER}
-}
-
-THREATMINER(){
-local URL_THREATMINER="https://api.threatminer.org/v2/domain.php?q="
-  echo -e  "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}Threatminer${RESET}${DPADDING}\t[${GREEN} ✔ ${RESET}]"
-  curl --silent --request GET --url "${URL_THREATMINER}${DOMAIN}&rt=5" | jq --raw-output -r '.results[]' | sort -u > ${OUT_THREATMINER}
-}
-
-BUFFEROVER(){
-local URL_BUFFEROVER="dns.bufferover.run/dns?q="
-  echo -e  "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}Bufferover${RESET}${DPADDING}\t[${GREEN} ✔ ${RESET}]"
-   curl --silent --request GET --url "${URL_BUFFEROVER}.${DOMAIN}&rt=5" | jq --raw-output '.FDNS_A[]' | awk '{print $1}' | sed -e 's/^.*,//g' | sort -u > ${OUT_BUFFEROVER}
-}
-
-HACKERTARGET(){
-local URL_HACKERTARGET="https://api.hackertarget.com/hostsearch/?q="
-  echo -e  "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}Hackertarget${RESET}${DPADDING}\t[${GREEN} ✔ ${RESET}]"
-  curl --silent --request GET --url "${URL_HACKERTARGET}${DOMAIN}" |  sed 's/,.*//' | sort -u  > ${OUT_HACKERTARGET}
-}
-
-ENTRUST(){
-local URL_ENTRUST="https://ctsearch.entrust.com/api/v1/certificates?fields=subjectDN&domain="
-  echo -e  "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}Entrust${RESET}${DPADDING}\t\t[${GREEN} ✔ ${RESET}]"
-   curl --silent --request GET --url "${URL_ENTRUST}${DOMAIN}&includeExpired=false&exactMatch=false&limit=5000" | jq --raw-output -r '.[].subjectDN' | sed 's/,.*//' | sed 's/\*\.//g' |  sed 's/cn=//g' | sort -u > ${OUT_ENTRUST}
-}
-
-FINDSUBDOMAIN(){
-local _FINDSUBDOMAIN="https://findsubdomains.com/search/subdomains?domain="
-   curl --silent ${_FINDSUBDOMAIN}"${DOMAIN}&page=1&per_page=100&domain=${DOMAIN}" | sed 's/\\//g' | grep -Po '(?<=data-target=").*?(?=")' > ${OUT_FINDSUBDOMAIN}
-  echo -e  "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}Findsubdomain${RESET}${DPADDING}\t[${GREEN} ✔ ${RESET}]"
-
-}
-
-THREATCROWD(){
-local URL_THREATCROWD="https://threatcrowd.org/searchApi/v2/domain/report/?domain="
-  echo -e  "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}Threatcrowd${RESET}${DPADDING}\t[${GREEN} ✔ ${RESET}]"
-    curl --silent --request GET --url  "${URL_THREATCROWD}${DOMAIN}" | jq --raw-output -r '.subdomains[]' | sort -u > ${OUT_THREATCROWD}
-}
-
-RIDDLER(){
-
-local URL_RIDDLER="https://riddler.io/search/exportcsv?q=pld:"
-  echo -e  "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}Riddler${RESET}${DPADDING}\t\t[${GREEN} ✔ ${RESET}]"
-    wget -q "${URL_RIDDLER}${DOMAIN}" --output-document=${OUT_FRIDDLER}
-       cat ${OUT_FRIDDLER} | tail -n +3 | awk -F, '{print $6}' > ${OUT_RIDDLER} && rm ${OUT_FRIDDLER}
-}
-
-WEBARCHIVE(){
-  echo -e  "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}Webarchive${RESET}${DPADDING}\t[${GREEN} ✔ ${RESET}]"
-
-      RAW_WEBARCHIVE=$(curl --silent "http://web.archive.org/cdx/search/cdx?url=*.${DOMAIN}/*&output=text&fl=original&collapse=urlkey" > ${OUT_RAW_WEBARCHIVE} ) 
-	# Extract Subdomain
-		cat ${OUT_RAW_WEBARCHIVE} | sed -e 's_https*://__' -e "s/\/.*//" -e 's/:.*//' -e 's/^www\.//' | sed "/@/d" | sed -e 's/\.$//' | sort -u > ${OUT_WEBARCHIVE}
-}
-
-DNSDUMPSTER(){
-local URL_DNS="https://dnsdumpster.com"
-  echo -e  "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}Dnsdumpster${RESET}${DPADDING}\t[${GREEN} ✔ ${RESET}]"
-    local CSRF=$(curl -s ${URL_DNS} | grep -P "csrfmiddlewaretoken" | grep -Po '(?<=value=")[^"]*(?=")')
-        MAKE=$(curl -s --cookie "csrftoken=$CSRF" -H "Referer: ${URL_DNS}" --data  "csrfmiddlewaretoken=$CSRF&targetip=${DOMAIN}" ${URL_DNS} | grep -Po '<td class="col-md-4">\K[^<]*' > ${OUT_DNSDUMPSTER})
-}
-
-CERTSH(){
-local URL_CERTSH="https://crt.sh\?q\="
-  echo -e  "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}Certsh${RESET}${DPADDING}\t\t[${GREEN} ✔ ${RESET}]"
-    #curl -s https://crt.sh\?q\=%.${DOMAIN} | awk -v pattern="<TD>.*${DOMAIN}" '$0 ~ pattern {gsub("<[^>]*>","");gsub(//,""); print}' | sort -u | sed 's/    //' > ${OUT_CRTSH}
-    # Fixing
-     curl -s https://crt.sh/?q\=%.${DOMAIN}\&output\=json | jq -r '.[].name_value' | sed 's/\*\.//g' | sort -u >  ${OUT_CRTSH}
-
-}
-
-current_date_time=$(date "+%Y-%m-%d %H:%M:%S")
->>>>>>> 92e6c17f15b8a28e1a37d233c89a6673ad8ce318
 goBanner ## Called banner sudomy
 echo -e "\n${BOLD}[${YELLOW}!${RESET}${BOLD}]${RESET} This tool is for ${BOLD}educational${RESET} purpose only.   "
 echo -e "${BOLD} ${LGREEN} ${RESET}${BOLD} ${RESET} Usage of sudomy for ${BOLD}attacking${RESET} targets ${BOLD}without ${RESET}prior mutual consent is ${RED}illegal${RESET}   "
@@ -661,7 +484,6 @@ done
     	fi
     }
 
-<<<<<<< HEAD
     [[ ${rapiddns} == true ]] && {
     RAPIDDNS
         if [[ -f ${OUT_RAPIDDNS} ]];then
@@ -700,10 +522,6 @@ done
 
 elif [[ ${SOURCE} == false ]] ; then
 	args_source=(SHODAN WEBARCHIVE DNSDUMPSTER VIRUSTOTAL CERTSPOTTER CERTSH BINARYEDGE SECURITY_TRAILS CENSYS THREATMINER BUFFEROVER HACKERTARGET ENTRUST FINDSUBDOMAIN THREATCROWD RIDDLER RAPIDDNS ALIENVAULT COMMONCRAWL URLSCAN)
-=======
-elif [[ ${SOURCE} == false ]] ; then
-	args_source=(SHODAN WEBARCHIVE DNSDUMPSTER VIRUSTOTAL CERTSPOTTER CERTSH BINARYEDGE SECURITY_TRAILS CENSYS THREATMINER BUFFEROVER HACKERTARGET ENTRUST FINDSUBDOMAIN THREATCROWD RIDDLER)
->>>>>>> 92e6c17f15b8a28e1a37d233c89a6673ad8ce318
 	for i in "${!args_source[@]}"; do
    		"${args_source[i]}" &
 	done
@@ -849,7 +667,6 @@ if [[ ${verbose} == true ]] ; then
             echo -e "\t - $VERBOSE"
         done
       fi
-<<<<<<< HEAD
 
     if [[ -f ${OUT_RAPIDDNS} ]] ; then
         COUNT=$(cat ${OUT_RAPIDDNS} | sort -u | wc  -l  )
@@ -888,8 +705,6 @@ if [[ ${verbose} == true ]] ; then
         done
       fi
 
-=======
->>>>>>> 92e6c17f15b8a28e1a37d233c89a6673ad8ce318
 	
 	ARG_PARS_LIST
 else
@@ -972,7 +787,6 @@ else
        	  COUNT=$(cat ${OUT_CENSYS} | sort -u | wc  -l  )
           echo -e  "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}Censys: Total Subdomain (${COUNT})${RESET}"
         fi
-<<<<<<< HEAD
 
         if [[ -f ${OUT_RAPIDDNS} ]] ; then
           COUNT=$(cat ${OUT_RAPIDDNS} | sort -u | wc  -l  )
@@ -994,8 +808,6 @@ else
           echo -e  "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}UrlScanIo: Total Subdomain (${COUNT})${RESET}"
         fi
 
-=======
->>>>>>> 92e6c17f15b8a28e1a37d233c89a6673ad8ce318
 	ARG_PARS_LIST
 fi
 
@@ -1510,18 +1322,13 @@ rm -r ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_DB_PORT} > /dev/null 2>&1
 fi
 
 # Plugin for Extract parameter from URL (--extract-params/-ep)
-<<<<<<< HEAD
 # Data Collecting & Scraping URL Parameter from Passive scan (Default::Web Archive, CommonCrawl, UrlScanIO) 
-=======
-# Data Collecting & Scraping URL Parameter from Passive scan (Default::Web Archive) 
->>>>>>> 92e6c17f15b8a28e1a37d233c89a6673ad8ce318
 # Regex using DFA Engine (awk,sed)
 # Support and Collecting URL with multi Parameter to Fuzzing
 # Removing Duplicate Parameter & URL
 
 if [[ ${PLUGIN_EXTRACT_PARAMS} == true ]]; then
 # Clean Old File
-<<<<<<< HEAD
 rm -r ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_EXTRACT_PARAM_FULL} ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_EXTRACT_PARAM_UNIQ} > /dev/null 2>&1
 
 # Collecting RAW 
@@ -1535,25 +1342,11 @@ cat ${OUT}/*.raw > ${OUT_JUICY_URL_RAW}
 				LIST_DOM=(${URL//[=&]/=FUZZ&})
 					#echo "${URL}"
 					echo ${LIST_DOM} | awk -F'=' -vOFS='=' '{$NF="FUZZ"}1;' >> ${OUT}/${RESULT_EXTRACT_PARAM}
-=======
-rm -r ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_EXTRACT_PARAM} > /dev/null 2>&1
-rm -r ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_EXTRACT_PARAM_UNIQ} > /dev/null 2>&1 
-	if [[ -f ${OUT_RAW_WEBARCHIVE} ]]; then #Check Raw Data 
-		echo -ne "\n${BOLD}[${LGREEN}+${RESET}${BOLD}]${RESET} Collecting URL Parameter from Engine \n"  ## 
-		echo -e "---------------------------------------------\n"  
-		cat ${OUT_RAW_WEBARCHIVE} | grep -P "=" | sed  "/\b\(jpg\|png\|js\|svg\|css\|gif\|jpeg\|woff\|woff2\)\b/d" > ${OUT_RAW_WEBARCHIVE_PARS} 
-			for i in $(cat ${OUT_RAW_WEBARCHIVE_PARS}); do
-				URL="${i}"
-				LIST_DOM=(${URL//[=&]/=FUZZ&})
-					#echo "${URL}"
-					echo ${LIST_DOM} | awk -F'=' -vOFS='=' '{$NF="FUZZ"}1;' >> ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_EXTRACT_PARAM}
->>>>>>> 92e6c17f15b8a28e1a37d233c89a6673ad8ce318
 			done
 		# Remove Raw Data  
 		# rm -r ${OUT_RAW_WEBARCHIVE} ${OUT_RAW_WEBARCHIVE_PARS} > /dev/null 2>&1
 
 		# Make another output, Sorting Duplicate Parameter
-<<<<<<< HEAD
 		sort -u ${OUT}/${RESULT_EXTRACT_PARAM} > ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_EXTRACT_PARAM_UNIQ} 
 
 		# Full URL Paramaeter no parsing
@@ -1573,14 +1366,6 @@ rm -r ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_EXTRACT_PARAM_UNIQ} > /dev/null 2>&1
 		echo -e  "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}Total Uniq Parameter${RESET}${DPADDING}[${GREEN}${COUNT_URL_PARAM_UNIQ}${RESET}]"
 
 		#mv ${OUT_RAW_WEBARCHIVE_PARS} ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_EXTRACT_PARAM}
-=======
-		sort -u ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_EXTRACT_PARAM} > ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_EXTRACT_PARAM_UNIQ} 
-		
-		# Count & Print Output
-		COUNT_URL_PARAM_UNIQ=$(cat ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_EXTRACT_PARAM_UNIQ} | wc  -l  )
-		echo -e  "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}Total ${RESET}${DPADDING}\t\t[${GREEN}${COUNT_URL_PARAM_UNIQ}${RESET}]\n"
-		mv ${OUT_RAW_WEBARCHIVE_PARS} ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_EXTRACT_PARAM}
->>>>>>> 92e6c17f15b8a28e1a37d233c89a6673ad8ce318
                 #cat ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_EXTRACT_PARAM_UNIQ} \
 		# | while read VERBOSE; do
                 #	echo -e ${YELLOW}"\t - ${RESET}$VERBOSE"
@@ -1589,21 +1374,13 @@ rm -r ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_EXTRACT_PARAM_UNIQ} > /dev/null 2>&1
 	else
 		echo -e "\n${BOLD}[${LGREEN}+${RESET}${BOLD}]${RESET} Collecting URL Parameter from Engine   "
                 echo -e "---------------------------------------------\n"
-<<<<<<< HEAD
                 echo -e  "${PADDING}${RED}${PADDING}!${PADDING}${RESET}Please, run it again with source WebArchive,CommonCrawl,UrlScan${RESET}\t[${RED}FAIL${RESET}]\n"
-=======
-                echo -e  "${PADDING}${RED}${PADDING}!${PADDING}${RESET}Please, run it again with source WebArchive${RESET}\t[${RED}FAIL${RESET}]\n"
->>>>>>> 92e6c17f15b8a28e1a37d233c89a6673ad8ce318
 
 	fi
 fi
 
 #Remove Temporary RAW DATA []
-<<<<<<< HEAD
 rm -r ${OUT_RAW_WEBARCHIVE} ${OUT_RAW_COMMONCRAWL} ${OUT_RAW_URLSCAN} ${OUT}/${RESULT_EXTRACT_PARAM} > /dev/null 2>&1
-=======
-rm -r ${OUT_RAW_WEBARCHIVE} > /dev/null 2>&1
->>>>>>> 92e6c17f15b8a28e1a37d233c89a6673ad8ce318
 
 
 # Identify technology on websites
@@ -1748,7 +1525,6 @@ echo -e "${BOLD}${PADDING}${PADDING}\t-${RESET}${BOLD}${RESET}${LGREEN} output/$
 ## END
     echo -e "\n${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}Successful Created .. "
 fi
-<<<<<<< HEAD
 
 if [[ $DESTINATION == true ]];then
 		echo -e "\n${BOLD}[${LGREEN}+${RESET}${BOLD}]${RESET} Sud⍥my has been sucessfully ${GRENN}completed${RESET}"
@@ -1771,11 +1547,3 @@ else
 		echo -e "${BOLD}${PADDING}${PADDING}\t-${RESET}${BOLD}${RESET}${LGREEN} output/${DATE_LOG}/${DOMAIN}/screenshots ${RESET} \n\n"
 fi
 
-=======
-echo -e "\n${BOLD}[${LGREEN}+${RESET}${BOLD}]${RESET} Sud⍥my has been sucessfully ${GRENN}completed${RESET}"  
-echo -e "---------------------------------------------\n"
-echo -e "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}Location output:"
-echo -e "${BOLD}${PADDING}${PADDING}\t-${RESET}${BOLD}${RESET}${LGREEN} output/${DATE_LOG}/${DOMAIN} ${RESET} "
-echo -e "${BOLD}${PADDING}${PADDING}\t-${RESET}${BOLD}${RESET}${LGREEN} output/${DATE_LOG}/${DOMAIN}/report ${RESET} "
-echo -e "${BOLD}${PADDING}${PADDING}\t-${RESET}${BOLD}${RESET}${LGREEN} output/${DATE_LOG}/${DOMAIN}/screenshots ${RESET} \n\n"
->>>>>>> 92e6c17f15b8a28e1a37d233c89a6673ad8ce318
