@@ -1,0 +1,18 @@
+#-Metadata----------------------------------------------------#
+#  Filename: Sudomy - Subdomain Enumeration & Analysis        #
+#-Author(s)---------------------------------------------------#
+#  Edo maland ~ @screetsec                                    #
+#-Info--------------------------------------------------------#
+#  This file is part of Sudomy project                        #
+#  Engine Riddler : Update = 2020-05-08                       #
+#-Licence-----------------------------------------------------#
+#  MIT License ~ http://opensource.org/licenses/MIT           #
+#-------------------------------------------------------------#
+
+RIDDLER(){
+
+local URL_RIDDLER="https://riddler.io/search/exportcsv?q=pld:"
+  echo -e  "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}Riddler${RESET}${DPADDING}\t\t[${GREEN} ✔ ${RESET}]"
+    wget -q "${URL_RIDDLER}${DOMAIN}" --output-document=${OUT_FRIDDLER}
+       cat ${OUT_FRIDDLER} | tail -n +3 | awk -F, '{print $6}' > ${OUT_RIDDLER} && rm ${OUT_FRIDDLER}
+}

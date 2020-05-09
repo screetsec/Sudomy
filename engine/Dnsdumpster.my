@@ -1,0 +1,17 @@
+#-Metadata----------------------------------------------------#
+#  Filename: Sudomy - Subdomain Enumeration & Analysis        #
+#-Author(s)---------------------------------------------------#
+#  Edo maland ~ @screetsec                                    #
+#-Info--------------------------------------------------------#
+#  This file is part of Sudomy project                        #
+#  Engine DnsDumpster : Update = 2020-05-08                   #
+#-Licence-----------------------------------------------------#
+#  MIT License ~ http://opensource.org/licenses/MIT           #
+#-------------------------------------------------------------#
+
+DNSDUMPSTER(){
+local URL_DNS="https://dnsdumpster.com"
+  echo -e  "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}Dnsdumpster${RESET}${DPADDING}\t[${GREEN} ✔ ${RESET}]"
+    local CSRF=$(curl -s ${URL_DNS} | grep -P "csrfmiddlewaretoken" | grep -Po '(?<=value=")[^"]*(?=")')
+        MAKE=$(curl -s --cookie "csrftoken=$CSRF" -H "Referer: ${URL_DNS}" --data  "csrfmiddlewaretoken=$CSRF&targetip=${DOMAIN}" ${URL_DNS} | grep -Po '<td class="col-md-4">\K[^<]*' > ${OUT_DNSDUMPSTER})
+}

@@ -1,0 +1,21 @@
+#-Metadata----------------------------------------------------#
+#  Filename: Sudomy - Subdomain Enumeration & Analysis        #
+#-Author(s)---------------------------------------------------#
+#  Edo maland ~ @screetsec                                    #
+#-Info--------------------------------------------------------#
+#  This file is part of Sudomy project                        #
+#  Engine Censys : Update = 2020-05-08                        #
+#-Licence-----------------------------------------------------#
+#  MIT License ~ http://opensource.org/licenses/MIT           #
+#-------------------------------------------------------------#
+
+CENSYS(){
+## Using API Key
+local _CENSYS="lib/censys/censys_subdomain_finder.py"
+  if [[ ! -z "$CENSYS_API" ]] && [[ ! -z "$CENSYS_SECRET" ]] ;then
+    echo -e  "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}Censys${RESET}${DPADDING}\t\t[${GREEN} ✔ ${RESET}]"
+      MAKEFILE=$(python ${_CENSYS} --censys-api-id ${CENSYS_API} --censys-api-secret ${CENSYS_SECRET} ${DOMAIN}> ${OUT_CENSYS})
+  else
+    echo -e  "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}Censys${RESET}${DPADDING}\t\t[${RED} ✕ ${RESET}]"
+  fi
+}

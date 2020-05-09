@@ -1,0 +1,16 @@
+#-Metadata----------------------------------------------------#
+#  Filename: Sudomy - Subdomain Enumeration & Analysis        #
+#-Author(s)---------------------------------------------------#
+#  Edo maland ~ @screetsec                                    #
+#-Info--------------------------------------------------------#
+#  This file is part of Sudomy project                        #
+#  Engine ThreatMiner : Update = 2020-05-08                   #
+#-Licence-----------------------------------------------------#
+#  MIT License ~ http://opensource.org/licenses/MIT           #
+#-------------------------------------------------------------#
+
+THREATMINER(){
+local URL_THREATMINER="https://api.threatminer.org/v2/domain.php?q="
+  echo -e  "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}Threatminer${RESET}${DPADDING}\t[${GREEN} ✔ ${RESET}]"
+  curl --silent --request GET --url "${URL_THREATMINER}${DOMAIN}&rt=5" | jq --raw-output -r '.results[]' | sort -u > ${OUT_THREATMINER}
+}

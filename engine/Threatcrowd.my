@@ -1,0 +1,16 @@
+#-Metadata----------------------------------------------------#
+#  Filename: Sudomy - Subdomain Enumeration & Analysis        #
+#-Author(s)---------------------------------------------------#
+#  Edo maland ~ @screetsec                                    #
+#-Info--------------------------------------------------------#
+#  This file is part of Sudomy project                        #
+#  Engine ThreatCrowd : Update = 2020-05-08                   #
+#-Licence-----------------------------------------------------#
+#  MIT License ~ http://opensource.org/licenses/MIT           #
+#-------------------------------------------------------------#
+
+THREATCROWD(){
+local URL_THREATCROWD="https://threatcrowd.org/searchApi/v2/domain/report/?domain="
+  echo -e  "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}Threatcrowd${RESET}${DPADDING}\t[${GREEN} ✔ ${RESET}]"
+    curl --silent --request GET --url  "${URL_THREATCROWD}${DOMAIN}" | jq --raw-output -r '.subdomains[]' | sort -u > ${OUT_THREATCROWD}
+}

@@ -1,0 +1,27 @@
+#-Metadata----------------------------------------------------#
+#  Filename: Sudomy - Subdomain Enumeration & Analysis        #
+#-Author(s)---------------------------------------------------#
+#  Edo maland ~ @screetsec                                    #
+#-Info--------------------------------------------------------#
+#  This file is part of Sudomy project                        #
+#  Engine CommonCrawl : Update = 2020-05-09                   #
+#-Licence-----------------------------------------------------#
+#  MIT License ~ http://opensource.org/licenses/MIT           #
+#-------------------------------------------------------------#
+
+COMMONCRAWL(){
+local URL=http://index.commoncrawl.org/collinfo.json
+local STATUS_COMMONCRAWL=$(curl --write-out %{http_code} --silent --output /dev/null "${URL}")
+                 if [[ ${STATUS_COMMONCRAWL} == 200 ]]; then
+                        echo -e  "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}CommonwCrawl${RESET}${DPADDING}\t[${GREEN} ✔ ${RESET}]"
+                        VERSION_DB_COMMONCRAWL=$(curl -s "${URL}" | jq --raw-output .[0]'."cdx-api"')
+
+                        MAKE_RAW_FILE=$(curl -s "${VERSION_DB_COMMONCRAWL}?url=*.${DOMAIN}/&output=json" |  jq --raw-output .url |  sed 's/\*\.//g' >  ${OUT_RAW_COMMONCRAWL})
+				# Extract Subdomain
+					cat ${OUT_RAW_COMMONCRAWL} | sed -e 's_https*://__' -e "s/\/.*//" -e 's/:.*//' -e 's/^www\.//'  | sed "/@/d" | sed -e 's/\.$//'  | sort -u > ${OUT_COMMONCRAWL}
+                 else
+
+                        echo -e  "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}CommonCrawl${RESET}${DPADDING}\t\t[${RED} ✕ ${RESET}]"
+                        #curl --silent --request GET --url "${URL_ENTRUST}${DOMAIN}&includeExpired=false&exactMatch=false&limit=5000" | jq --raw-output -r '.[].subjectDN' | sed 's>
+                fi
+}

@@ -1,0 +1,18 @@
+#-Metadata----------------------------------------------------#
+#  Filename: Sudomy - Subdomain Enumeration & Analysis        #
+#-Author(s)---------------------------------------------------#
+#  Edo maland ~ @screetsec                                    #
+#-Info--------------------------------------------------------#
+#  This file is part of Sudomy project                        #
+#  Engine RapidDNS : Update = 2020-05-08                      #
+#-Licence-----------------------------------------------------#
+#  MIT License ~ http://opensource.org/licenses/MIT           #
+#-------------------------------------------------------------#
+
+RAPIDDNS(){
+local URL_RAPIDDNS="https://rapiddns.io/subdomain"
+  echo -e  "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}RapidDNS${RESET}${DPADDING}\t\t[${GREEN} ✔ ${RESET}]"
+  # Extract Subdomain
+	 curl -s "${URL_RAPIDDNS}/${DOMAIN}" | grep -Po 'target="_blank">\K[^<]*' | sort -u > ${OUT_RAPIDDNS}
+
+}

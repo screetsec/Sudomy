@@ -1,0 +1,22 @@
+#-Metadata----------------------------------------------------#
+#  Filename: Sudomy - Subdomain Enumeration & Analysis        #
+#-Author(s)---------------------------------------------------#
+#  Edo maland ~ @screetsec                                    #
+#-Info--------------------------------------------------------#
+#  This file is part of Sudomy project                        #
+#  Engine Shodan : Update = 2020-05-08                        #
+#-Licence-----------------------------------------------------#
+#  MIT License ~ http://opensource.org/licenses/MIT           #
+#-------------------------------------------------------------#
+
+SHODAN(){
+## Using API Key
+local URL_SHODAN="https://api.shodan.io/shodan/host/search?key=" ## Using API Shodan
+  if [[ ! -z "$SHODAN_API" ]];then
+    echo -e  "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}Shodan${RESET}${DPADDING}\t\t[${GREEN} ✔ ${RESET}]"
+      MAKEFILE=$(curl --silent --request GET --url "${URL_SHODAN}${SHODAN_API}&query=hostname:${DOMAIN}" | jq --raw-output -r '.matches[] |.hostnames[]' | sort -u > ${OUT_SHODAN})
+  else
+    echo -e  "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}Shodan${RESET}${DPADDING}\t\t[${RED} ✕ ${RESET}]"
+
+  fi
+}

@@ -1,0 +1,22 @@
+#-Metadata----------------------------------------------------#
+#  Filename: Sudomy - Subdomain Enumeration & Analysis        #
+#-Author(s)---------------------------------------------------#
+#  Edo maland ~ @screetsec                                    #
+#-Info--------------------------------------------------------#
+#  This file is part of Sudomy project                        #
+#  Engine BinaryEdge : Update = 2020-05-08                    #
+#-Licence-----------------------------------------------------#
+#  MIT License ~ http://opensource.org/licenses/MIT           #
+#-------------------------------------------------------------#
+
+BINARYEDGE(){
+## Using API Key
+
+local URL_BINARY="https://api.binaryedge.io/v2/query/domains/subdomain/"
+  if [[ ! -z "$BINARYEDGE" ]];then
+    echo -e  "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}Binaryedge${RESET}${DPADDING}\t[${GREEN} ✔ ${RESET}]"
+      MAKEFILE=`curl --silent "${URL_BINARY}${DOMAIN}" -H 'X-Key:'${BINARYEDGE}''| jq --raw-output -r '.events[]?' | sort -u > ${OUT_BINARYEDGE}  `
+  else
+    echo -e  "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}Binaryedge${RESET}${DPADDING}\t[${RED} ✕ ${RESET}]"
+  fi
+}

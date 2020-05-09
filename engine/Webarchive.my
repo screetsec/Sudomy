@@ -1,0 +1,18 @@
+#-Metadata----------------------------------------------------#
+#  Filename: Sudomy - Subdomain Enumeration & Analysis        #
+#-Author(s)---------------------------------------------------#
+#  Edo maland ~ @screetsec                                    #
+#-Info--------------------------------------------------------#
+#  This file is part of Sudomy project                        #
+#  Engine WebArchive : Update = 2020-05-08                    #
+#-Licence-----------------------------------------------------#
+#  MIT License ~ http://opensource.org/licenses/MIT           #
+#-------------------------------------------------------------#
+
+WEBARCHIVE(){
+  echo -e  "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}Webarchive${RESET}${DPADDING}\t[${GREEN} ✔ ${RESET}]"
+
+      RAW_WEBARCHIVE=$(curl --silent "http://web.archive.org/cdx/search/cdx?url=*.${DOMAIN}/*&output=text&fl=original&collapse=urlkey" > ${OUT_RAW_WEBARCHIVE} ) 
+	# Extract Subdomain
+		cat ${OUT_RAW_WEBARCHIVE} | sed -e 's_https*://__' -e "s/\/.*//" -e 's/:.*//' -e 's/^www\.//' | sed "/@/d" | sed -e 's/\.$//' | sort -u > ${OUT_WEBARCHIVE}
+}
