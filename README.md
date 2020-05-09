@@ -31,10 +31,10 @@
                 https://www.threatcrowd.org
                 https://riddler.io
                 https://findsubdomains.com
-		https://rapiddns.io/
-		https://https://otx.alienvault.com/
-		http://index.commoncrawl.org/
-		https://urlscan.io
+                https://rapiddns.io/
+                https://otx.alienvault.com/
+                https://index.commoncrawl.org/
+                https://urlscan.io/
 - Test the list of collected subdomains and probe for working http or https servers. This feature uses a third-party tool, [httprobe](https://github.com/tomnomnom/httprobe "httprobe").
 - Subdomain availability test based on Ping Sweep and/or by getting HTTP status code.
 - The ability to detect virtualhost (several subdomains which resolve to single IP Address). Sudomy will resolve the collected subdomains to IP addresses, then classify them if several subdomains resolve to single IP address. This feature will be very useful for the next penetration testing/bug bounty process. For instance, in port scanning, single IP address won’t be scanned repeatedly
