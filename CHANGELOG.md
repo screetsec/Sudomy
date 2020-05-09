@@ -49,6 +49,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 		- Removing Duplicate Parameter & URL
 		- Passive_Collecting_URLParamter.txt : This File is original Collecting URL Parameter without Parsing 
 	- Fixing Bug in statement Plugin --db-port
+<<<<<<< HEAD
 
 ## [1.1.5] - 2020-05-09
  - Update
@@ -67,3 +68,5 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 	- Fix & Clean Code
 	- Remove The engine (Third-party sites) to new folder for easy fixing & patch
 
+=======
+>>>>>>> 92e6c17f15b8a28e1a37d233c89a6673ad8ce318
