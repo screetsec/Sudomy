@@ -13,7 +13,6 @@ RUN apk add --no-cache git make musl-dev go bash util-linux py-pip nmap bind-too
     cp phantomjs-${PHANTOMJS_VERSION}-linux-x86_64/bin/phantomjs /usr/local/bin/phantomjs && \
     rm -fR phantomjs-${PHANTOMJS_VERSION}-linux-x86_64
 
-
 WORKDIR /app
 COPY requirements.txt .
 RUN pip install -r requirements.txt
@@ -26,6 +25,7 @@ ENV SHODAN_API="" CENSYS_API="" CENSYS_SECRET="" VIRUSTOTAL="" BINARYEDGE="" SEC
 RUN apk del make musl-dev gcc && \
     rm -rf /var/cache/apk/* && \
     # Install wappalyzer
+    npm config set unsafe-perm true && \
     npm i -g wappalyzer && \
     git clone https://github.com/Screetsec/Sudomy.git /usr/lib/sudomy
 
