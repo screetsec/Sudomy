@@ -40,7 +40,7 @@
 - The ability to detect virtualhost (several subdomains which resolve to single IP Address). Sudomy will resolve the collected subdomains to IP addresses, then classify them if several subdomains resolve to single IP address. This feature will be very useful for the next penetration testing/bug bounty process. For instance, in port scanning, single IP address won’t be scanned repeatedly
 - Performed port scanning from collected subdomains/virtualhosts IP Addresses
 - Testing Subdomain TakeOver attack
-- Taking Screenshotsof subdomains
+- Taking Screenshots of subdomains
 - Identify technologies on websites
 - Data Collecting/Scraping open port from 3rd party (Default::Shodan), For right now just using Shodan [Future::Censys,Zoomeye]. More efficient and effective to collecting port from list ip on target [[ Subdomain > IP Resolver > Crawling > ASN & Open Port ]]
 - Collecting Juicy URL & Extract URL Parameter ( Resource Default::WebArchive, CommonCrawl, UrlScanIO) 
@@ -125,7 +125,7 @@ docker pull screetsec/sudomy:v1.1.5-dev
 # Run an image, you can run the image on custom directory but you must copy/download config sudomy.api on current directory
 docker run -v "${PWD}/output:/usr/lib/sudomy/output" -v "${PWD}/sudomy.api:/usr/lib/sudomy/sudomy.api" -it --rm screetsec/sudomy:v1.1.5-dev [argument]
 
-or define variable when execute
+or define API variable when executed an image.
 
 docker run -v "${PWD}/output:/usr/lib/sudomy/output" -e "SHODAN_API=xxxx" -e "VIRUSTOTAL=xxxx" -it --rm screetsec/sudomy:v1.1.5-dev [argument]
 ```
