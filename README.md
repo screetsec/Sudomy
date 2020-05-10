@@ -188,7 +188,7 @@ Optional Arguments:
   -s,  --source          Use source for Enumerate Subdomain
   -aI, --apps-identifier Identify technologies on websites from domain list
   -dP, --db-port         Collecting port from 3rd Party default=shodan
-  -eP, --extract-params  Collecting URL Parameter from Engine default=webarchive
+  -eP, --extract-params  Collecting URL Parameter from Engine
   -tO, --takeover        Subdomain TakeOver Vulnerabilty Scanner
   -pS, --ping-sweep      Check live host using methode Ping Sweep
   -rS, --resolver        Convert domain lists to resolved IP lists without duplicates
