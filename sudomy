@@ -265,17 +265,17 @@ fi
 dependencies=(nmap dig jq httprobe)
 for dependency in "${dependencies[@]}"; do
     type -p "$dependency" &>/dev/null || {
-        echo "error: Error: require ${dependency} but it's is not installed. Aborting." >&2
+        echo "Error: ${dependency} required but it is not installed. Aborting." >&2
         exit 1
 	}
 done
 
 if [[ ${PLUGIN_WAPPALYZER} == true ]] ; then
-	command -v wappalyzer > /dev/null 2>&1 || { echo "Error: require wappalyzer for identify apps but it's is not installed. Aborting." >&2; exit 1; }
+	command -v wappalyzer > /dev/null 2>&1 || { echo "Error: Wappalyzer required for identifying apps but it is not installed. Aborting." >&2; exit 1; }
 fi
 
 ARG_PARS_LIST(){
-echo -e "\n${BOLD}[${LGREEN}+${RESET}${BOLD}]${RESET} Parsing & Sorting list Domain "
+echo -e "\n${BOLD}[${LGREEN}+${RESET}${BOLD}]${RESET} Parsing & Sorting domain list"
 echo -e "---------------------------------------------\n"
 DATE_LOG=$(date +%m-%d-%Y)
 [[ ! -e "${OUT}/${DATE_LOG}/${DOMAIN}" ]] \
@@ -297,7 +297,7 @@ DATE_LOG=$(date +%m-%d-%Y)
 
 
 ## Calling Engine (Third Party-Sites) Total 18 
-## Selecting the good third-party sites, the enumeration process can be optimized
+## Selecting the good third-party sites to optimize the enumeration process
 
 source ${Engine_Shodan}
 source ${Engine_VirusTotal}
@@ -333,8 +333,8 @@ echo -e "${BOLD}${PADDING}${PADDING}-${RESET}${BOLD}${RESET} ${LGREEN}starting${
 echo -e "\n${BOLD}[${LGREEN}+${RESET}${BOLD}]${RESET} Running & Checking source to be used  "
 echo -e "---------------------------------------------\n"
 
-# Running Source for enumarte subdomain
-## This List for check if one of source get errors
+# Running Source for enumerating subdomains
+## This List is for reference if a source causes errors
 
 #SHODAN               ##  http://developer.shodan.io/billing/
 #WEBARCHIVE           ##  http://web.archive.org/
@@ -815,7 +815,7 @@ if [[ ${PLUGIN_HTTPROBE} == true ]];then
      #_HTTPROBE=httprobe
           which ${_HTTPROBE} > /dev/null
              if  [[ "$?" -eq "0" ]];then
-                 echo -e "\n${BOLD}[${LGREEN}+${RESET}${BOLD}]${RESET} Probe subdomain for working on http/https   "
+                 echo -e "\n${BOLD}[${LGREEN}+${RESET}${BOLD}]${RESET} Probe working subdomain on HTTP/HTTPS   "
                    echo -e "---------------------------------------------\n"
                     cat ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_SUBDOMAIN} | ${_HTTPROBE} > ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_HTTPROBE} & 
                     
@@ -827,7 +827,7 @@ if [[ ${PLUGIN_HTTPROBE} == true ]];then
                         echo -e  "\n${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}Total ${RESET}${DPADDING}\t\t[${GREEN}${COUNT}${RESET}]\n"
                      #cat ${OUT_GOBUSTER} | awk '{print $2}' > ${RESULT_GOBUSTER} ; rm -rf ${OUT_GOBUSTER}
         else 
-	       echo -e "\n${BOLD}[${LGREEN}+${RESET}${BOLD}]${RESET} Probe subdomain for working on http/https   "
+	       echo -e "\n${BOLD}[${LGREEN}+${RESET}${BOLD}]${RESET} Probe working subdomain on HTTP/HTTPS   "
                echo -e "---------------------------------------------\n"
                echo -e "${PADDING}${RESET}${PADDING}${LRED}x${RESET} This Plugin need httprobe, ${RED}install it${RESET}"
 
@@ -839,14 +839,14 @@ if [[ ${PLUGIN_GOBUSTER} == true ]];then
      _GOBUSTER=gobuster
           which ${_GOBUSTER} > /dev/null
              if  [[ "$?" -eq "0" ]];then
-                 echo -e "\n${BOLD}[${LGREEN}+${RESET}${BOLD}]${RESET} Running Bruterforce DNS: Gobuster    "
+                 echo -e "\n${BOLD}[${LGREEN}+${RESET}${BOLD}]${RESET} Running Bruteforce DNS: Gobuster    "
                    echo -e "---------------------------------------------\n"
                     ${_GOBUSTER} dns -d ${DOMAIN} --wildcard  -qw ${_GOWORDLIST} -o ${OUT_GOBUSTER} | awk '{print $2}' | sed -e 's/^/\t - /'
                     cat ${OUT_GOBUSTER} | awk '{print $2}' > ${RESULT_GOBUSTER} ; rm -rf ${OUT_GOBUSTER}
         else 
-               echo -e "${BOLD}[${LGREEN}+${RESET}${BOLD}]${RESET} Running Bruterforce DNS: Gobuster    "
+               echo -e "${BOLD}[${LGREEN}+${RESET}${BOLD}]${RESET} Running Bruteforce DNS: Gobuster    "
                echo -e "---------------------------------------------\n"
-               echo -e "${PADDING}${RESET}${PADDING}${LRED}x${RESET} This Plugin need Gobuster, ${RED}install it${RESET}"
+               echo -e "${PADDING}${RESET}${PADDING}${LRED}x${RESET} This Plugin requires Gobuster, ${RED}install it${RESET}"
 
         fi
 
@@ -882,14 +882,14 @@ do
 
 	done
 
-    #MAKER MORE PRETTY 
+    #MAKE MORE PRETTY 
     cat ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_PINGSWEEP} | sed 's/ / ,/g' | column -t -s, > ${OUT}/${DATE_LOG}/${DOMAIN}/${FINAL_PINGSWEEP}
     rm -r ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_PINGSWEEP} > /dev/null 2>&1
 fi  ### Ending Ping Sweep
 
 if [[ ${PLUGIN_RESOLV_SD} == true ]] ; then
 
-echo -e "\n${BOLD}[${LGREEN}+${RESET}${BOLD}]${RESET} Check Resolving: Subdomains & Domains  "
+echo -e "\n${BOLD}[${LGREEN}+${RESET}${BOLD}]${RESET} Check Resolving Subdomains & Domains  "
 echo -e "---------------------------------------------\n"
 TMP_RESOL=temp_resolver.lst
 
@@ -926,7 +926,7 @@ if [[ ${PLUGIN_TAKEOVER} == true ]] ; then
 # Pointing to a GitHub page and the user decided to delete their GitHub page, an attacker can now create a GitHub 
 # page, add a CNAME file containing subdomain.example.com, and claim subdomain.example.com.
 
-#can read up more about subdomain takeovers here:
+#Read up more about subdomain takeovers here:
 
 #    https://labs.detectify.com/2014/10/21/hostile-subdomain-takeover-using-herokugithubdesk-more/
 #    https://www.hackerone.com/blog/Guide-Subdomain-Takeovers
@@ -1095,14 +1095,14 @@ if [[ ${PLUGIN_STATUS_CODE} == true ]]; then
 
 
 
-echo -e "\n${BOLD}[${LGREEN}+${RESET}${BOLD}]${RESET}  Checks status code on port 80 and 443 "  
+echo -e "\n${BOLD}[${LGREEN}+${RESET}${BOLD}]${RESET}  Checks status code on ports 80 and 443 "  
 echo -e "---------------------------------------------\n"
 
 
 ## Cleaning Log Files ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_HTTP_CODE}
 rm -r ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_HTTP_CODE} > /dev/null 2>&1 ##Cleaning old results
 
-for SUB_CODE_CHECK in $(cat ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_HTTPROBE}) ## GET Status Code from list of domains valid working http and https servers.
+for SUB_CODE_CHECK in $(cat ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_HTTPROBE}) ## GET Status Code from list of valid domains with working HTTP and HTTPS servers.
 do
   RESPONSE=$(curl --write-out %{http_code} --silent --output /dev/null ${SUB_CODE_CHECK})
 
@@ -1282,7 +1282,7 @@ fi
 
 
 # Explain about IP DB_PORT
-# Data Collecting/Scraping open port from 3rd party (Default::Shodan), For right now just using Shodan [Future::Censys,Zoomeye] 
+# Data Collecting/Scraping open port from 3rd party (Default::Shodan). For right now just using Shodan [Future::Censys,Zoomeye] 
 # More efficient and effective to collecting port from list ip on target [[ Subdomain > IP Resolver > Crawling > Open Port ]]
 # Here we can further narrow the targeting port for checking in port scanning
 
@@ -1311,7 +1311,7 @@ rm -r ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_DB_PORT} > /dev/null 2>&1
 				fi
 			 done
 		else
-			 echo -e  "${PADDING}${RED}${PADDING}!${PADDING}${RESET}Shodan API required,settings on Sudomy.api${RESET}\n"
+			 echo -e  "${PADDING}${RED}${PADDING}!${PADDING}${RESET}Shodan API required, configure in Sudomy.api${RESET}\n"
 		fi
 
 	else
