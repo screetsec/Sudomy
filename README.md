@@ -1,16 +1,16 @@
 # Sudomy
-[![License](https://img.shields.io/badge/license-MIT-red.svg)](https://github.com/Screetsec/Sudomy/blob/master/LICENSE.md)  [![Build Status](https://travis-ci.org/Screetsec/Sudomy.svg?branch=master)](https://travis-ci.org/Screetsec/Sudomy)  [![Version](https://img.shields.io/badge/Release-1.1.5-blue.svg?maxAge=259200)]()  [![Build](https://img.shields.io/badge/Supported_OS-Linux-yellow.svg)]()  [![Build](https://img.shields.io/badge/Supported_WSL-Windows-blue.svg)]() [![Contributions Welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/screetsec/sudomy/issues)  [![Youtube](https://img.shields.io/badge/Youtube-Demo-red.svg)](https://www.youtube.com/watch?v=DpXIBUtasn0)
+[![License](https://img.shields.io/badge/license-MIT-red.svg)](https://github.com/Screetsec/Sudomy/blob/master/LICENSE.md)  [![Build Status](https://travis-ci.org/Screetsec/Sudomy.svg?branch=master)](https://travis-ci.org/Screetsec/Sudomy)  [![Version](https://img.shields.io/badge/Release-1.1.5-blue.svg?maxAge=259200)]()  [![Build](https://img.shields.io/badge/Supported_OS-Linux-yellow.svg)]()  [![Build](https://img.shields.io/badge/Supported_WSL-Windows-blue.svg)]() [![Contributions Welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/screetsec/sudomy/issues)  [![YouTube](https://img.shields.io/badge/YouTube-Demo-red.svg)](https://www.youtube.com/watch?v=DpXIBUtasn0)
 ### Subdomain Enumeration & Analysis
 ![ff](https://user-images.githubusercontent.com/17976841/63212795-b8d57300-c133-11e9-882a-f604d67819cc.png)
 
 ***Sudomy*** is a subdomain enumeration tool, created using a bash script, to analyze domains and collect subdomains in fast and comprehensive way.
 
-## Features !
-##### For recent time, ***Sudomy*** has these 13 features:
+## Features!
+##### ***Sudomy*** has these 13 features:
 -  Easy, light, fast and powerful. Bash script is available by default in almost all Linux distributions. By using bash script multiprocessing feature, all processors will be utilized optimally.
 -  Subdomain enumeration process can be achieved by using **active** method or **passive** method
     - **Active Method**
-        - *Sudomy* utilize Gobuster tools because of its highspeed performance in carrying out DNS Subdomain Bruteforce attack (wildcard support). The wordlist that is used comes from combined SecList (Discover/DNS) lists which contains around 3 million entries
+        - *Sudomy* utilizes Gobuster tools because of its highspeed performance in carrying out DNS Subdomain Bruteforce attacks (wildcard support). The wordlist that is used comes from combined SecList (Discover/DNS) lists which contain around 3 million entries.
 
     - **Passive Method**
         - By **selecting** the **good** third-party sites, the enumeration process can be **optimized**. More results will be obtained with less time required. *Sudomy* can collect data from these  well-curated 20 third-party sites:
@@ -37,8 +37,8 @@
                 https://urlscan.io/
 - Test the list of collected subdomains and probe for working http or https servers. This feature uses a third-party tool, [httprobe](https://github.com/tomnomnom/httprobe "httprobe").
 - Subdomain availability test based on Ping Sweep and/or by getting HTTP status code.
-- The ability to detect virtualhost (several subdomains which resolve to single IP Address). Sudomy will resolve the collected subdomains to IP addresses, then classify them if several subdomains resolve to single IP address. This feature will be very useful for the next penetration testing/bug bounty process. For instance, in port scanning, single IP address won’t be scanned repeatedly
-- Performed port scanning from collected subdomains/virtualhosts IP Addresses
+- The ability to detect virtualhost (several subdomains which resolve to single IP Address). Sudomy will resolve the collected subdomains to IP addresses, then classify them if several subdomains resolve to single IP address. This feature will be very useful for the next penetration testing/bug bounty process. For instance, in port scanning, single IP addresses won’t be scanned repeatedly
+- Performing port scanning from collected subdomains/virtualhosts IP Addresses
 - Testing Subdomain TakeOver attack
 - Taking Screenshots of subdomains
 - Identify technologies on websites
@@ -48,7 +48,7 @@
 - Report output in HTML & CSV format
 
 ## How Sudomy Works
-*Sudomy* is using cURL library in order to get the HTTP Response Body from third-party sites to then execute the regular expression to get subdomains. This process fully leverages multi processors, more subdomains will be collected with less time consumption.
+*Sudomy* uses the cURL library in order to get the HTTP Response Body from third-party sites to then execute the regular expression to get subdomains. This process fully leverages multi-core processors (more subdomains will be collected with less time consumption).
 
 ## Publication
 - [Sudomy: Information Gathering Tools for Subdomain Enumeration and Analysis](https://iopscience.iop.org/article/10.1088/1757-899X/771/1/012019/meta) -  IOP Conference Series: Materials Science and Engineering, Volume 771, 2nd International Conference on Engineering and Applied Sciences (2nd InCEAS) 16 November 2019, Yogyakarta, Indonesia
@@ -76,7 +76,7 @@ Asciinema :
 | ------------  | ------------ | ------------ |
 |  [Gobuster](https://github.com/OJ/gobuster) |  Apache License 2.0 | not mandatory
 |  [httprobe](https://github.com/tomnomnom/httprobe/) | Tom Hudson - | mandatory
-|  [nmap](https://github.com/nmap/nmap) | GNU General Public License v2.0 | not mandatory
+|  [Nmap](https://github.com/nmap/nmap) | GNU General Public License v2.0 | not mandatory
 
 ### To Download Sudomy From Github
 ```bash
@@ -111,7 +111,7 @@ export GOPATH=$HOME/go
 export PATH=$PATH:$GOROOT/bin:$GOPATH/bin
 source ~/.bashrc
 ```
-Then Install the dependencies
+Then install the dependencies
 ```
 go get -u github.com/tomnomnom/httprobe 
 go get -u github.com/OJ/gobuster
@@ -131,8 +131,8 @@ docker run -v "${PWD}/output:/usr/lib/sudomy/output" -e "SHODAN_API=xxxx" -e "VI
 ```
 
 ### Post Installation
-API Key is needed before querying on third-party sites, such as ```Shodan, Censys, SecurityTrails, Virustotal,``` and ```BinaryEdge```.
-- The API key setting can be done in sudomy.api file.
+An API Key is needed before querying on third-party sites, such as ```Shodan, Censys, SecurityTrails, Virustotal,``` and ```BinaryEdge```.
+- The API key setting can be configured in the sudomy.api file.
 ```bash
 # Shodan
 # URL :  http://developer.shodan.io
@@ -180,31 +180,31 @@ Example: sud⍥my.sh -d example.com
          sud⍥my.sh -pS -rS -sC -nT -sS -d example.com
 
 Optional Arguments:
-  -a,  --all             Running all Enumeration, no nmap & gobuster 
+  -a,  --all             Running all Enumeration, no Nmap & Gobuster 
   -b,  --bruteforce      Bruteforce Subdomain Using Gobuster (Wordlist: ALL Top SecList DNS) 
   -d,  --domain          domain of the website to scan
   -h,  --help            show this help message
   -o,  --outfile         specify an output file when completed 
   -s,  --source          Use source for Enumerate Subdomain
   -aI, --apps-identifier Identify technologies on websites from domain list
-  -dP, --db-port         Collecting port from 3rd Party default=shodan
+  -dP, --db-port         Collecting port from 3rd Party default=Shodan
   -eP, --extract-params  Collecting URL Parameter from Engine
   -tO, --takeover        Subdomain TakeOver Vulnerabilty Scanner
-  -pS, --ping-sweep      Check live host using methode Ping Sweep
+  -pS, --ping-sweep      Check for live hosts using Ping Sweep method
   -rS, --resolver        Convert domain lists to resolved IP lists without duplicates
   -sC, --status-code     Get status codes, response from domain list
-  -nT, --nmap-top        Port scanning with top-ports using nmap from domain list
+  -nT, --nmap-top        Port scanning with top-ports using Nmap from domain list
   -sS, --screenshot      Screenshots a list of website
   -nP, --no-passive      Do not perform passive subdomain enumeration 
        --no-probe        Do not perform httprobe 
        --html            Make report output into HTML 
 
 ```
-To use all 20 Sources and Probe for working http or https servers:
+To use all 20 sources and probe for working HTTP or HTTPS servers:
 ```
 $ sudomy -d hackerone.com
 ```
-To use one or more source:
+To use one or more sources:
 ```
 $ sudomy -s shodan,dnsdumpster,webarchive -d hackerone.com
 ```
@@ -212,9 +212,9 @@ To use one or more plugins:
 ```
 $ sudomy -pS -sC -sS -d hackerone.com
 ```
-To use all plugins: testing host status, http/https status code, subdomain takeover and screenshots. 
+To use all plugins (testing host status, HTTP/HTTPS status code, subdomain takeover and screenshots)
 
-Nmap,Gobuster and wappalyzer Not Included.
+Nmap, Gobuster and Wappalyzer Not Included.
 ```
 $ sudomy --all -d hackerone.com
 ```
@@ -233,7 +233,7 @@ HTML Report Sample:
 
 
 ## Tools Overview
-- Youtube Videos : Click [here](http://www.youtube.com/watch?v=DpXIBUtasn0)
+- YouTube videos: Click [here](http://www.youtube.com/watch?v=DpXIBUtasn0)
 
 
 ## Translations
