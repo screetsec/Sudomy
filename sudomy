@@ -952,10 +952,7 @@ do
           echo -e "${SUB_TAKEOVER_CHECK} BitBucket Vulnerable"  | tee -a ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_TAKEOVER} > /dev/null 2>&1
         elif [[ $HTML =~ "The specified bucket does not exit" ]]; then
           echo -e "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}[${GREEN}VULNS${RESET}]\t AWS/S3       ${SUB_TAKEOVER_CHECK} ${RESET}"  ## AWS/S3
-          echo -e "${SUB_TAKEOVER_CHECK} AWS/S3 Vulnerable"  | tee -a ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_TAKEOVER} > /dev/null 2>&1    
-        elif [[ $HTML =~ "The request could not be satisfied" ]] || [[ $HTML =~ "ViewerCertificateException" ]] ; then
-          echo -e "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}[${GREEN}VULNS${RESET}]\t CloudFront   ${SUB_TAKEOVER_CHECK} ${RESET}"  ## CLOUD FRONT
-          echo -e "${SUB_TAKEOVER_CHECK} CloudFront Vulnerable"  | tee -a ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_TAKEOVER} > /dev/null 2>&1
+          echo -e "${SUB_TAKEOVER_CHECK} AWS/S3 Vulnerable"  | tee -a ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_TAKEOVER} > /dev/null 2>&1
         elif [[ $HTML =~ "There isn't a Github Pages site here." ]]; then
           echo -e "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}[${GREEN}VULNS${RESET}]\t Github       ${SUB_TAKEOVER_CHECK} ${RESET}"  ## GITHUB
           echo -e "${SUB_TAKEOVER_CHECK} Github Vulnerable"  | tee -a ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_TAKEOVER} > /dev/null 2>&1
