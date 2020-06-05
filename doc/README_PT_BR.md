@@ -1,19 +1,19 @@
 # Sudomy
 [![License](https://img.shields.io/badge/license-MIT-red.svg)](https://github.com/Screetsec/Sudomy/blob/master/LICENSE.md)  [![Build Status](https://travis-ci.org/Screetsec/Sudomy.svg?branch=master)](https://travis-ci.org/Screetsec/Sudomy)  [![Version](https://img.shields.io/badge/Release-1.1.5-blue.svg?maxAge=259200)]()  [![Build](https://img.shields.io/badge/Supported_OS-Linux-yellow.svg)]()  [![Build](https://img.shields.io/badge/Supported_WSL-Windows-blue.svg)]() [![Contributions Welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/screetsec/sudomy/issues)  [![Youtube](https://img.shields.io/badge/Youtube-Demo-red.svg)](https://www.youtube.com/watch?v=DpXIBUtasn0)
-### Subdomain Enumeration & Analysis
+### Análise e Enumeração de Subdomínios
 ![ff](https://user-images.githubusercontent.com/17976841/63212795-b8d57300-c133-11e9-882a-f604d67819cc.png)
 
-***Sudomy*** is a subdomain enumeration tool, created using a bash script, to analyze domains and collect subdomains in fast and comprehensive way.
+***Sudomy*** é uma ferramenta de enumeração de sub-domínios criada com bash script para analizar e coletar dominios e subdominions de forma rápida e compreensiva.
 
-## Features !
-##### For recent time, ***Sudomy*** has these 13 features:
--  Easy, light, fast and powerful. Bash script is available by default in almost all Linux distributions. By using bash script multiprocessing feature, all processors will be utilized optimally.
--  Subdomain enumeration process can be achieved by using **active** method or **passive** method
-    - **Active Method**
-        - *Sudomy* utilize Gobuster tools because of its highspeed performance in carrying out DNS Subdomain Bruteforce attack (wildcard support). The wordlist that is used comes from combined SecList (Discover/DNS) lists which contains around 3 million entries
+## Features!
+##### Até o momento, ***Sudomy*** possui essas 13 features:
+-  Facil, leve, rápido e poderoso. Bash scripts estão disponiveis por padrão em quase todas as distribuições Linux. Usando a feature de multiprocessamento do bash script, usamos todos os processadores distribuindo a carga entre eles, otimizando o processo.
+-  O processo de enumeração de subdomínios pode ser alcançado usando o método **ativo** ou **passivo**.
+    - **Método Ativo**
+        - *Sudomy* utiliza ferramentas Gobuster por conta de sua alta performance na execução de ataques força-bruta em subdomínios em DNS. A wordlist usada vem de uma combinação de listas do SecList que possui cerca de 3 milhões de entradas.
 
-    - **Passive Method**
-        - By **selecting** the **good** third-party sites, the enumeration process can be **optimized**. More results will be obtained with less time required. *Sudomy* can collect data from these  well-curated 20 third-party sites:
+    - **Método Passivo**
+        - **Selecionando bons sites de terceiros**, o processo de enumeração pode ser otimizado. Mais resultados podem ser obtidos em menos tempo. *Sudomy* pode coletar dados destes 20 sites de terceiros:
 
                 https://dnsdumpster.com
                 https://web.archive.org
@@ -35,30 +35,30 @@
                 https://otx.alienvault.com/
                 https://index.commoncrawl.org/
                 https://urlscan.io/
-- Test the list of collected subdomains and probe for working http or https servers. This feature uses a third-party tool, [httprobe](https://github.com/tomnomnom/httprobe "httprobe").
-- Subdomain availability test based on Ping Sweep and/or by getting HTTP status code.
-- The ability to detect virtualhost (several subdomains which resolve to single IP Address). Sudomy will resolve the collected subdomains to IP addresses, then classify them if several subdomains resolve to single IP address. This feature will be very useful for the next penetration testing/bug bounty process. For instance, in port scanning, single IP address won’t be scanned repeatedly
-- Performed port scanning from collected subdomains/virtualhosts IP Addresses
-- Testing Subdomain TakeOver attack
-- Taking Screenshots of subdomains
+- Teste a lista de subdomínios coletados e examine-os para encontrar servidores http e https ativos. Essa feature usa uma extensão chamada [httprobe](https://github.com/tomnomnom/httprobe "httprobe").
+- Teste de disponibilidade de subdomínio utiliza o Ping Sweep e/ou o código HTTP retornado.
+- A capacidade de detectar virtualhost (muitos domínios utilizando somente um endereço de IP). Sudomy irá resolver os subdomínios coletados à endereços de IP, e classifica-los se muitos subdomínios se resolvem em somente um único endereço de IP. Essa feature é bastante útil para o próximo passo durante testes de penetração ou bug bounties. Por exemplo, durante port scanning, um único endereço de IP não vai ser escaniado repetidas vezes.
+- Executa port scanning a partir dos subdmínios coletados ou endereços de IP dos virtualhosts.
+- Testa ataques Subdomain takeover
+- Tira screenshots dos subdomínios
 - Identify technologies on websites
-- Data Collecting/Scraping open port from 3rd party (Default::Shodan), For right now just using Shodan [Future::Censys,Zoomeye]. More efficient and effective to collecting port from list ip on target [[ Subdomain > IP Resolver > Crawling > ASN & Open Port ]]
-- Collecting Juicy URL & Extract URL Parameter ( Resource Default::WebArchive, CommonCrawl, UrlScanIO) 
-- Define path for outputfile (specify an output file when completed) 
-- Report output in HTML & CSV format
+- Coleta dados/Busca portas abertas através de terceiros (Default::Shodan), mas atualmente usa apenas Shodan [Future::Censys, Zoomeye]. Mais eficiente e assertivo em coletar portas através da lista de IP.
+- Coleta Juicy URL & Extrai parametros de URL.
+- Define um caminho para o arquivo de saída. (Especifique o arquivo de saída quando acabar)
+- Gera um report em formatos HTML & CSV.
 
-## How Sudomy Works
-*Sudomy* is using cURL library in order to get the HTTP Response Body from third-party sites to then execute the regular expression to get subdomains. This process fully leverages multi processors, more subdomains will be collected with less time consumption.
+## Como Sudomy funciona
+*Sudomy* esta usando a biblioteca cURL para obter o body das respostas HTTP a partir dos sites terceiros para após isso executar expressões regulares e obter os subdomínios. Esse processo aproveita totalmente todos os processadores e assim mais subdomínios serão coletados em menos tempo.
 
-## Publication
+## Publicação
 - [Sudomy: Information Gathering Tools for Subdomain Enumeration and Analysis](https://iopscience.iop.org/article/10.1088/1757-899X/771/1/012019/meta) -  IOP Conference Series: Materials Science and Engineering, Volume 771, 2nd International Conference on Engineering and Applied Sciences (2nd InCEAS) 16 November 2019, Yogyakarta, Indonesia
 
-## User Guide
-- Offline User Guide : [Sudomy - Subdomain Enumeration and Analysis User Guide v1.0](https://github.com/Screetsec/Sudomy/blob/master/doc/Sudomy%20-%20Subdomain%20Enumeration%20%26%20Analaysis%20User%20Guide%20v1.0.pdf)
-- Online User Guide : [Subdomain Enumeration and Analysis User Guide](https://sudomy.screetsec.web.id/features)
+## Guia do usuário
+- Guia do usuário offline : [Sudomy - Subdomain Enumeration and Analysis User Guide v1.0](https://github.com/Screetsec/Sudomy/blob/master/doc/Sudomy%20-%20Subdomain%20Enumeration%20%26%20Analaysis%20User%20Guide%20v1.0.pdf)
+- Guia do usuário online : [Subdomain Enumeration and Analysis User Guide](https://sudomy.screetsec.web.id/features)
 
-## Comparison
-The following are the results of passive enumeration DNS testing of *Sublist3r, Subfinder*, and *Sudomy*. The domain that is used in this comparison is ***bugcrowd.com***.
+## Comparação
+Abaixo estão os resultados de enumerações passivas em DNS usando *Sublist3r, Subfinder*, e *Sudomy*. O domínio usado para comparação foi o ***bugcrowd.com***.
 
 |  Sudomy | Subfinder   | Sublister |
 | ------------  | ------------ | ------------ |
@@ -69,26 +69,26 @@ Asciinema :
 - [Sudomy](https://asciinema.org/a/260324)
 - [Sublist3r](https://asciinema.org/a/260325)
 
-## Installation
-*Sudomy* is currently extended with the following tools. Instructions on how to install & use the application are linked below.
+## Instalação
+*Sudomy* esta atualmente utilizando as seguintes ferramentas. As instruções de como instala-las & usa-las estão linkadas abaixo.
 
 |  Tools | License  | Info |
 | ------------  | ------------ | ------------ |
-|  [Gobuster](https://github.com/OJ/gobuster) |  Apache License 2.0 | not mandatory
-|  [httprobe](https://github.com/tomnomnom/httprobe/) | Tom Hudson - | mandatory
-|  [nmap](https://github.com/nmap/nmap) | GNU General Public License v2.0 | not mandatory
+|  [Gobuster](https://github.com/OJ/gobuster) |  Apache License 2.0 | Não obrigatório
+|  [httprobe](https://github.com/tomnomnom/httprobe/) | Tom Hudson - | Obrigatório
+|  [nmap](https://github.com/nmap/nmap) | GNU General Public License v2.0 | Não obrigatório
 
-### To Download Sudomy From Github
+### Baixando Sudomy do GitHub
 ```bash
-# Clone this repository
+# Clone o repositório
 git clone --recursive https://github.com/screetsec/Sudomy.git
 ```
 
-### Dependencies
+### Dependências
 ```
 $ pip install -r requirements.txt
 ```
-*Sudomy* requires [jq](https://stedolan.github.io/jq/download/) to run and parse. Information on how to download and install jq can be accessed [here](https://stedolan.github.io/jq/download/)
+*Sudomy* precisa [jq](https://stedolan.github.io/jq/download/) para roda e fazer parse. Informações sobre como baixar e instalar podem ser acessadas [aqui](https://stedolan.github.io/jq/download/)
 
 ```bash
 # Linux
@@ -102,37 +102,37 @@ brew install jq nmap go npm
 npm i -g wappalyzer
 ```
 
-***If you already have a Go environment, then follow this instruction:***
+***Se você já tiver o ambiente Go, então siga essas instruções:***
 
-Add the following lines to ~/.bashrc (Of your user)
+Adicione as seguintes linhas ao seu ~/.bashrc (Do seu usuário)
 ```
 nano ~/.bashrc
 export GOPATH=$HOME/go
 export PATH=$PATH:$GOROOT/bin:$GOPATH/bin
 source ~/.bashrc
 ```
-Then Install the dependencies
+Então instale as dependências
 ```
 go get -u github.com/tomnomnom/httprobe 
 go get -u github.com/OJ/gobuster
 ```
 
-## Running in a Docker Container
+## Rodando dentro de um container Docker
 ```bash
-# Pull an image from DockerHub
+# Dê pull na imagem a partir do DockerHub
 docker pull screetsec/sudomy:v1.1.5-dev
 
-# Run an image, you can run the image on custom directory but you must copy/download config sudomy.api on current directory
+# Rode a imagem. Você pode rodar a imagem de qualquer diretório, mas você deve copiar/baixar a configuração sudomy.api no seu diretório atual.
 docker run -v "${PWD}/output:/usr/lib/sudomy/output" -v "${PWD}/sudomy.api:/usr/lib/sudomy/sudomy.api" -it --rm screetsec/sudomy:v1.1.5-dev [argument]
 
-or define API variable when executed an image.
+ou definir a variável API enquanto estiver executando.
 
 docker run -v "${PWD}/output:/usr/lib/sudomy/output" -e "SHODAN_API=xxxx" -e "VIRUSTOTAL=xxxx" -it --rm screetsec/sudomy:v1.1.5-dev [argument]
 ```
 
-### Post Installation
-API Key is needed before querying on third-party sites, such as ```Shodan, Censys, SecurityTrails, Virustotal,``` and ```BinaryEdge```.
-- The API key setting can be done in sudomy.api file.
+### Pós-Instalação
+A chave da API é necessária antes da busca em sites terceiros, como por exemplo ```Shodan, Censys, SecurityTrails, Virustotal,``` e ```BinaryEdge```.
+- A chave da API pode ser setada no arquivo sudomy.api.
 ```bash
 # Shodan
 # URL :  http://developer.shodan.io
@@ -162,7 +162,7 @@ BINARYEDGE=""
 SECURITY_TRAILS=""
 ```
 
-## Usage
+## Uso
 
 ```text
  ___         _ _  _
@@ -200,31 +200,31 @@ Optional Arguments:
        --html            Make report output into HTML 
 
 ```
-To use all 20 Sources and Probe for working http or https servers:
+Para usar todas as 20 fontes de busca por servidores http or https:
 ```
 $ sudomy -d hackerone.com
 ```
-To use one or more source:
+Para usar uma ou mais fontes:
 ```
 $ sudomy -s shodan,dnsdumpster,webarchive -d hackerone.com
 ```
-To use one or more plugins:
+Para usar um ou mais plugins:
 ```
 $ sudomy -pS -sC -sS -d hackerone.com
 ```
-To use all plugins: testing host status, http/https status code, subdomain takeover and screenshots. 
+Para usar todos os plugins: testar status do host, http/https status code, subdomain takeover and screenshots. 
 
-Nmap,Gobuster and wappalyzer Not Included.
+Nmap,Gobuster e wappalyzer não estão incluídos.
 ```
 $ sudomy --all -d hackerone.com
 ```
 
-To create report in HTML Format
+Para criar um report em formato HTML
 ```
 $ sudomy --all -d hackerone.com --html
 ```
 
-HTML Report Sample:
+Exemplo de report HTML:
 
 | Dashboard	| Reports	|
 | ------------  | ------------ |
@@ -232,21 +232,21 @@ HTML Report Sample:
 
 
 
-## Tools Overview
+## Overview das Ferramentas
 - Youtube Videos : Click [here](http://www.youtube.com/watch?v=DpXIBUtasn0)
 
 
-## Translations
-- [Indonesia](https://github.com/Screetsec/Sudomy/blob/master/doc/README_ID.md)
-- [English](https://github.com/Screetsec/Sudomy/blob/master/doc/README_EN.md)
-- [Portuguese - Brazil](https://github.com/Screetsec/Sudomy/blob/master/doc/README_PT_BR.md)
+## Traduções
+- Indonesia
+- English
+- Portuguese - Brazil
 
 
 ## Changelog
-All notable changes to this project will be documented in this [file](https://github.com/Screetsec/sudomy/blob/master/CHANGELOG.md).
+Qualquer mudança importante neste projeto será documentada neste [arquivo](https://github.com/Screetsec/sudomy/blob/master/CHANGELOG.md).
 
 
-## Credits & Thanks
+## Créditos & Agradecimentos
 - [Tom Hudson](https://github.com/tomnomnom/) - Tomonomnom
 - [OJ Reeves](https://github.com/OJ/) - Gobuster
 - [Thomas D Maaaaz](https://github.com/maaaaz) - Webscreenshot
