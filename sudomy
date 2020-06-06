@@ -353,17 +353,17 @@ echo -e "\n${BOLD}[${LCYAN}⍥${RESET}${BOLD}]${RESET} Perfoming Sud⍥my scans 
 
 # pkg httprobe, checking in local system and if not have try setup pkg to local system /usr/local/bin
 command -v ${_HTTPROBE} > /dev/null 2>&1 || { 
-	 echo -e "${BOLD}${PADDING}${PADDING}- ${YELLOW}Warning: ${RESET}require ${RED}${_HTTPROBE}${RESET} but it's is not installed.${GREEN}Trying to setup${RESET} pkg_${_HTTPROBE} " >&2; cp -r ${PKG_HTTPROBE} /usr/local/bin/; }
+	 echo -e "${BOLD}${PADDING}${PADDING}- ${YELLOW}Warning: ${RESET}require ${RED}${_HTTPROBE}${RESET} but it's is not installed.${GREEN}Trying to setup${RESET} pkg_${_HTTPROBE} " >&2; chmod +x ${PKG_HTTPROBE}; cp -r ${PKG_HTTPROBE} /usr/local/bin/; }
 # pkg httpx, checking in local system and if not have try  setup pkg to local system /usr/local/bin
 command -v ${_HTTPX} > /dev/null 2>&1 || {
-	 echo -e "${BOLD}${PADDING}${PADDING}- ${YELLOW}Warning: ${RESET}require ${RED}${_HTTPX}${RESET} but it's is not installed.${GREEN}Trying to setup${RESET} pkg_${_HTTPX} " >&2; cp -r ${PKG_HTTPX} /usr/local/bin/; }
+	 echo -e "${BOLD}${PADDING}${PADDING}- ${YELLOW}Warning: ${RESET}require ${RED}${_HTTPX}${RESET} but it's is not installed.${GREEN}Trying to setup${RESET} pkg_${_HTTPX} " >&2; chmod +x ${PKG_HTTPX}; cp -r ${PKG_HTTPX} /usr/local/bin/; }
 # pkg dnsprobe, checking in local system and if not have try setup pkg to local system /usr/local/bin
 command -v ${_DNSPROBE} > /dev/null 2>&1 || {
-         echo -e "${BOLD}${PADDING}${PADDING}- ${YELLOW}Warning: ${RESET}require ${RED}${_DNSPROBE}${RESET} but it's is not installed.${GREEN}Trying to setup${RESET} pkg_${_HTTPX} " >&2; cp -r ${PKG_DNSPROBE} /usr/local/bin/; }
+         echo -e "${BOLD}${PADDING}${PADDING}- ${YELLOW}Warning: ${RESET}require ${RED}${_DNSPROBE}${RESET} but it's is not installed.${GREEN}Trying to setup${RESET} pkg_${_HTTPX} " >&2; chmod +x ${PKG_DNSPROBE}; cp -r ${PKG_DNSPROBE} /usr/local/bin/; }
 
 # pkg gobuster, checking in local system and if not have try setup pkg to local system /usr/local/bin
 command -v ${_GOBUSTER} > /dev/null 2>&1 || {
-         echo -e "${BOLD}${PADDING}${PADDING}- ${YELLOW}Warning: ${RESET}require ${RED}${_GOBUSTER}${RESET} but it's is not installed.${GREEN}Trying to setup${RESET} pkg_${_GOBUSTER} " >&2; cp -r ${PKG_GOBUSTER} /usr/local/bin/; }
+         echo -e "${BOLD}${PADDING}${PADDING}- ${YELLOW}Warning: ${RESET}require ${RED}${_GOBUSTER}${RESET} but it's is not installed.${GREEN}Trying to setup${RESET} pkg_${_GOBUSTER} " >&2; chmod +x ${PKG_GOBUSTER}: cp -r ${PKG_GOBUSTER} /usr/local/bin/; }
 
 
 echo -e "\n${BOLD}[${LBLUE}*${RESET}${BOLD}]${RESET} Load target domain: ${LGREEN}${DOMAIN}${RESET}  "
