@@ -1,12 +1,12 @@
 # Sudomy
-[![License](https://img.shields.io/badge/license-MIT-red.svg)](https://github.com/Screetsec/Sudomy/blob/master/LICENSE.md)  [![Build Status](https://travis-ci.org/Screetsec/Sudomy.svg?branch=master)](https://travis-ci.org/Screetsec/Sudomy)  [![Version](https://img.shields.io/badge/Release-1.1.5-blue.svg?maxAge=259200)]()  [![Build](https://img.shields.io/badge/Supported_OS-Linux-yellow.svg)]()  [![Build](https://img.shields.io/badge/Supported_WSL-Windows-blue.svg)]() [![Contributions Welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/screetsec/sudomy/issues)  [![Youtube](https://img.shields.io/badge/Youtube-Demo-red.svg)](https://www.youtube.com/watch?v=DpXIBUtasn0)
+[![License](https://img.shields.io/badge/license-MIT-red.svg)](https://github.com/Screetsec/Sudomy/blob/master/LICENSE.md)  [![Build Status](https://travis-ci.org/Screetsec/Sudomy.svg?branch=master)](https://travis-ci.org/Screetsec/Sudomy)  [![Version](https://img.shields.io/badge/Release-1.1.6-blue.svg?maxAge=259200)]()  [![Build](https://img.shields.io/badge/Supported_OS-Linux-yellow.svg)]()  [![Build](https://img.shields.io/badge/Supported_WSL-Windows-blue.svg)]() [![Contributions Welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/screetsec/sudomy/issues)  [![Youtube](https://img.shields.io/badge/Youtube-Demo-red.svg)](https://www.youtube.com/watch?v=DpXIBUtasn0)
 ### Subdomain Enumeration & Analysis
 ![ff](https://user-images.githubusercontent.com/17976841/63212795-b8d57300-c133-11e9-882a-f604d67819cc.png)
 
 ***Sudomy*** is a subdomain enumeration tool, created using a bash script, to analyze domains and collect subdomains in fast and comprehensive way.
 
 ## Features !
-##### For recent time, ***Sudomy*** has these 13 features:
+##### For recent time, ***Sudomy*** has these 15 features:
 -  Easy, light, fast and powerful. Bash script is available by default in almost all Linux distributions. By using bash script multiprocessing feature, all processors will be utilized optimally.
 -  Subdomain enumeration process can be achieved by using **active** method or **passive** method
     - **Active Method**
@@ -42,6 +42,8 @@
 - Testing Subdomain TakeOver attack
 - Taking Screenshots of subdomains
 - Identify technologies on websites
+- Detection urls, ports, title, content-length, status-code, response-body probbing.
+- Smart auto fallback from https to http as default.
 - Data Collecting/Scraping open port from 3rd party (Default::Shodan), For right now just using Shodan [Future::Censys,Zoomeye]. More efficient and effective to collecting port from list ip on target [[ Subdomain > IP Resolver > Crawling > ASN & Open Port ]]
 - Collecting Juicy URL & Extract URL Parameter ( Resource Default::WebArchive, CommonCrawl, UrlScanIO) 
 - Define path for outputfile (specify an output file when completed) 
@@ -55,7 +57,7 @@
 
 ## User Guide
 - Offline User Guide : [Sudomy - Subdomain Enumeration and Analysis User Guide v1.0](https://github.com/Screetsec/Sudomy/blob/master/doc/Sudomy%20-%20Subdomain%20Enumeration%20%26%20Analaysis%20User%20Guide%20v1.0.pdf)
-- Online User Guide : [Subdomain Enumeration and Analysis User Guide](https://sudomy.screetsec.web.id/features)
+- Online User Guide : [Subdomain Enumeration and Analysis User Guide](https://sudomy.screetsec.web.id/features) - Up to date
 
 ## Comparison
 The following are the results of passive enumeration DNS testing of *Sublist3r, Subfinder*, and *Sudomy*. The domain that is used in this comparison is ***bugcrowd.com***.
@@ -93,28 +95,13 @@ $ pip install -r requirements.txt
 ```bash
 # Linux
 apt-get update
-apt-get install jq nmap phantomjs golang npm
+apt-get install jq nmap phantomjs npm
 npm i -g wappalyzer
 
 # Mac
 brew cask install phantomjs 
-brew install jq nmap go npm
+brew install jq nmap npm
 npm i -g wappalyzer
-```
-
-***If you already have a Go environment, then follow this instruction:***
-
-Add the following lines to ~/.bashrc (Of your user)
-```
-nano ~/.bashrc
-export GOPATH=$HOME/go
-export PATH=$PATH:$GOROOT/bin:$GOPATH/bin
-source ~/.bashrc
-```
-Then Install the dependencies
-```
-go get -u github.com/tomnomnom/httprobe 
-go get -u github.com/OJ/gobuster
 ```
 
 ## Running in a Docker Container
@@ -196,8 +183,11 @@ Optional Arguments:
   -nT, --nmap-top        Port scanning with top-ports using nmap from domain list
   -sS, --screenshot      Screenshots a list of website
   -nP, --no-passive      Do not perform passive subdomain enumeration 
+       --httpx           Perform httpx multiple probers using retryablehttp 
+       --dnsprobe        Perform multiple dns queries (dnsprobe) 
        --no-probe        Do not perform httprobe 
        --html            Make report output into HTML 
+
 
 ```
 To use all 20 Sources and Probe for working http or https servers:
@@ -249,6 +239,7 @@ All notable changes to this project will be documented in this [file](https://gi
 ## Credits & Thanks
 - [Tom Hudson](https://github.com/tomnomnom/) - Tomonomnom
 - [OJ Reeves](https://github.com/OJ/) - Gobuster
+- [ProjectDiscovery](https://github.com/projectdiscovery) - Security Through Intelligent Automation
 - [Thomas D Maaaaz](https://github.com/maaaaz) - Webscreenshot
 - [christophetd](https://github.com/christophetd/censys-subdomain-finder) - Censys
 - [Daniel Miessler](https://github.com/danielmiessler/) - SecList
@@ -256,5 +247,5 @@ All notable changes to this project will be documented in this [file](https://gi
 - [jerukitumanis](https://github.com/myugan) - Docker Maintainer
 - [NgeSEC](https://ngesec.id/) - Community
 - [Zerobyte](http://zerobyte.id/) - Community
-- [Gauli(dot)Net](https://gauli.net/)
+- [Gauli(dot)Net](https://gauli.net/) - Lab Hacking Indonesia
 - [Bugcrowd](https://www.bugcrowd.com/) & [Hackerone](https://www.hackerone.com/)
