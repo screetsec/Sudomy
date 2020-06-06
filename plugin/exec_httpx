@@ -1,0 +1,32 @@
+#-Metadata----------------------------------------------------#
+#  Filename: Sudomy - Subdomain Enumeration & Analysis        #
+#-Author(s)---------------------------------------------------#
+#  Edo maland ~ @screetsec                                    #
+#-Info--------------------------------------------------------#
+#  This file is part of Sudomy project                        #
+#  Plugin htt[x: Update = 2020-06-06                          #
+#-Licence-----------------------------------------------------#
+#  MIT License ~ http://opensource.org/licenses/MIT           #
+#-------------------------------------------------------------#
+
+
+function exec_httpx(){
+          which ${_HTTPX} > /dev/null
+             if  [[ "$?" -eq "0" ]];then
+                 echo -e "\n${BOLD}[${LGREEN}+${RESET}${BOLD}]${RESET} Multiple probers use retryablehttp httpx "
+                   echo -e "---------------------------------------------\n"
+		   echo -e  "\n${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}Execute ${RESET}\n"
+
+
+		# Default Thread 50 
+		# You Can edit the argument here for httpx
+		    cat ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_SUBDOMAIN} | ${_HTTPX} --silent -title -content-length -status-code -o ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_HTTPX} | sed -e 's/^/\t - /'
+        else 
+               echo -e "\n${BOLD}[${LGREEN}+${RESET}${BOLD}]${RESET} Multiple probers using retryablehttp (httpx) "
+               echo -e "---------------------------------------------\n"
+               echo -e "${PADDING}${RESET}${PADDING}${LRED}x${RESET} This Plugin need httpx, ${RED} running the tools again${RESET}"
+
+        fi
+
+
+}
