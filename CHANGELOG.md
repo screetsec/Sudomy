@@ -68,3 +68,15 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 	- Remove The engine (Third-party sites) to new folder for easy fixing & patch
 	- Update Docker Images - Sudomy 1.1.5#dev
 
+## [1.1.6] - 2020-06-06
+ - Update
+	- Added binary 3rd pkg to lib/bin for easy management/handling
+        - Added New Plugin httpx  
+		- Detection urls, ports, title, content-length, status-code, response-body probbing.
+		- Smart auto fallback from https to http as default.
+
+        - Added New Plugin dnsprobe                
+                - Detection urls, ports, title, content-length, status-code, response-body probbing.
+                - Smart auto fallback from https to http as default.
+
+	- Remove the Plugin to new folder for easy fixing, update & path
