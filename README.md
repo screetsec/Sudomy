@@ -230,6 +230,13 @@ HTML Report Sample:
 All notable changes to this project will be documented in this [file](https://github.com/Screetsec/sudomy/blob/master/CHANGELOG.md).
 
 
+
+## Alternative Best Tool - Subdomain Enumeration
+- [Subfinder](https://github.com/projectdiscovery/subfinder) - Projectdiscovery
+- [Sublist3r](https://github.com/aboul3la/Sublist3r) - aboul3la
+- [Findomain](https://github.com/Edu4rdSHL/findomain) - Edu4rdSHL
+- [Amass)](https://github.com/OWASP/Amass) - OWASP
+
 ## Credits & Thanks
 - [Tom Hudson](https://github.com/tomnomnom/) - Tomonomnom
 - [OJ Reeves](https://github.com/OJ/) - Gobuster
