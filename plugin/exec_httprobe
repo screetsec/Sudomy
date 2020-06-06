@@ -1,0 +1,33 @@
+#-Metadata----------------------------------------------------#
+#  Filename: Sudomy - Subdomain Enumeration & Analysis        #
+#-Author(s)---------------------------------------------------#
+#  Edo maland ~ @screetsec                                    #
+#-Info--------------------------------------------------------#
+#  This file is part of Sudomy project                        #
+#  Plugin httprobe: Update = 2020-06-06                       #
+#-Licence-----------------------------------------------------#
+#  MIT License ~ http://opensource.org/licenses/MIT           #
+#-------------------------------------------------------------#
+
+
+function exec_httprobe(){
+          which ${_HTTPROBE} > /dev/null
+             if  [[ "$?" -eq "0" ]];then
+                 echo -e "\n${BOLD}[${LGREEN}+${RESET}${BOLD}]${RESET} Probe subdomain for working on http/https   "
+                   echo -e "---------------------------------------------\n"
+                    cat ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_SUBDOMAIN} | ${_HTTPROBE} > ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_HTTPROBE} & 
+                    
+                    #Print
+
+                     cat ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_SUBDOMAIN} | ${_HTTPROBE} | sed -e 's/^/\t - /'
+                     wait 
+                        COUNT=$(cat ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_HTTPROBE} | wc  -l  )
+                        echo -e  "\n${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}Total ${RESET}${DPADDING}\t\t[${GREEN}${COUNT}${RESET}]\n"
+                     #cat ${OUT_GOBUSTER} | awk '{print $2}' > ${RESULT_GOBUSTER} ; rm -rf ${OUT_GOBUSTER}
+        else 
+	       echo -e "\n${BOLD}[${LGREEN}+${RESET}${BOLD}]${RESET} Probe subdomain for working on http/https   "
+               echo -e "---------------------------------------------\n"
+               echo -e "${PADDING}${RESET}${PADDING}${LRED}x${RESET} This Plugin need httprobe, ${RED}install it${RESET}"
+
+        fi
+}

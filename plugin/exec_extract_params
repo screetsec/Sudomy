@@ -1,0 +1,63 @@
+#-Metadata----------------------------------------------------#
+#  Filename: Sudomy - Subdomain Enumeration & Analysis        #
+#-Author(s)---------------------------------------------------#
+#  Edo maland ~ @screetsec                                    #
+#-Info--------------------------------------------------------#
+#  This file is part of Sudomy project                        #
+#  Plugin Extract param : Update = 2020-06-06                 #
+#-Licence-----------------------------------------------------#
+#  MIT License ~ http://opensource.org/licenses/MIT           #
+#-------------------------------------------------------------#
+
+
+function exec_extract_params(){
+# Clean Old File
+rm -r ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_EXTRACT_PARAM_FULL} ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_EXTRACT_PARAM_UNIQ} > /dev/null 2>&1
+
+# Collecting RAW 
+cat ${OUT}/*.raw > ${OUT_JUICY_URL_RAW}
+	if [[ -f ${OUT_JUICY_URL_RAW} ]]; then #Check Full Raw Data 
+		echo -ne "\n${BOLD}[${LGREEN}+${RESET}${BOLD}]${RESET} Collecting URL Parameter from Engine \n"  ## 
+		echo -e "---------------------------------------------\n"  
+		cat ${OUT_JUICY_URL_RAW} | grep -P "=" | sed  "/\b\(jpg\|png\|js\|svg\|css\|gif\|jpeg\|woff\|woff2\)\b/d" > ${OUT_PARAM_URL_PARSING} 
+			for i in $(cat ${OUT_PARAM_URL_PARSING}); do
+				URL="${i}"
+				LIST_DOM=(${URL//[=&]/=FUZZ&})
+					#echo "${URL}"
+					echo ${LIST_DOM} | awk -F'=' -vOFS='=' '{$NF="FUZZ"}1;' >> ${OUT}/${RESULT_EXTRACT_PARAM}
+			done
+		# Remove Raw Data  
+		# rm -r ${OUT_RAW_WEBARCHIVE} ${OUT_RAW_WEBARCHIVE_PARS} > /dev/null 2>&1
+
+		# Make another output, Sorting Duplicate Parameter
+		sort -u ${OUT}/${RESULT_EXTRACT_PARAM} > ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_EXTRACT_PARAM_UNIQ} 
+
+		# Full URL Paramaeter no parsing
+		mv ${OUT_PARAM_URL_PARSING} ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_EXTRACT_PARAM_FULL}
+
+		# Full Juicy URL 
+
+		mv ${OUT_JUICY_URL_RAW} ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_JUICY_URL_FULL}
+
+		# Count & Print Output
+		COUNT_JUICY_URL_FULL=$(cat ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_JUICY_URL_FULL} | wc -l)
+		COUNT_URL_PARAM_FULL=$(cat ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_EXTRACT_PARAM_FULL} | wc -l )
+		COUNT_URL_PARAM_UNIQ=$(cat ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_EXTRACT_PARAM_UNIQ} | wc -l )
+		
+		echo -e  "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}Total Juicy URL${RESET}${DPADDING}\t[${GREEN}${COUNT_JUICY_URL_FULL}${RESET}]"
+		echo -e  "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}Total Full Parameter${RESET}${DPADDING}[${GREEN}${COUNT_URL_PARAM_FULL}${RESET}]"
+		echo -e  "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}Total Uniq Parameter${RESET}${DPADDING}[${GREEN}${COUNT_URL_PARAM_UNIQ}${RESET}]"
+
+		#mv ${OUT_RAW_WEBARCHIVE_PARS} ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_EXTRACT_PARAM}
+                #cat ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_EXTRACT_PARAM_UNIQ} \
+		# | while read VERBOSE; do
+                #	echo -e ${YELLOW}"\t - ${RESET}$VERBOSE"
+       		#   done
+		#echo -e  "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}Total ${RESET}${DPADDING}\t\t[${GREEN}${COUNT_URL_PARAM_UNIQ}${RESET}]\n"
+	else
+		echo -e "\n${BOLD}[${LGREEN}+${RESET}${BOLD}]${RESET} Collecting URL Parameter from Engine   "
+                echo -e "---------------------------------------------\n"
+                echo -e  "${PADDING}${RED}${PADDING}!${PADDING}${RESET}Please, run it again with source WebArchive,CommonCrawl,UrlScan${RESET}\t[${RED}FAIL${RESET}]\n"
+
+	fi
+}

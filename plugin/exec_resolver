@@ -1,0 +1,42 @@
+#-Metadata----------------------------------------------------#
+#  Filename: Sudomy - Subdomain Enumeration & Analysis        #
+#-Author(s)---------------------------------------------------#
+#  Edo maland ~ @screetsec                                    #
+#-Info--------------------------------------------------------#
+#  This file is part of Sudomy project                        #
+#  Plugin Resolver: Update = 2020-06-06                       #
+#-Licence-----------------------------------------------------#
+#  MIT License ~ http://opensource.org/licenses/MIT           #
+#-------------------------------------------------------------#
+
+
+
+function exec_resolver(){
+
+	echo -e "\n${BOLD}[${LGREEN}+${RESET}${BOLD}]${RESET} Check Resolving: Subdomains & Domains  "
+	echo -e "---------------------------------------------\n"
+	TMP_RESOL=temp_resolver.lst
+	
+	for SUB_RESOLV in $(cat ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_SUBDOMAIN}) 
+	do
+	    RESOLVER=$(dig +short ${SUB_RESOLV} |grep -oE "\b([0-9]{1,3}\.){3}[0-9]{1,3}\b"|head -1)
+	    if [[ -n "${RESOLVER}" ]];
+	    then
+	        echo -e "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}Resolving domains to:${LGREEN} ${RESOLVER} ${RESET}"		## INFO
+		echo -e "${SUB_RESOLV} = ${RESOLVER} " | tee -a ${OUT}/${DATE_LOG}/${DOMAIN}/${TMP_RESOL} > /dev/null 2>&1	## Temporary for pars
+		echo -e "${RESOLVER}" |  tee -a ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_IP_RESOLVER} > /dev/null 2>&1		## Host for parsing
+		echo -e "${SUB_RESOLV} ${RESOLVER}" | tee -a ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_SUB_TABLE} > /dev/null 2>&1  ## For pars html table
+	    else
+		echo -e "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}Resolving${RESET} domains to: ${RED}RESOLVE ERROR ${RESET}"
+	    fi
+		done
+	
+	   #Resolver IP = Subdomain {pars}	
+	   	awk '{ if (a[$3]) a[$3] = a[$3]"\n - "$1; else a[$3] ="\n - "$1;} END { for (i in a) print i, a[i]}'  < ${OUT}/${DATE_LOG}/${DOMAIN}/${TMP_RESOL} >  ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_SUB_RESOLVER}
+		rm -r ${OUT}/${DATE_LOG}/${DOMAIN}/${TMP_RESOL} > /dev/null 2>&1
+		sort -u -o ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_IP_RESOLVER} ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_IP_RESOLVER} ## Pars duplicate resolver ip
+	
+	  ## Make more pretty
+	  cat ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_SUB_TABLE} | sed 's/ / ,/g' | column -t -s, > ${OUT}/${DATE_LOG}/${DOMAIN}/${FINAL_SUBDOMAIN_REV_ALL}
+    rm -r ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_SUB_TABLE} > /dev/null 2>&1
+}
