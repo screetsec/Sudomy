@@ -76,7 +76,6 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 		- Smart auto fallback from https to http as default.
 
         - Added New Plugin dnsprobe                
-                - Detection urls, ports, title, content-length, status-code, response-body probbing.
-                - Smart auto fallback from https to http as default.
+                - Perform multiple dns queries of your choice with a list of user supplied resolvers
 
 	- Remove the Plugin to new folder for easy fixing, update & path
