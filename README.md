@@ -101,14 +101,14 @@ npm i -g wappalyzer
 ## Running in a Docker Container
 ```bash
 # Pull an image from DockerHub
-docker pull screetsec/sudomy:v1.1.5-dev
+docker pull screetsec/sudomy:v1.1.6-dev
 
 # Run an image, you can run the image on custom directory but you must copy/download config sudomy.api on current directory
-docker run -v "${PWD}/output:/usr/lib/sudomy/output" -v "${PWD}/sudomy.api:/usr/lib/sudomy/sudomy.api" -it --rm screetsec/sudomy:v1.1.5-dev [argument]
+docker run -v "${PWD}/output:/usr/lib/sudomy/output" -v "${PWD}/sudomy.api:/usr/lib/sudomy/sudomy.api" -it --rm screetsec/sudomy:v1.1.6-dev [argument]
 
 or define API variable when executed an image.
 
-docker run -v "${PWD}/output:/usr/lib/sudomy/output" -e "SHODAN_API=xxxx" -e "VIRUSTOTAL=xxxx" -it --rm screetsec/sudomy:v1.1.5-dev [argument]
+docker run -v "${PWD}/output:/usr/lib/sudomy/output" -e "SHODAN_API=xxxx" -e "VIRUSTOTAL=xxxx" -it --rm screetsec/sudomy:v1.1.6-dev [argument]
 ```
 
 ### Post Installation
