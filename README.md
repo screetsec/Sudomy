@@ -74,12 +74,6 @@ Asciinema :
 ## Installation
 *Sudomy* is currently extended with the following tools. Instructions on how to install & use the application are linked below.
 
-|  Tools | License  | Info |
-| ------------  | ------------ | ------------ |
-|  [Gobuster](https://github.com/OJ/gobuster) |  Apache License 2.0 | not mandatory
-|  [httprobe](https://github.com/tomnomnom/httprobe/) | Tom Hudson - | mandatory
-|  [nmap](https://github.com/nmap/nmap) | GNU General Public License v2.0 | not mandatory
-
 ### To Download Sudomy From Github
 ```bash
 # Clone this repository
