@@ -20,7 +20,7 @@ cat ${OUT}/*.raw > ${OUT_JUICY_URL_RAW}
 		echo -ne "\n${BOLD}[${LGREEN}+${RESET}${BOLD}]${RESET} Collecting URL Parameter from Engine \n"  ## 
 		echo -e "---------------------------------------------\n"  
 		cat ${OUT_JUICY_URL_RAW} | grep -P "=" | sed  "/\b\(jpg\|png\|js\|svg\|css\|gif\|jpeg\|woff\|woff2\)\b/d" | \
-		egrep -iv "\?utm_(source|campaign|content|medium)=|\?fbclid=|\?gclid=|\?dclid=|\?mscklid=|\?zanpid=|\?gclsrc=|\?af_(ios|android)_url=|\?> \
+		egrep -iv "\?utm_(source|campaign|content|medium)=|\?fbclid=|\?gclid=|\?dclid=|\?mscklid=|\?zanpid=|\?gclsrc=|\?af_(ios|android)_url=|\?af_force_deeplink=|\?af_web_dp=|\?is_retargeting=|\?af_(dp|esp)=" \
 		> ${OUT_PARAM_URL_PARSING} 
 			for i in $(cat ${OUT_PARAM_URL_PARSING}); do
 				URL="${i}"
