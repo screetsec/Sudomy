@@ -1,5 +1,6 @@
 # Sudomy
-[![License](https://img.shields.io/badge/license-MIT-red.svg)](https://github.com/Screetsec/Sudomy/blob/master/LICENSE.md)  [![Build Status](https://travis-ci.org/Screetsec/Sudomy.svg?branch=master)](https://travis-ci.org/Screetsec/Sudomy)  [![Version](https://img.shields.io/badge/Release-1.1.5-blue.svg?maxAge=259200)]()  [![Build](https://img.shields.io/badge/Supported_OS-Linux-yellow.svg)]()  [![Build](https://img.shields.io/badge/Supported_WSL-Windows-blue.svg)]() [![Contributions Welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/screetsec/sudomy/issues)  [![Youtube](https://img.shields.io/badge/Youtube-Demo-red.svg)](https://www.youtube.com/watch?v=DpXIBUtasn0)
+[![License](https://img.shields.io/badge/license-MIT-red.svg)](https://github.com/Screetsec/Sudomy/blob/master/LICENSE.md)  [![Build Status](https://travis-ci.org/Screetsec/Sudomy.svg?branch=master)](https://travis-ci.org/Screetsec/Sudomy) [![Version](https://img.shields.io/badge/Release-1.1.6-blue.svg?maxAge=259200)]() ![Docker Image Version (latest by date)](https://img.shields.io/docker/v/screetsec/sudomy?label=docker%20tags) ![Docker Image Size (latest by date)](https://img.shields.io/docker/image-size/screetsec/sudomy) ![Docker Pulls](https://img.shields.io/docker/pulls/screetsec/sudomy)
+ [![Build](https://img.shields.io/badge/Supported_OS-Linux-yellow.svg)]()  [![Build](https://img.shields.io/badge/Supported_WSL-Windows-blue.svg)]() [![Contributions Welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/screetsec/sudomy/issues)  [![Youtube](https://img.shields.io/badge/Youtube-Demo-red.svg)](https://www.youtube.com/watch?v=DpXIBUtasn0)
 ### Subdomain Enumeration & Analysis
 ![ff](https://user-images.githubusercontent.com/17976841/63212795-b8d57300-c133-11e9-882a-f604d67819cc.png)
 
@@ -117,17 +118,16 @@ go get -u github.com/tomnomnom/httprobe
 go get -u github.com/OJ/gobuster
 ```
 
-## Running in a Docker Container
+## Running via Docker
+
+Please see available tags on the badges.
+
 ```bash
 # Pull an image from DockerHub
-docker pull screetsec/sudomy:v1.1.5-dev
+docker pull screetsec/sudomy:v1.1.6
 
-# Run an image, you can run the image on custom directory but you must copy/download config sudomy.api on current directory
-docker run -v "${PWD}/output:/usr/lib/sudomy/output" -v "${PWD}/sudomy.api:/usr/lib/sudomy/sudomy.api" -it --rm screetsec/sudomy:v1.1.5-dev [argument]
-
-or define API variable when executed an image.
-
-docker run -v "${PWD}/output:/usr/lib/sudomy/output" -e "SHODAN_API=xxxx" -e "VIRUSTOTAL=xxxx" -it --rm screetsec/sudomy:v1.1.5-dev [argument]
+# You can run the image on custom directory, you can define the API via environment argument
+docker run -v "${PWD}/output:/usr/lib/sudomy/output" -e "SHODAN_API=xxxx" -e "CENSYS_API=xxx" -it --rm screetsec/sudomy:v1.1.6 [argument]
 ```
 
 ### Post Installation
@@ -257,3 +257,4 @@ All notable changes to this project will be documented in this [file](https://gi
 - [Zerobyte](http://zerobyte.id/) - Community
 - [Gauli(dot)Net](https://gauli.net/)
 - [Bugcrowd](https://www.bugcrowd.com/) & [Hackerone](https://www.hackerone.com/)
+
