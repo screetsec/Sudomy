@@ -120,14 +120,14 @@ go get -u github.com/OJ/gobuster
 ## Rodando dentro de um container Docker
 ```bash
 # Dê pull na imagem a partir do DockerHub
-docker pull screetsec/sudomy:v1.1.5-dev
+docker pull screetsec/sudomy:v1.1.6
 
 # Rode a imagem. Você pode rodar a imagem de qualquer diretório, mas você deve copiar/baixar a configuração sudomy.api no seu diretório atual.
-docker run -v "${PWD}/output:/usr/lib/sudomy/output" -v "${PWD}/sudomy.api:/usr/lib/sudomy/sudomy.api" -it --rm screetsec/sudomy:v1.1.5-dev [argument]
+docker run -v "${PWD}/output:/usr/lib/sudomy/output" -v "${PWD}/sudomy.api:/usr/lib/sudomy/sudomy.api" -it --rm screetsec/sudomy:v1.1.6 [argument]
 
 ou definir a variável API enquanto estiver executando.
 
-docker run -v "${PWD}/output:/usr/lib/sudomy/output" -e "SHODAN_API=xxxx" -e "VIRUSTOTAL=xxxx" -it --rm screetsec/sudomy:v1.1.5-dev [argument]
+docker run -v "${PWD}/output:/usr/lib/sudomy/output" -e "SHODAN_API=xxxx" -e "VIRUSTOTAL=xxxx" -it --rm screetsec/sudomy:v1.1.6 [argument]
 ```
 
 ### Pós-Instalação
