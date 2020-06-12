@@ -94,12 +94,12 @@ $ pip install -r requirements.txt
 # Linux
 apt-get update
 apt-get install jq nmap phantomjs golang npm
-npm i -g wappalyzer
+npm i -g wappalyzer wscat
 
 # Mac
 brew cask install phantomjs 
 brew install jq nmap go npm
-npm i -g wappalyzer
+npm i -g wappalyzer wscat
 ```
 
 ***Se você já tiver o ambiente Go, então siga essas instruções:***
@@ -214,7 +214,7 @@ $ sudomy -pS -sC -sS -d hackerone.com
 ```
 Para usar todos os plugins: testar status do host, http/https status code, subdomain takeover and screenshots. 
 
-Nmap,Gobuster e wappalyzer não estão incluídos.
+Nmap,Gobuster,wappalyzer e wscat não estão incluídos.
 ```
 $ sudomy --all -d hackerone.com
 ```

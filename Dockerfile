@@ -24,9 +24,9 @@ ENV SHODAN_API="" CENSYS_API="" CENSYS_SECRET="" VIRUSTOTAL="" BINARYEDGE="" SEC
 
 RUN apk del make musl-dev gcc && \
     rm -rf /var/cache/apk/* && \
-    # Install wappalyzer
+    # Install wappalyzer & wscat
     npm config set unsafe-perm true && \
-    npm i -g wappalyzer && \
+    npm i -g wappalyzer wscat && \
     git clone https://github.com/Screetsec/Sudomy.git /usr/lib/sudomy
 
 WORKDIR /usr/lib/sudomy

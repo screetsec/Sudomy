@@ -90,12 +90,12 @@ $ pip install -r requirements.txt
 # Linux
 apt-get update
 apt-get install jq nmap phantomjs npm
-npm i -g wappalyzer
+npm i -g wappalyzer wscat
 
 # Mac
 brew cask install phantomjs 
 brew install jq nmap npm
-npm i -g wappalyzer
+npm i -g wappalyzer wscat
 ```
 
 ## Running in a Docker Container
@@ -198,7 +198,7 @@ $ sudomy -pS -sC -sS -d hackerone.com
 ```
 To use all plugins: testing host status, http/https status code, subdomain takeover and screenshots. 
 
-Nmap,Gobuster and wappalyzer Not Included.
+Nmap,Gobuster,wappalyzer and wscat Not Included.
 ```
 $ sudomy --all -d hackerone.com
 ```
