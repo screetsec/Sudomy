@@ -80,6 +80,7 @@ goBanner;
  echo -e "${PADDING}${BOLD}-dP,${RESET} --db-port\t Collecting port from 3rd Party default=shodan"
  echo -e "${PADDING}${BOLD}-eP,${RESET} --extract-params\t Collecting URL Parameter from Engine"
  echo -e "${PADDING}${BOLD}-tO,${RESET} --takeover\t Subdomain TakeOver Vulnerabilty Scanner"
+ echo -e "${PADDING}${BOLD}-wS,${RESET} --websocket\t WebSocket Connection Check"
  echo -e "${PADDING}${BOLD}-pS,${RESET} --ping-sweep\t Check live host using methode Ping Sweep"
  echo -e "${PADDING}${BOLD}-rS,${RESET} --resolver\t Convert domain lists to resolved IP lists without duplicates"
  echo -e "${PADDING}${BOLD}-sC,${RESET} --status-code\t Get status codes, response from domain list"
@@ -179,6 +180,11 @@ args="${1}";
 
         "-to"|"--takeover")
             PLUGIN_TAKEOVER=true
+            shift
+        ;;
+
+        "-ws"|"--websocket")
+            PLUGIN_WEBSOCKET=true
             shift
         ;;
 
@@ -963,6 +969,12 @@ if [[ ${PLUGIN_DOMAIN_SCREENSHOTS} == true ]]; then
 
 
 fi
+
+# WebSocket Connection Check
+if [[ ${PLUGIN_WEBSOCKET} == true ]] ; then
+   source ${APP_WEBSOCKET}
+		exec_websocket
+fi 
 
 # Load template for reporting
 source lib/template/_template
