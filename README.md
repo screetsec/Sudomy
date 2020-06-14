@@ -236,13 +236,15 @@ All notable changes to this project will be documented in this [file](https://gi
 - [Subfinder](https://github.com/projectdiscovery/subfinder) - Projectdiscovery
 - [Sublist3r](https://github.com/aboul3la/Sublist3r) - aboul3la
 - [Findomain](https://github.com/Edu4rdSHL/findomain) - Edu4rdSHL
-- [Amass)](https://github.com/OWASP/Amass) - OWASP
+- [Amass](https://github.com/OWASP/Amass) - OWASP
 
 ## Credits & Thanks
 - [Tom Hudson](https://github.com/tomnomnom/) - Tomonomnom
 - [OJ Reeves](https://github.com/OJ/) - Gobuster
 - [ProjectDiscovery](https://github.com/projectdiscovery) - Security Through Intelligent Automation
 - [Thomas D Maaaaz](https://github.com/maaaaz) - Webscreenshot
+- [Dwi Siswanto](https://github.com/dwisiswant0) - cf-checker
+- [Robin Verton](https://github.com/rverton/webanalyze) - webanalyze
 - [christophetd](https://github.com/christophetd/censys-subdomain-finder) - Censys
 - [Daniel Miessler](https://github.com/danielmiessler/) - SecList
 - [EdOverflow](https://github.com/EdOverflow/) - can-i-take-over-xyz
