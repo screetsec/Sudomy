@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #-Metadata----------------------------------------------------#
-#  Filename: sudomy (v1.1.6)             (Update: 2020-06-06) #
+#  Filename: sudomy (v1.1.7)             (Update: 2020-06-16) #
 #-Info--------------------------------------------------------#
 #  Fast Subdomain Enumeration & Analysis.                     #
 #-Author(s)---------------------------------------------------#
@@ -20,7 +20,7 @@
 ### Variable Name and Version
 
 APPNAME="sud⍥my.sh"
-VERSION="1.1.6#dev"
+VERSION="1.1.7#dev"
 
 ### Calling Source
 source sudomy.api
@@ -76,11 +76,12 @@ goBanner;
  echo -e "${PADDING}${BOLD}-h, ${RESET} --help${DPADDING} show this help message"
  echo -e "${PADDING}${BOLD}-o, ${RESET} --outfile\t specify an output file when completed "
  echo -e "${PADDING}${BOLD}-s, ${RESET} --source${DPADDING} Use source for Enumerate Subdomain"
- echo -e "${PADDING}${BOLD}-aI,${RESET} --apps-identifier Identify technologies on websites from domain list"
+ echo -e "${PADDING}${BOLD}-aI,${RESET} --apps-identifier Identify technologies on website (ex: -aI webanalyze)"
  echo -e "${PADDING}${BOLD}-dP,${RESET} --db-port\t Collecting port from 3rd Party default=shodan"
  echo -e "${PADDING}${BOLD}-eP,${RESET} --extract-params\t Collecting URL Parameter from Engine"
  echo -e "${PADDING}${BOLD}-tO,${RESET} --takeover\t Subdomain TakeOver Vulnerabilty Scanner"
  echo -e "${PADDING}${BOLD}-wS,${RESET} --websocket\t WebSocket Connection Check"
+ echo -e "${PADDING}${BOLD}-cF,${RESET} --cloudfare\t Check an IP is Owned by Cloudflare" 
  echo -e "${PADDING}${BOLD}-pS,${RESET} --ping-sweep\t Check live host using methode Ping Sweep"
  echo -e "${PADDING}${BOLD}-rS,${RESET} --resolver\t Convert domain lists to resolved IP lists without duplicates"
  echo -e "${PADDING}${BOLD}-sC,${RESET} --status-code\t Get status codes, response from domain list"
@@ -187,9 +188,19 @@ args="${1}";
             PLUGIN_WEBSOCKET=true
             shift
         ;;
+	
+
+        "-cf"|"--cloudfare")
+            PLUGIN_CFCHECK=true
+            shift
+        ;;
+
+
 
         "-ai"|"--apps-identifier")
-            PLUGIN_WAPPALYZER=true
+            APPS_IDENTIFIER=true
+            LIST_API=${2}
+            shift
             shift
         ;;
 	
@@ -263,6 +274,7 @@ args="${1}";
 	    PLUGIN_EXTRACT_PARAMS=true
 	    PLUGIN_HTTPX=true
 	    PLUGIN_DNSPROBE=true
+	    PLUGIN_CFCHECK=true
             shift
         ;;        
     
@@ -370,6 +382,16 @@ command -v ${_DNSPROBE} > /dev/null 2>&1 || {
 # pkg gobuster, checking in local system and if not have try setup pkg to local system /usr/local/bin
 command -v ${_GOBUSTER} > /dev/null 2>&1 || {
          echo -e "${BOLD}${PADDING}${PADDING}- ${YELLOW}Warning: ${RESET}require ${RED}${_GOBUSTER}${RESET} but it's is not installed.${GREEN}Trying to setup${RESET} pkg_${_GOBUSTER} " >&2; chmod +x ${PKG_GOBUSTER}: cp -r ${PKG_GOBUSTER} /usr/local/bin/; }
+
+# pkg webanalze, checking in local system and if not have try setup pkg to local system /usr/local/bin
+command -v ${_WEBANALYZE} > /dev/null 2>&1 || {
+         echo -e "${BOLD}${PADDING}${PADDING}- ${YELLOW}Warning: ${RESET}require ${RED}${_WEBANALYZE}${RESET} but it's is not installed.${GREEN}Trying to setup${RESET} pkg_${_WEBANALYZE} " >&2; chmod +x ${PKG_WEBANALYZE}: cp -r ${PKG_WEBANALYZE} /usr/local/bin/; }
+
+
+# pkg cf-check, checking in local system and if not have try setup pkg to local system /usr/local/bin
+command -v ${_CFCHECK} > /dev/null 2>&1 || {
+         echo -e "${BOLD}${PADDING}${PADDING}- ${YELLOW}Warning: ${RESET}require ${RED}${_CFCHECK}${RESET} but it's is not installed.${GREEN}Trying to setup${RESET} pkg_${_CFCHECK} " >&2; chmod +x ${PKG_CFCHECK}: cp -r ${PKG_CFCHECK} /usr/local/bin/; }
+
 
 
 echo -e "\n${BOLD}[${LBLUE}*${RESET}${BOLD}]${RESET} Load target domain: ${LGREEN}${DOMAIN}${RESET}  "
@@ -947,17 +969,50 @@ fi
 rm -r ${OUT_RAW_WEBARCHIVE} ${OUT_RAW_COMMONCRAWL} ${OUT_RAW_URLSCAN} ${OUT}/${RESULT_EXTRACT_PARAM} > /dev/null 2>&1
 
 
-
+# Plugin to check Title,Status Code, Lenght
 if [[ ${PLUGIN_HTTPX} == true ]]; then
 	source ${APP_HTTPX}
 		exec_httpx
 fi
 
 # Identify technology on websites
-if [[ ${PLUGIN_WAPPALYZER} == true ]] ; then
-	source ${APP_WAPPALYZER}
+# Run argument -aI / --apps-identifider ( -aI webanalyze / -aI webanalyze,wappalyzer
+if [[ ${APPS_IDENTIFIER} == true ]] ; then
+   # Default running Apps Identifier (wappalyzer)
+   if [[ -z ${LIST_API} ]]; then 
+      source ${APP_WAPPALYZER}
+        exec_wappalyzer
+   else 
+     for arr_apps in $(echo ${LIST_API} | tr "," "\n" | tr '[:upper:]' '[:lower:]'); do
+	 eval "${arr_apps}=true";
+     done  
+	# Execution The Plugin (Choice Manual)
+	[[ ${wappalyzer} == true ]] && {
+	    source ${APP_WAPPALYZER} 
 		exec_wappalyzer
+	}
+	# Running Webanalyze
+	[[ ${webanalyze} == true ]] && {
+	    source ${APP_WEBANALYZE}
+                exec_webanalyze 
+        }
+    fi 
+fi
 
+# PLUGIN_CFCHECK=true
+# Running with argument -rS / --dnsprobe
+# Default running with plugin --dnsprobe
+
+if [[ ${PLUGIN_CFCHECK} == true ]]; then
+	if [[ ${PLUGIN_DNSPROBE} == true ]] ; then		
+       	 source ${APP_CFCHECK}
+            exec_cfcheck
+	else
+       	 source ${APP_DNSPROBE}
+	 source ${APP_CFCHECK}
+            exec_dnsprobe
+            exec_cfcheck
+	fi
 fi
 
 #  Screenshots a list of website
@@ -966,7 +1021,6 @@ if [[ ${PLUGIN_DOMAIN_SCREENSHOTS} == true ]]; then
 ## Cleaning Log Files : ${OUT}/${DATE_LOG}/${DOMAIN}/screenshots/
 	source ${APP_SCREENSHOT}
 		exec_screenshot
-
 
 fi
 

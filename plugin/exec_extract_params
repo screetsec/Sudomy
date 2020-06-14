@@ -4,7 +4,7 @@
 #  Edo maland ~ @screetsec                                    #
 #-Info--------------------------------------------------------#
 #  This file is part of Sudomy project                        #
-#  Plugin Extract param : Update = 2020-06-06                 #
+#  Plugin Extract param : Update = 2020-06-14                 #
 #-Licence-----------------------------------------------------#
 #  MIT License ~ http://opensource.org/licenses/MIT           #
 #-------------------------------------------------------------#
@@ -17,10 +17,16 @@ rm -r ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_EXTRACT_PARAM_FULL} ${OUT}/${DATE_LO
 # Collecting RAW 
 cat ${OUT}/*.raw > ${OUT_JUICY_URL_RAW}
 	if [[ -f ${OUT_JUICY_URL_RAW} ]]; then #Check Full Raw Data 
+	# Pattern Removing Click identifier 
+	pattern1="\?utm(_|-)(source|campaign|content|medium|term)=|\?fbclid=|\?gclid=|\?dclid=|\?mscklid=|\?zanpid=|\?gclsrc=|\?af_(ios|android)_url=|";
+	pattern2="\?af_force_deeplink=|\?af_banner=|\?af_web_dp=|\?is_retargeting=|\?af_(dp|esp)=|\&utm(_|-)(campaign|source|medium)=|";
+	pattern3="\?_="
 		echo -ne "\n${BOLD}[${LGREEN}+${RESET}${BOLD}]${RESET} Collecting URL Parameter from Engine \n"  ## 
 		echo -e "---------------------------------------------\n"  
-		cat ${OUT_JUICY_URL_RAW} | grep -P "=" | sed  "/\b\(jpg\|png\|js\|svg\|css\|gif\|jpeg\|woff\|woff2\)\b/d" | \
-		egrep -iv "\?utm_(source|campaign|content|medium)=|\?fbclid=|\?gclid=|\?dclid=|\?mscklid=|\?zanpid=|\?gclsrc=|\?af_(ios|android)_url=|\?af_force_deeplink=|\?af_web_dp=|\?is_retargeting=|\?af_(dp|esp)=" \
+		
+		# Removing duplicate parameter value & Delete uri containing extension 
+		cat ${OUT_JUICY_URL_RAW} | grep -P "=" | sed  "/\b\(jpg\|JPG\|jpeg\|png\|doc\|PNG\|SVG\|svg\|pdf\|PDF\|ttf\|eot\|cssx\|css\|gif\|GIF\|ico\|woff\|woff2\)\b/d" | \
+		egrep -iv "${pattern1}${pattern2}${pattern3}" \
 		> ${OUT_PARAM_URL_PARSING} 
 			for i in $(cat ${OUT_PARAM_URL_PARSING}); do
 				URL="${i}"
@@ -28,7 +34,7 @@ cat ${OUT}/*.raw > ${OUT_JUICY_URL_RAW}
 					#echo "${URL}"
 					echo ${LIST_DOM} | awk -F'=' -vOFS='=' '{$NF="FUZZ"}1;' >> ${OUT}/${RESULT_EXTRACT_PARAM}
 			done
-		# Remove Raw Data  
+		# Remove Raw Data   
 		# rm -r ${OUT_RAW_WEBARCHIVE} ${OUT_RAW_WEBARCHIVE_PARS} > /dev/null 2>&1
 
 		# Make another output, Sorting Duplicate Parameter

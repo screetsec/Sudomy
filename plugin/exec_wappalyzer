@@ -14,7 +14,7 @@ function exec_wappalyzer(){
 
     rm -r ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_WAPPALYZER} > /dev/null 2>&1
 
-    echo -e "\n${BOLD}[${LGREEN}+${RESET}${BOLD}]${RESET} Apps Identifier "
+    echo -e "\n${BOLD}[${LGREEN}+${RESET}${BOLD}]${RESET} Web Apss Identifier (wappalyzer)  "
     echo -e "---------------------------------------------\n"
 
     for WAPPALYZER_SITE in $(cat ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_HTTPROBE}) 

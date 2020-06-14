@@ -19,7 +19,7 @@ function exec_httpx(){
 
 
 		# Default Thread 50 
-		# You Can edit the argument here for httpx
+		# You Can edit the argument here for httpx (-status-code -title -threads 100 -timeout 6 -silent)
 		    cat ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_SUBDOMAIN} | ${_HTTPX} --silent -title -content-length -status-code -o ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_HTTPX} | sed -e 's/^/\t - /'
         else 
                echo -e "\n${BOLD}[${LGREEN}+${RESET}${BOLD}]${RESET} Multiple probers using retryablehttp (httpx) "

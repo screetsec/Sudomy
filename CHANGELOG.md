@@ -79,3 +79,14 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
                 - Perform multiple dns queries of your choice with a list of user supplied resolvers
 
 	- Remove the Plugin to new folder for easy fixing, update & path
+
+## [1.1.7] - 2020-06-06
+ - Update
+        - Added New Plugin webanalyze
+	- For using plugin apps-identifider/-ai , you can choice useing wappalyzer or webanalyze (default::wappalyzer)
+		- example : ./sudomy -d bugcrowd.com -aI webanalyze 
+	- Added Clouder IP Checker
+		- IP Resolver -> Cloudfare IP Checker
+	- Added Plugin Websocket Check
+
+

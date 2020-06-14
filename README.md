@@ -1,12 +1,12 @@
 # Sudomy
-[![License](https://img.shields.io/badge/license-MIT-red.svg)](https://github.com/Screetsec/Sudomy/blob/master/LICENSE.md)  [![Build Status](https://travis-ci.org/Screetsec/Sudomy.svg?branch=master)](https://travis-ci.org/Screetsec/Sudomy)  [![Version](https://img.shields.io/badge/Release-1.1.6-blue.svg?maxAge=259200)]()  [![Build](https://img.shields.io/badge/Supported_OS-Linux-yellow.svg)]()  [![Build](https://img.shields.io/badge/Supported_WSL-Windows-blue.svg)]() [![Contributions Welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/screetsec/sudomy/issues)  [![Youtube](https://img.shields.io/badge/Youtube-Demo-red.svg)](https://www.youtube.com/watch?v=DpXIBUtasn0)
+[![License](https://img.shields.io/badge/license-MIT-red.svg)](https://github.com/Screetsec/Sudomy/blob/master/LICENSE.md)  [![Build Status](https://travis-ci.org/Screetsec/Sudomy.svg?branch=master)](https://travis-ci.org/Screetsec/Sudomy)  [![Version](https://img.shields.io/badge/Release-1.1.7-blue.svg?maxAge=259200)]()  [![Build](https://img.shields.io/badge/Supported_OS-Linux-yellow.svg)]()  [![Build](https://img.shields.io/badge/Supported_WSL-Windows-blue.svg)]() [![Contributions Welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/screetsec/sudomy/issues)  [![Youtube](https://img.shields.io/badge/Youtube-Demo-red.svg)](https://www.youtube.com/watch?v=DpXIBUtasn0)
 ### Subdomain Enumeration & Analysis
 ![ff](https://user-images.githubusercontent.com/17976841/63212795-b8d57300-c133-11e9-882a-f604d67819cc.png)
 
 ***Sudomy*** is a subdomain enumeration tool, created using a bash script, to analyze domains and collect subdomains in fast and comprehensive way.
 
 ## Features !
-##### For recent time, ***Sudomy*** has these 15 features:
+##### For recent time, ***Sudomy*** has these 16 features:
 -  Easy, light, fast and powerful. Bash script is available by default in almost all Linux distributions. By using bash script multiprocessing feature, all processors will be utilized optimally.
 -  Subdomain enumeration process can be achieved by using **active** method or **passive** method
     - **Active Method**
@@ -47,6 +47,7 @@
 - Data Collecting/Scraping open port from 3rd party (Default::Shodan), For right now just using Shodan [Future::Censys,Zoomeye]. More efficient and effective to collecting port from list ip on target [[ Subdomain > IP Resolver > Crawling > ASN & Open Port ]]
 - Collecting Juicy URL & Extract URL Parameter ( Resource Default::WebArchive, CommonCrawl, UrlScanIO) 
 - Define path for outputfile (specify an output file when completed) 
+- Check an IP is Owned by Cloudflare 
 - Report output in HTML & CSV format
 
 ## How Sudomy Works
@@ -101,14 +102,14 @@ npm i -g wappalyzer wscat
 ## Running in a Docker Container
 ```bash
 # Pull an image from DockerHub
-docker pull screetsec/sudomy:v1.1.6
+docker pull screetsec/sudomy:v1.1.7
 
 # Run an image, you can run the image on custom directory but you must copy/download config sudomy.api on current directory
-docker run -v "${PWD}/output:/usr/lib/sudomy/output" -v "${PWD}/sudomy.api:/usr/lib/sudomy/sudomy.api" -it --rm screetsec/sudomy:v1.1.6 [argument]
+docker run -v "${PWD}/output:/usr/lib/sudomy/output" -v "${PWD}/sudomy.api:/usr/lib/sudomy/sudomy.api" -it --rm screetsec/sudomy:v1.1.7 [argument]
 
 or define API variable when executed an image.
 
-docker run -v "${PWD}/output:/usr/lib/sudomy/output" -e "SHODAN_API=xxxx" -e "VIRUSTOTAL=xxxx" -it --rm screetsec/sudomy:v1.1.6 [argument]
+docker run -v "${PWD}/output:/usr/lib/sudomy/output" -e "SHODAN_API=xxxx" -e "VIRUSTOTAL=xxxx" -it --rm screetsec/sudomy:v1.1.7 [argument]
 ```
 
 ### Post Installation

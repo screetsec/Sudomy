@@ -4,7 +4,7 @@
 #  Edo maland ~ @screetsec                                    #
 #-Info--------------------------------------------------------#
 #  This file is part of Sudomy project                        #
-#  Plugin DNSProbe : Update = 2020-06-06                      #
+#  Plugin DNSProbe : Update = 2020-06-14                      #
 #-Licence-----------------------------------------------------#
 #  MIT License ~ http://opensource.org/licenses/MIT           #
 #-------------------------------------------------------------#
@@ -25,7 +25,7 @@ function exec_dnsprobe(){
 	            cat ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_DNSPROBE} | sed -e 's/^/\t - /'
 		   
 		    # Extract IP Resolver
-	            cat ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_DNSPROBE} | awk '{print $2}' >> ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_IP_RESOLVER}
+	            cat ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_DNSPROBE} | awk '{print $2}' | sort -u  >> ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_IP_RESOLVER}
         else 
                echo -e "\n${BOLD}[${LGREEN}+${RESET}${BOLD}]${RESET} Perform multiple dns queries (dnsprobe)"
                echo -e "---------------------------------------------\n"
