@@ -85,8 +85,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
         - Added New Plugin webanalyze
 	- For using plugin apps-identifider/-ai , you can choice useing wappalyzer or webanalyze (default::wappalyzer)
 		- example : ./sudomy -d bugcrowd.com -aI webanalyze 
-	- Added Clouder IP Checker
-		- IP Resolver -> Cloudfare IP Checker
+	- Added Clouder IP Checker (Just run with argument -cf or --dnsprobe -cf )
+		- IP Resolve -> Cloudfare IP Checker
 	- Added Plugin Websocket Check
 
 
