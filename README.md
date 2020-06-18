@@ -72,6 +72,9 @@ Asciinema :
 - [Sudomy](https://asciinema.org/a/260324)
 - [Sublist3r](https://asciinema.org/a/260325)
 
+### But it's shit! And your implementation sucks!
+- Yes, you're probably correct. Feel free to "Not use it" and there is a pull button to "Make it better". 
+
 ## Installation
 *Sudomy* is currently extended with the following tools. Instructions on how to install & use the application are linked below.
 
