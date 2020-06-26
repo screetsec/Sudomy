@@ -381,16 +381,15 @@ command -v ${_DNSPROBE} > /dev/null 2>&1 || {
 
 # pkg gobuster, checking in local system and if not have try setup pkg to local system /usr/local/bin
 command -v ${_GOBUSTER} > /dev/null 2>&1 || {
-         echo -e "${BOLD}${PADDING}${PADDING}- ${YELLOW}Warning: ${RESET}require ${RED}${_GOBUSTER}${RESET} but it's is not installed.${GREEN}Trying to setup${RESET} pkg_${_GOBUSTER} " >&2; chmod +x ${PKG_GOBUSTER}: cp -r ${PKG_GOBUSTER} /usr/local/bin/; }
+         echo -e "${BOLD}${PADDING}${PADDING}- ${YELLOW}Warning: ${RESET}require ${RED}${_GOBUSTER}${RESET} but it's is not installed.${GREEN}Trying to setup${RESET} pkg_${_GOBUSTER} " >&2; chmod +x ${PKG_GOBUSTER}; cp -r ${PKG_GOBUSTER} /usr/local/bin/; }
 
 # pkg webanalze, checking in local system and if not have try setup pkg to local system /usr/local/bin
 command -v ${_WEBANALYZE} > /dev/null 2>&1 || {
-         echo -e "${BOLD}${PADDING}${PADDING}- ${YELLOW}Warning: ${RESET}require ${RED}${_WEBANALYZE}${RESET} but it's is not installed.${GREEN}Trying to setup${RESET} pkg_${_WEBANALYZE} " >&2; chmod +x ${PKG_WEBANALYZE}: cp -r ${PKG_WEBANALYZE} /usr/local/bin/; }
-
+         echo -e "${BOLD}${PADDING}${PADDING}- ${YELLOW}Warning: ${RESET}require ${RED}${_WEBANALYZE}${RESET} but it's is not installed.${GREEN}Trying to setup${RESET} pkg_${_WEBANALYZE} " >&2; chmod +x ${PKG_WEBANALYZE}; cp -r ${PKG_WEBANALYZE} /usr/local/bin/; }
 
 # pkg cf-check, checking in local system and if not have try setup pkg to local system /usr/local/bin
 command -v ${_CFCHECK} > /dev/null 2>&1 || {
-         echo -e "${BOLD}${PADDING}${PADDING}- ${YELLOW}Warning: ${RESET}require ${RED}${_CFCHECK}${RESET} but it's is not installed.${GREEN}Trying to setup${RESET} pkg_${_CFCHECK} " >&2; chmod +x ${PKG_CFCHECK}: cp -r ${PKG_CFCHECK} /usr/local/bin/; }
+         echo -e "${BOLD}${PADDING}${PADDING}- ${YELLOW}Warning: ${RESET}require ${RED}${_CFCHECK}${RESET} but it's is not installed.${GREEN}Trying to setup${RESET} pkg_${_CFCHECK} " >&2; chmod +x ${PKG_CFCHECK}; cp -r ${PKG_CFCHECK} /usr/local/bin/; }
 
 
 
