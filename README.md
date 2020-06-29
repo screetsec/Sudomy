@@ -51,8 +51,62 @@
 - Generate & make wordlist based on collecting url resources (wayback,urlscan,commoncrawl. To make that, we Extract All the paramater and path from our domain recon
 - Report output in HTML & CSV format
 
-## How Sudomy Works
-*Sudomy* is using cURL library in order to get the HTTP Response Body from third-party sites to then execute the regular expression to get subdomains. This process fully leverages multi processors, more subdomains will be collected with less time consumption.
+## How Sudomy Works 
+How sudomy works or recon flow, when you run the best arguments to collect subdomains and analyze by doing automatic recon.
+```
+root@maland: ./sudomy -d bugcrowd.com -dP -eP -rS -cF -pS -tO -gW --httpx --dnsprobe  -aI webanalyze -sS
+```
+### Recon Worfklow
+![Recon Workflow](https://raw.githubusercontent.com/Screetsec/Sudomy/master/doc/Sudomy%20-%20Recon%20Workflow%20v1.1.8%23dev.png)
+
+### Detail information
+```
+------------------------------------------------------------------------------------------------------
+
+- subdomain.txt             -- Subdomain list             < $DOMAIN (Target)
+- httprobe_subdomain.txt    -- Validate Subdomain	  < subdomain.txt
+- webanalyzes.txt           -- Identify technology scan   < httprobe_subdomain.txt
+- httpx_status_title.txt    -- title+statuscode+lenght    < httprobe_subdomain.txt
+- dnsprobe_subdomain.txt    -- Subdomain resolv		  < subdomain.txt
+- Subdomain_Resolver.txt    -- Subdomain resolv (alt)     < subdomain.txt
+- cf-ipresolv.txt           -- Cloudflare scan        	  < ip_resolver.txt 
+- Live_hosts_pingsweep.txt  -- Live Host check		  < ip_resolver.txt	 
+- ip_resolver.txt           -- IP resolv list          	  < Subdomain_Resolver::dnsprobe
+- ip_dbasn.txt		    -- ASN Number Check		  < ip_resolver.txt
+- vHost_subdomain.txt       -- Virtual Host (Group by ip) < Subdomain_Resolver.txt
+- nmap_top_ports.txt        -- Active port scanning       < cf-ipresolv.txt
+- ip_dbport.txt		    -- Passive port scanning	  < cf-ipresolv.txt
+
+------------------------------------------------------------------------------------------------------
+- Passive_Collect_URL_Full.txt 		-- Full All Url Crawl (WebArchive, CommonCrawl, UrlScanIO)
+------------------------------------------------------------------------------------------------------
+
+- ./screenshots/report-0.html   	-- Screenshoting report    	< httprobe_subdomain.txt
+- ./screenshots/gowitness.db   		-- Database screenshot    	< httprobe_subdomain.txt
+
+------------------------------------------------------------------------------------------------------
+
+- ./interest/interesturi-allpath.out	-- Interest path(/api,/git,etc) < Passive_Collect_URL_Full.txt
+- ./interest/interesturi-doc.out	-- Interest doc (doc,pdf,xls)   < Passive_Collect_URL_Full.txt
+- ./interest/interesturi-otherfile.out	-- Other files (.json,.env,etc) < Passive_Collect_URL_Full.txt
+- ./interest/interesturi-js.out		-- All Javascript files(*.js)  	< Passive_Collect_URL_Full.txt
+- ./interest/interesturi-nodemodule.out	-- Files from /node_modules/    < Passive_Collect_URL_Full.txt
+- ./interest/interesturi-param-full.out	-- Full parameter list 		< Passive_Collect_URL_Full.txt
+- ./interest/interesturi-paramsuniq.out -- Full Uniq parameter list 	< Passive_Collect_URL_Full.txt
+
+------------------------------------------------------------------------------------------------------
+
+- ./takeover/CNAME-resolv.txt		-- CNAME Resolver 		< subdomain.txt
+- ./takeover/TakeOver-Lookup.txt	-- DNSLookup 			< CNAME-resolv.txt
+- ./takeover/TakeOver-nxdomain.txt	-- Other 3d service platform	< TakeOver-Lookup.txt
+- ./takeover/TakeOver.txt		-- Checking Vulnerabilty	< CNAME-resolv.txt
+
+------------------------------------------------------------------------------------------------------
+
+- ./wordlist/wordlist-parameter.lst     -- Generate params wordlist     < Passive_Collect_URL_Full.txt
+- ./wordlist/wordlist-pathurl.lst       -- Generate List paths wordlis  < Passive_Collect_URL_Full.txt
+
+```
 
 ## Publication
 - [Sudomy: Information Gathering Tools for Subdomain Enumeration and Analysis](https://iopscience.iop.org/article/10.1088/1757-899X/771/1/012019/meta) -  IOP Conference Series: Materials Science and Engineering, Volume 771, 2nd International Conference on Engineering and Applied Sciences (2nd InCEAS) 16 November 2019, Yogyakarta, Indonesia
@@ -261,4 +315,5 @@ All notable changes to this project will be documented in this [file](https://gi
 - [NgeSEC](https://ngesec.id/) - Community
 - [Zerobyte](http://zerobyte.id/) - Community
 - [Gauli(dot)Net](https://gauli.net/) - Lab Hacking Indonesia
+- [missme3f](https://github.com/missme3f/) - Adrian
 - [Bugcrowd](https://www.bugcrowd.com/) & [Hackerone](https://www.hackerone.com/)
