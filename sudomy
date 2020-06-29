@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #-Metadata----------------------------------------------------#
-#  Filename: sudomy (v1.1.7)             (Update: 2020-06-16) #
+#  Filename: sudomy (v1.1.8)             (Update: 2020-06-29) #
 #-Info--------------------------------------------------------#
 #  Fast Subdomain Enumeration & Analysis.                     #
 #-Author(s)---------------------------------------------------#
@@ -20,7 +20,7 @@
 ### Variable Name and Version
 
 APPNAME="sud⍥my.sh"
-VERSION="1.1.7#dev"
+VERSION="1.1.8#dev"
 
 ### Calling Source
 source sudomy.api
@@ -86,8 +86,9 @@ goBanner;
  echo -e "${PADDING}${BOLD}-rS,${RESET} --resolver\t Convert domain lists to resolved IP lists without duplicates"
  echo -e "${PADDING}${BOLD}-sC,${RESET} --status-code\t Get status codes, response from domain list"
  echo -e "${PADDING}${BOLD}-nT,${RESET} --nmap-top\t Port scanning with top-ports using nmap from domain list"
- echo -e "${PADDING}${BOLD}-sS,${RESET} --screenshot\t Screenshots a list of website"
+ echo -e "${PADDING}${BOLD}-sS,${RESET} --screenshot\t Screenshots a list of website (default: gowitness)"
  echo -e "${PADDING}${BOLD}-nP,${RESET} --no-passive\t Do not perform passive subdomain enumeration "
+ echo -e "${PADDING}${BOLD}-gW,${RESET} --gwordlist\t Generate wordlist based on collecting url resources (Passive) "
  echo -e "${PADDING}${BOLD}    ${RESET} --httpx${DPADDING} Perform httpx multiple probers using retryablehttp "
  echo -e "${PADDING}${BOLD}    ${RESET} --dnsprobe\t Perform multiple dns queries (dnsprobe) "
  echo -e "${PADDING}${BOLD}    ${RESET} --no-probe\t Do not perform httprobe "
@@ -217,6 +218,8 @@ args="${1}";
 
         "-ss"|"--screenshot")
             PLUGIN_DOMAIN_SCREENSHOTS=true
+            LIST_SCREENSHOT=${2}
+            shift
             shift
         ;; 
 
@@ -263,6 +266,11 @@ args="${1}";
         ;;  
 
 
+        "-gw"|"--gwordlist")
+            PLUGIN_WORDLISTS=true
+            shift
+        ;;
+
 
         "-a"|"--all")
             PLUGIN_DOMAIN_SCREENSHOTS=true
@@ -275,6 +283,7 @@ args="${1}";
 	    PLUGIN_HTTPX=true
 	    PLUGIN_DNSPROBE=true
 	    PLUGIN_CFCHECK=true
+	    PLUGIN_WORDLISTS=true
             shift
         ;;        
     
@@ -371,26 +380,38 @@ echo -e "\n${BOLD}[${LCYAN}⍥${RESET}${BOLD}]${RESET} Perfoming Sud⍥my scans 
 
 # pkg httprobe, checking in local system and if not have try setup pkg to local system /usr/local/bin
 command -v ${_HTTPROBE} > /dev/null 2>&1 || { 
-	 echo -e "${BOLD}${PADDING}${PADDING}- ${YELLOW}Warning: ${RESET}require ${RED}${_HTTPROBE}${RESET} but it's is not installed.${GREEN}Trying to setup${RESET} pkg_${_HTTPROBE} " >&2; chmod +x ${PKG_HTTPROBE}; cp -r ${PKG_HTTPROBE} /usr/local/bin/; }
+	 echo -e "${BOLD}${PADDING}${PADDING}- ${YELLOW}Warning: ${RESET}require ${RED}${_HTTPROBE}${RESET} but it's is not installed.${GREEN}Trying to setup${RESET} pkg_${_HTTPROBE} " >&2; cp -r ${PKG_HTTPROBE} /usr/local/bin/; }
 # pkg httpx, checking in local system and if not have try  setup pkg to local system /usr/local/bin
 command -v ${_HTTPX} > /dev/null 2>&1 || {
-	 echo -e "${BOLD}${PADDING}${PADDING}- ${YELLOW}Warning: ${RESET}require ${RED}${_HTTPX}${RESET} but it's is not installed.${GREEN}Trying to setup${RESET} pkg_${_HTTPX} " >&2; chmod +x ${PKG_HTTPX}; cp -r ${PKG_HTTPX} /usr/local/bin/; }
+	 echo -e "${BOLD}${PADDING}${PADDING}- ${YELLOW}Warning: ${RESET}require ${RED}${_HTTPX}${RESET} but it's is not installed.${GREEN}Trying to setup${RESET} pkg_${_HTTPX} " >&2; cp -r ${PKG_HTTPX} /usr/local/bin/; }
 # pkg dnsprobe, checking in local system and if not have try setup pkg to local system /usr/local/bin
 command -v ${_DNSPROBE} > /dev/null 2>&1 || {
-         echo -e "${BOLD}${PADDING}${PADDING}- ${YELLOW}Warning: ${RESET}require ${RED}${_DNSPROBE}${RESET} but it's is not installed.${GREEN}Trying to setup${RESET} pkg_${_HTTPX} " >&2; chmod +x ${PKG_DNSPROBE}; cp -r ${PKG_DNSPROBE} /usr/local/bin/; }
+         echo -e "${BOLD}${PADDING}${PADDING}- ${YELLOW}Warning: ${RESET}require ${RED}${_DNSPROBE}${RESET} but it's is not installed.${GREEN}Trying to setup${RESET} pkg_${_HTTPX} " >&2; cp -r ${PKG_DNSPROBE} /usr/local/bin/; }
 
 # pkg gobuster, checking in local system and if not have try setup pkg to local system /usr/local/bin
 command -v ${_GOBUSTER} > /dev/null 2>&1 || {
-         echo -e "${BOLD}${PADDING}${PADDING}- ${YELLOW}Warning: ${RESET}require ${RED}${_GOBUSTER}${RESET} but it's is not installed.${GREEN}Trying to setup${RESET} pkg_${_GOBUSTER} " >&2; chmod +x ${PKG_GOBUSTER}: cp -r ${PKG_GOBUSTER} /usr/local/bin/; }
+         echo -e "${BOLD}${PADDING}${PADDING}- ${YELLOW}Warning: ${RESET}require ${RED}${_GOBUSTER}${RESET} but it's is not installed.${GREEN}Trying to setup${RESET} pkg_${_GOBUSTER} " >&2; cp -r ${PKG_GOBUSTER} /usr/local/bin/; }
 
 # pkg webanalze, checking in local system and if not have try setup pkg to local system /usr/local/bin
 command -v ${_WEBANALYZE} > /dev/null 2>&1 || {
-         echo -e "${BOLD}${PADDING}${PADDING}- ${YELLOW}Warning: ${RESET}require ${RED}${_WEBANALYZE}${RESET} but it's is not installed.${GREEN}Trying to setup${RESET} pkg_${_WEBANALYZE} " >&2; chmod +x ${PKG_WEBANALYZE}: cp -r ${PKG_WEBANALYZE} /usr/local/bin/; }
-
+         echo -e "${BOLD}${PADDING}${PADDING}- ${YELLOW}Warning: ${RESET}require ${RED}${_WEBANALYZE}${RESET} but it's is not installed.${GREEN}Trying to setup${RESET} pkg_${_WEBANALYZE} " >&2; cp -r ${PKG_WEBANALYZE} /usr/local/bin/; }
 
 # pkg cf-check, checking in local system and if not have try setup pkg to local system /usr/local/bin
 command -v ${_CFCHECK} > /dev/null 2>&1 || {
-         echo -e "${BOLD}${PADDING}${PADDING}- ${YELLOW}Warning: ${RESET}require ${RED}${_CFCHECK}${RESET} but it's is not installed.${GREEN}Trying to setup${RESET} pkg_${_CFCHECK} " >&2; chmod +x ${PKG_CFCHECK}: cp -r ${PKG_CFCHECK} /usr/local/bin/; }
+         echo -e "${BOLD}${PADDING}${PADDING}- ${YELLOW}Warning: ${RESET}require ${RED}${_CFCHECK}${RESET} but it's is not installed.${GREEN}Trying to setup${RESET} pkg_${_CFCHECK} " >&2; cp -r ${PKG_CFCHECK} /usr/local/bin/; }
+
+# pkg gowitness, checking in local system and if not have try setup pkg to local system /usr/local/bin
+command -v ${_GOWITNESS} > /dev/null 2>&1 || {
+         echo -e "${BOLD}${PADDING}${PADDING}- ${YELLOW}Warning: ${RESET}require ${RED}${_GOWITNESS}${RESET} but it's is not installed.${GREEN}Trying to setup${RESET} pkg_${_GOWITNESS} " >&2; cp -r ${PKG_GOWITNESS} /usr/local/bin/; }
+
+# pkg unfurl, checking in local system and if not have try setup pkg to local system /usr/local/bin
+command -v ${_UNFURL} > /dev/null 2>&1 || {
+         echo -e "${BOLD}${PADDING}${PADDING}- ${YELLOW}Warning: ${RESET}require ${RED}${_UNFURL}${RESET} but it's is not installed.${GREEN}Trying to setup${RESET} pkg_${_UNFURL} " >&2; cp -r ${PKG_UNFURL} /usr/local/bin/; }
+
+# pkg subjack, checking in local system and if not have try setup pkg to local system /usr/local/bin
+command -v ${_SUBJACK} > /dev/null 2>&1 || {
+         echo -e "${BOLD}${PADDING}${PADDING}- ${YELLOW}Warning: ${RESET}require ${RED}${_SUBJACK}${RESET} but it's is not installed.${GREEN}Trying to setup${RESET} pkg_${_SUBJACK} " >&2; cp -r ${PKG_SUBJACK} /usr/local/bin/; }
+
 
 
 
@@ -915,11 +936,6 @@ if [[ ${PLUGIN_RESOLV_SD} == true ]] ; then
 		exec_resolver
 fi
 
-# Subdomain TakeOver Vulnerabilty Scanner
-if [[ ${PLUGIN_TAKEOVER} == true ]] ; then
-	source ${APP_TAKEOVER}
-		exec_takeover
-fi 
 
 
 # Get status codes, response from domain list
@@ -939,6 +955,30 @@ fi
 if [[ ${PLUGIN_DNSPROBE} == true ]]; then
 	source ${APP_DNSPROBE}
 		exec_dnsprobe
+fi
+
+
+
+# PLUGIN_CFCHECK=true
+# Running with argument -rS / --dnsprobe
+# Default running with plugin --dnsprobe
+
+if [[ ${PLUGIN_CFCHECK} == true ]]; then
+	if [[ ${PLUGIN_DNSPROBE} == true ]] ; then		
+       	 source ${APP_CFCHECK}
+            exec_cfcheck
+	else
+       	 source ${APP_DNSPROBE}
+	 source ${APP_CFCHECK}
+            exec_dnsprobe
+            exec_cfcheck
+	fi
+fi
+
+# Plugin to check Title,Status Code, Lenght
+if [[ ${PLUGIN_HTTPX} == true ]]; then
+	source ${APP_HTTPX}
+		exec_httpx
 fi
 
 # Explain about IP DB_PORT
@@ -964,16 +1004,15 @@ if [[ ${PLUGIN_EXTRACT_PARAMS} == true ]]; then
 		exec_extract_params
 fi
 
-
 #Remove Temporary RAW DATA []
-rm -r ${OUT_RAW_WEBARCHIVE} ${OUT_RAW_COMMONCRAWL} ${OUT_RAW_URLSCAN} ${OUT}/${RESULT_EXTRACT_PARAM} > /dev/null 2>&1
+#rm -r ${OUT_RAW_WEBARCHIVE} ${OUT_RAW_COMMONCRAWL} ${OUT_RAW_URLSCAN} ${OUT}/${RESULT_EXTRACT_PARAM} > /dev/null 2>&1
 
 
-# Plugin to check Title,Status Code, Lenght
-if [[ ${PLUGIN_HTTPX} == true ]]; then
-	source ${APP_HTTPX}
-		exec_httpx
-fi
+# Subdomain TakeOver Vulnerabilty Scanner
+if [[ ${PLUGIN_TAKEOVER} == true ]] ; then
+	source ${APP_TAKEOVER}
+		exec_takeover
+fi 
 
 # Identify technology on websites
 # Run argument -aI / --apps-identifider ( -aI webanalyze / -aI webanalyze,wappalyzer
@@ -999,36 +1038,64 @@ if [[ ${APPS_IDENTIFIER} == true ]] ; then
     fi 
 fi
 
-# PLUGIN_CFCHECK=true
-# Running with argument -rS / --dnsprobe
-# Default running with plugin --dnsprobe
 
-if [[ ${PLUGIN_CFCHECK} == true ]]; then
-	if [[ ${PLUGIN_DNSPROBE} == true ]] ; then		
-       	 source ${APP_CFCHECK}
-            exec_cfcheck
-	else
-       	 source ${APP_DNSPROBE}
-	 source ${APP_CFCHECK}
-            exec_dnsprobe
-            exec_cfcheck
-	fi
-fi
+# Screenshots a list of website
 
-#  Screenshots a list of website
+# Run argument -sS / --screenshot ( -aI gowitness / -aI webscreenshot ) 
+# Default screenshots using gowitness
+
 if [[ ${PLUGIN_DOMAIN_SCREENSHOTS} == true ]]; then	
-
-## Cleaning Log Files : ${OUT}/${DATE_LOG}/${DOMAIN}/screenshots/
-	source ${APP_SCREENSHOT}
-		exec_screenshot
-
+   if [[ -z ${LIST_SCREENSHOT} ]]; then 
+      source ${APP_GOWITNESS}
+        exec_gowitness
+   else 
+     for arr_ass in $(echo ${LIST_SCREENSHOT} | tr "," "\n" | tr '[:upper:]' '[:lower:]'); do
+	 eval "${arr_ass}=true";
+     done  
+	# Execution The Plugin (Choice Manual)
+	[[ ${gowitness} == true ]] && {
+	    source ${APP_GOWITNESS} 
+		exec_gowitness
+	}
+	# Running Webscreenshot
+	[[ ${webscreenshot} == true ]] && {
+	    source ${APP_WEBSCREENSHOT}
+                exec_webscreenshot
+        }
+    fi 
 fi
+
+
 
 # WebSocket Connection Check
 if [[ ${PLUGIN_WEBSOCKET} == true ]] ; then
    source ${APP_WEBSOCKET}
 		exec_websocket
 fi 
+
+# Generate wordlist based on collecting url resources (wayback,urlscan,commoncrawl)
+# Running with argument -eP
+# Wordlist based on path/param 
+# efault running with plugin -eP
+
+if [[ ${PLUGIN_WORDLISTS} == true ]] ; then
+	if [[ ${PLUGIN_EXTRACT_PARAMS} == true ]] ; then
+	 source ${APP_WORDLISTS}
+		exec_wordlists
+	else	        
+	 source ${APP_EXTRACT_PARAMS}
+               exec_extract_params
+
+	 source ${APP_WORDLISTS}
+     	       exec_wordlists
+	fi
+fi 
+
+
+
+#Remove Temporary RAW DATA []
+rm -r ${OUT_RAW_WEBARCHIVE} ${OUT_RAW_COMMONCRAWL} ${OUT_RAW_URLSCAN} ${OUT}/${RESULT_EXTRACT_PARAM} > /dev/null 2>&1
+
 
 # Load template for reporting
 source lib/template/_template
@@ -1088,12 +1155,12 @@ echo -e "${BOLD}${PADDING}${PADDING}\t-${RESET}${BOLD}${RESET}${LGREEN} output/$
               echo ${MAKE_TABLE} >> ${OUT}/${DATE_LOG}/${DOMAIN}/report/status_code.html 
               _template >> ${OUT}/${DATE_LOG}/${DOMAIN}/report/status_code.html;fi
 
-        if [[ ! -e "${OUT}/${DATE_LOG}/${DOMAIN}/${FINAL_TAKEOVER}" ]] ; then
+        if [[ ! -e "${OUT}/${DATE_LOG}/${DOMAIN}/takeover/${RESULT_TAKEOVER}" ]] ; then
           COUNT_TOTAL_TAKEOVER=0 
               _template >> ${OUT}/${DATE_LOG}/${DOMAIN}/report/takeover.html
         else
-          COUNT_TOTAL_TAKEOVER=$(grep -c "Vulnerable" ${OUT}/${DATE_LOG}/${DOMAIN}/${FINAL_TAKEOVER}); 
-              MAKE_TABLE=$(awk 'BEGIN{print ""} {print "<tr>";for(i=1;i<=NF;i++)print "<td>" $i"</td>";print "</tr>"} END{print ""}' ${OUT}/${DATE_LOG}/${DOMAIN}/${FINAL_TAKEOVER})
+          COUNT_TOTAL_TAKEOVER=$(grep -c "Vulnerable" ${OUT}/${DATE_LOG}/${DOMAIN}/takeover/${RESULT_TAKEOVER}); 
+              MAKE_TABLE=$(awk 'BEGIN{print ""} {print "<tr>";for(i=1;i<=NF;i++)print "<td>" $i"</td>";print "</tr>"} END{print ""}' ${OUT}/${DATE_LOG}/${DOMAIN}/takeover/${RESULT_TAKEOVER})
               echo ${MAKE_TABLE} >> ${OUT}/${DATE_LOG}/${DOMAIN}/report/takeover.html 
               _template >> ${OUT}/${DATE_LOG}/${DOMAIN}/report/takeover.html;fi
 
@@ -1148,6 +1215,7 @@ if [[ $DESTINATION == true ]];then
 
 		echo -e "${BOLD}${PADDING}${PADDING}\t-${RESET}${BOLD}${RESET}${LGREEN} ${OUTFILE}/${OUT_NAME}/${DOMAIN} ${RESET} "
 		echo -e "${BOLD}${PADDING}${PADDING}\t-${RESET}${BOLD}${RESET}${LGREEN} ${OUTFILE}/${OUT_NAME}/${DOMAIN}/report ${RESET} "
+                echo -e "${BOLD}${PADDING}${PADDING}\t-${RESET}${BOLD}${RESET}${LGREEN} ${OUTFILE}/${OUT_NAME}/${DOMAIN}/wordlists ${RESET} "
 		echo -e "${BOLD}${PADDING}${PADDING}\t-${RESET}${BOLD}${RESET}${LGREEN} ${OUTFILE}/${OUT_NAME}/${DOMAIN}/screenshots ${RESET} \n\n"
 
 else
@@ -1156,6 +1224,7 @@ else
 		echo -e "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}Location output:"
 		echo -e "${BOLD}${PADDING}${PADDING}\t-${RESET}${BOLD}${RESET}${LGREEN} output/${DATE_LOG}/${DOMAIN} ${RESET} "
 		echo -e "${BOLD}${PADDING}${PADDING}\t-${RESET}${BOLD}${RESET}${LGREEN} output/${DATE_LOG}/${DOMAIN}/report ${RESET} "
+                echo -e "${BOLD}${PADDING}${PADDING}\t-${RESET}${BOLD}${RESET}${LGREEN} output/${DATE_LOG}/${DOMAIN}/wordlists ${RESET} "
 		echo -e "${BOLD}${PADDING}${PADDING}\t-${RESET}${BOLD}${RESET}${LGREEN} output/${DATE_LOG}/${DOMAIN}/screenshots ${RESET} \n\n"
 fi
 

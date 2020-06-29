@@ -4,7 +4,8 @@
 #  Edo maland ~ @screetsec                                    #
 #-Info--------------------------------------------------------#
 #  This file is part of Sudomy project                        #
-#  Plugin TakeOver : Update = 2020-06-06                      #
+#  Plugin TakeOver : Update = 2020-06-28                      #
+# 		Based on Subjack & dnsprobe		      #
 #-Licence-----------------------------------------------------#
 #  MIT License ~ http://opensource.org/licenses/MIT           #
 #-------------------------------------------------------------#
@@ -30,82 +31,55 @@ echo -e "\n${BOLD}[${LGREEN}+${RESET}${BOLD}]${RESET} Subdomain TakeOver - Check
 echo -e "---------------------------------------------\n"     
 
 ## Cleaning Log Files { {${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_TAKEOVER} }
-
-rm -r ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_TAKEOVER} > /dev/null 2>&1
-
-for SUB_TAKEOVER_CHECK in $(cat ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_HTTPROBE}) 
-do
-  HTML=$(curl -Lks ${SUB_TAKEOVER_CHECK} --max-time 4)  ## GET RESPONE HTML USE CURL -LKS {LIST DOMAINS }
-	if [[ $HTML =~ "If you're the owner of this store" ]] || [[ $HTML =~ "Sorry, this shop is currently unavailable." ]] ; then 
-		      echo -e "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}[${GREEN}VULNS${RESET}]\t Shopify      ${SUB_TAKEOVER_CHECK} ${RESET}"  ## SHOPIFY   
-        	echo -e "${SUB_TAKEOVER_CHECK} Shopify Vulnerable"  | tee -a ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_TAKEOVER} > /dev/null 2>&1
-        elif [[ $HTML =~ "Repository not found" ]]; then
-          echo -e "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}[${GREEN}VULNS${RESET}]\t BitBucket    ${SUB_TAKEOVER_CHECK} ${RESET}"  ## BITBUCKET
-          echo -e "${SUB_TAKEOVER_CHECK} BitBucket Vulnerable"  | tee -a ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_TAKEOVER} > /dev/null 2>&1
-        elif [[ $HTML =~ "The specified bucket does not exit" ]]; then
-          echo -e "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}[${GREEN}VULNS${RESET}]\t AWS/S3       ${SUB_TAKEOVER_CHECK} ${RESET}"  ## AWS/S3
-          echo -e "${SUB_TAKEOVER_CHECK} AWS/S3 Vulnerable"  | tee -a ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_TAKEOVER} > /dev/null 2>&1
-        elif [[ $HTML =~ "There isn't a Github Pages site here." ]]; then
-          echo -e "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}[${GREEN}VULNS${RESET}]\t Github       ${SUB_TAKEOVER_CHECK} ${RESET}"  ## GITHUB
-          echo -e "${SUB_TAKEOVER_CHECK} Github Vulnerable"  | tee -a ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_TAKEOVER} > /dev/null 2>&1
-        elif [[ $HTML =~ "Trying to access your account?" ]]; then
-          echo -e "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}[${GREEN}VULNS${RESET}]\t Campaign     ${SUB_TAKEOVER_CHECK} ${RESET}"  ## CMAMPAIGN MONITOR
-          echo -e "${SUB_TAKEOVER_CHECK} Campaign_Monitor Vulnerable"  | tee -a ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_TAKEOVER} > /dev/null 2>&1
-        elif [[ $HTML =~ "Fastly error: unknown domain:" ]]; then
-          echo -e "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}[${GREEN}VULNS${RESET}]\t Fastly       ${SUB_TAKEOVER_CHECK} ${RESET}"  ##  FASTLY
-          echo -e "${SUB_TAKEOVER_CHECK} Fastly Vulnerable"  | tee -a ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_TAKEOVER} > /dev/null 2>&1
-        elif [[ $HTML =~ "The feed has not been found." ]]; then
-          echo -e "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}[${GREEN}VULNS${RESET}]\t Feedpress    ${SUB_TAKEOVER_CHECK} ${RESET}"  ## FEEDPRESS
-          echo -e "${SUB_TAKEOVER_CHECK} Feedpress Vulnerable"  | tee -a ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_TAKEOVER} > /dev/null 2>&1
-        elif [[ $HTML =~ "The thing you were looking for is no longer here, or never" ]]; then
-          echo -e "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}[${GREEN}VULNS${RESET}]\t Ghost        ${SUB_TAKEOVER_CHECK} ${RESET}"  ##  GHOST
-          echo -e "${SUB_TAKEOVER_CHECK} Ghost Vulnerable"  | tee -a ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_TAKEOVER} > /dev/null 2>&1
-        elif [[ $HTML =~ "We could not find what you're looking for" ]]; then
-          echo -e "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}[${GREEN}VULNS${RESET}]\t Help Juice   ${SUB_TAKEOVER_CHECK} ${RESET}"  ##  HELP JUICE
-          echo -e "${SUB_TAKEOVER_CHECK} Help_Juice Vulnerable"  | tee -a ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_TAKEOVER} > /dev/null 2>&1
-        elif [[ $HTML =~ "No settings were found for this company" ]]; then
-          echo -e "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}[${GREEN}VULNS${RESET}]\t Help Scout   ${SUB_TAKEOVER_CHECK} ${RESET}"  ##  HELP SCOUT
-          echo -e "${SUB_TAKEOVER_CHECK} Help_Scout Vulnerable"  | tee -a ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_TAKEOVER} > /dev/null 2>&1
-        elif [[ $HTML =~ "404 Blog is not found" ]]; then
-          echo -e "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}[${GREEN}VULNS${RESET}]\t HatenaBlog   ${SUB_TAKEOVER_CHECK} ${RESET}"  ## HATENA BLOG
-          echo -e "${SUB_TAKEOVER_CHECK} HatenaBlog Vulnerable"  | tee -a ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_TAKEOVER} > /dev/null 2>&1
-        elif [[ $HTML =~ "Uh oh. That page doesn't exist." ]]; then
-          echo -e "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}[${GREEN}VULNS${RESET}]\t Intercom     ${SUB_TAKEOVER_CHECK} ${RESET}"  ## INTERCOM
-          echo -e "${SUB_TAKEOVER_CHECK} Intercom Vulnerable"  | tee -a ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_TAKEOVER} > /dev/null 2>&1
-        elif [[ $HTML =~ "is not a registered InCloud YouTrack" ]]; then
-          echo -e "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}[${GREEN}VULNS${RESET}]\t JetBrains    ${SUB_TAKEOVER_CHECK} ${RESET}"  ## JETBRAINS
-          echo -e "${SUB_TAKEOVER_CHECK} JetBrains Vulnerable"  | tee -a ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_TAKEOVER} > /dev/null 2>&1
-        elif [[ $HTML =~ "No Site For Domain" ]]; then
-          echo -e "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}[${GREEN}VULNS${RESET}]\t Kinsta       ${SUB_TAKEOVER_CHECK} ${RESET}"  ## KINSTA
-          echo -e "${SUB_TAKEOVER_CHECK} Kinsta Vulnerable"  | tee -a ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_TAKEOVER} > /dev/null 2>&1
-        elif [[ $HTML =~ "It looks like you may have taken a wrong turn somewhere. Don't worry...it happens to all of us." ]]; then
-          echo -e "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}[${GREEN}VULNS${RESET}]\t LaunchRock   ${SUB_TAKEOVER_CHECK} ${RESET}"  ## LAUNCHROCK
-          echo -e "${SUB_TAKEOVER_CHECK} LaunchRock Vulnerable"  | tee -a ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_TAKEOVER} > /dev/null 2>&1
-        elif [[ $HTML =~ "404 error unknown site!" ]]; then
-          echo -e "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}[${GREEN}VULNS${RESET}]\t Pantheon     ${SUB_TAKEOVER_CHECK} ${RESET}"  ## PANTHEON
-          echo -e "${SUB_TAKEOVER_CHECK} Pantheon Vulnerable"  | tee -a ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_TAKEOVER} > /dev/null 2>&1
-        elif [[ $HTML =~ "Project doesnt exist... yet!" ]]; then
-          echo -e "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}[${GREEN}VULNS${RESET}]\t Readme.io    ${SUB_TAKEOVER_CHECK} ${RESET}"  ## README>.IO
-          echo -e "${SUB_TAKEOVER_CHECK} Readme.io Vulnerable"  | tee -a ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_TAKEOVER} > /dev/null 2>&1        
-        elif [[ $HTML =~ "Whatever you were looking for doesn't currently exist at this address" ]]; then
-          echo -e "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}[${GREEN}VULNS${RESET}]\t Tumblr       ${SUB_TAKEOVER_CHECK} ${RESET}"  ## TUMBLR
-          echo -e "${SUB_TAKEOVER_CHECK} Tumblr Vulnerable"  | tee -a ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_TAKEOVER} > /dev/null 2>&1
-        elif [[ $HTML =~ "This UserVoice subdomain is currently available!" ]]; then
-          echo -e "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}[${GREEN}VULNS${RESET}]\t UserVoice    ${SUB_TAKEOVER_CHECK} ${RESET}"  ## USERVOICE
-          echo -e "${SUB_TAKEOVER_CHECK} UserVoice Vulnerable"  | tee -a ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_TAKEOVER} > /dev/null 2>&1
-        elif [[ $HTML =~ "Domain is not configured" ]]; then
-          echo -e "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}[${GREEN}VULNS${RESET}]\t Smartling    ${SUB_TAKEOVER_CHECK} ${RESET}"  ## SMARTLING
-          echo -e "${SUB_TAKEOVER_CHECK} Smartling Vulnerable"  | tee -a ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_TAKEOVER} > /dev/null 2>&1
-        elif [[ $HTML =~ "You may have mistyped the address or the page may have moved." ]]; then
-          echo -e "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}[${GREEN}VULNS${RESET}]\t Thinkific    ${SUB_TAKEOVER_CHECK} ${RESET}"  ## THINKIFIC
-          echo -e "${SUB_TAKEOVER_CHECK} Thinkific Vulnerable"  | tee -a ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_TAKEOVER} > /dev/null 2>&1
-	else	
-	        echo -e "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}[${RED}FAILS${RESET}]\t En: Unknown  ${SUB_TAKEOVER_CHECK} ${RESET}"  ## UKOWN 
-		      echo -e "${SUB_TAKEOVER_CHECK} Unknown Not.Vuln"  | tee -a ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_TAKEOVER} > /dev/null 2>&1   
-        fi
+local TO=takeover
 	
-		done ## Close
+ ## Check Folder Results 
+  [[ ! -e "${OUT}/${DATE_LOG}/${DOMAIN}/${TO}" ]] \
+        && mkdir -p "${OUT}/${DATE_LOG}/${DOMAIN}/${TO}"||true
 
-    cat ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_TAKEOVER} | sed 's/ / ,/g' | column -t -s, > ${OUT}/${DATE_LOG}/${DOMAIN}/${FINAL_TAKEOVER}
-    rm -r ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_TAKEOVER} > /dev/null 2>&1
-}
+	rm -r ${OUT}/${DATE_LOG}/${DOMAIN}/${TO}/${RESULT_TAKEOVER} > /dev/null 2>&1
+	echo -e  "\n${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}Execute CNAME Resolv  ${RESET}\n"
+	
+	# Checking DNSPROBE
+	 which ${_DNSPROBE} > /dev/null
+             if  [[ "$?" -eq "0" ]];then
+		# Resolv using dnsprobe to make it faster
+			${_DNSPROBE} -l ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_SUBDOMAIN} -r CNAME --silent  -o ${OUT}/${DATE_LOG}/${DOMAIN}/${TO}/temp_cname.raw
+				if [[ -s ${OUT}/${DATE_LOG}/${DOMAIN}/${TO}/temp_cname.raw ]]; then
+					cat ${OUT}/${DATE_LOG}/${DOMAIN}/${TO}/temp_cname.raw | awk '{print $1}' > ${OUT}/${DATE_LOG}/${DOMAIN}/${TO}/${RESULT_CNAME_RESOLV} 
+					rm -r ${OUT}/${DATE_LOG}/${DOMAIN}/${TO}/temp_cname.raw
+						#COUNT_CNAME=$(cat ${OUT}/${DATE_LOG}/${DOMAIN}/${TO}/${RESULT_CNAME_RESOLV} | wc -l)
+							#echo -e  "${RESET}\t- Found${RESET}${DPADDING}\t\t[${GREEN}${COUNT_CNAME}${RESET}] "
+					
+					# Cheking DNSLOOK UP 
+					parallel -j 20 host {1} {2} :::: ${OUT}/${DATE_LOG}/${DOMAIN}/${TO}/${RESULT_CNAME_RESOLV} ::: 8.8.8.8 1.1.1.1 8.8.4.4 >> ${OUT}/${DATE_LOG}/${DOMAIN}/${TO}/${RESULT_DNSLOOKUP}
+					
+					# Parsing NXDOMAIN
+					cat ${OUT}/${DATE_LOG}/${DOMAIN}/${TO}/${RESULT_DNSLOOKUP} | grep "NXDOMAIN" | awk '{print $2" "$7}' > ${OUT}/${DATE_LOG}/${DOMAIN}/${TO}/${RESULT_NXDOMAIN}
+
+					# Running to check TakeOVer
+					 which ${_SUBJACK} > /dev/null
+						if  [[ "$?" -eq "0" ]];then
+							echo -e  "\n${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}Checking ${RESET}\n"
+							${_SUBJACK}  -w ${OUT}/${DATE_LOG}/${DOMAIN}/${TO}/${RESULT_CNAME_RESOLV} -timeout 30 -ssl -o ${OUT}/${DATE_LOG}/${DOMAIN}/${TO}/${RAW_RESULT_TAKEOVER} -c ${LIB_SJACK} -v 3 | sed -e 's/^/\t- /'
+
+								# Pars the output
+									cat ${OUT}/${DATE_LOG}/${DOMAIN}/${TO}/${RAW_RESULT_TAKEOVER} | tr '[\]' '- ' > ${OUT}/${DATE_LOG}/${DOMAIN}/${TO}/${RESULT_TAKEOVER} 
+									rm -r ${OUT}/${DATE_LOG}/${DOMAIN}/${TO}/${RAW_RESULT_TAKEOVER}
+						else
+							echo -e "${PADDING}${RESET}${PADDING}${LRED}x${RESET}  This Plugin need ${_SUBJACK},${RED} running the tools again${RESET}"
+ 						fi
+				else
+					echo -e  "${YELLOW}\t- ${RESET}CNAME resv not found in subdomains"
+					rm -r ${OUT}/${DATE_LOG}/${DOMAIN}/${TO}/temp_cname.raw
+				fi					 
+
+	       else 
+           
+	echo -e "\n${BOLD}[${LGREEN}+${RESET}${BOLD}]${RESET} Subdomain TakeOver - Check Possible Vulns"
+	echo -e "---------------------------------------------\n"
+	echo -e "${PADDING}${RESET}${PADDING}${LRED}x${RESET} This Plugin need ${_DNSPROBE},${RED} running the tools again${RESET}"
+
+        fi
+}	 
+	

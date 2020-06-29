@@ -90,3 +90,17 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 	- Added Plugin Websocket Check
 
 
+
+## [1.1.8] - 2020-06-29
+- Update
+        - Added New Plugin Generate Wordlist
+	- Generate & make  wordlist based on collecting url resources (wayback,urlscan,commoncrawl)
+		- To make that, we Extract All the paramater and path from our domain recon
+	- Added New plugin to screenshot using gowitness
+		- Default argument -ss (default running: gowitness)
+		- You can choice another screenshot tools, like (-ss webscreeenshot)  
+	- Update & Added package on "/lib/bin"
+	- Added Extract Interest URL Like Document extension (pdf,docx),Javascript,Interesting path & Files
+	- Fixing and Added regex to parsing url and parameter
+	- Change native subdomain take over to using subjack 
+	- Added to check cname (Subdomain > CNAME resolv > NXDOMAIN | Pattern matching )

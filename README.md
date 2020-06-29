@@ -1,12 +1,12 @@
 # Sudomy
-[![License](https://img.shields.io/badge/license-MIT-red.svg)](https://github.com/Screetsec/Sudomy/blob/master/LICENSE.md)  [![Build Status](https://travis-ci.org/Screetsec/Sudomy.svg?branch=master)](https://travis-ci.org/Screetsec/Sudomy)  [![Version](https://img.shields.io/badge/Release-1.1.7-blue.svg?maxAge=259200)]()  [![Build](https://img.shields.io/badge/Supported_OS-Linux-yellow.svg)]()  [![Build](https://img.shields.io/badge/Supported_WSL-Windows-blue.svg)]() [![Contributions Welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/screetsec/sudomy/issues)  [![Youtube](https://img.shields.io/badge/Youtube-Demo-red.svg)](https://www.youtube.com/watch?v=DpXIBUtasn0)
+[![License](https://img.shields.io/badge/license-MIT-red.svg)](https://github.com/Screetsec/Sudomy/blob/master/LICENSE.md)  [![Build Status](https://travis-ci.org/Screetsec/Sudomy.svg?branch=master)](https://travis-ci.org/Screetsec/Sudomy)  [![Version](https://img.shields.io/badge/Release-1.1.8-blue.svg?maxAge=259200)]()  [![Build](https://img.shields.io/badge/Supported_OS-Linux-yellow.svg)]()  [![Build](https://img.shields.io/badge/Supported_WSL-Windows-blue.svg)]() [![Contributions Welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/screetsec/sudomy/issues)  [![Youtube](https://img.shields.io/badge/Youtube-Demo-red.svg)](https://www.youtube.com/watch?v=DpXIBUtasn0)
 ### Subdomain Enumeration & Analysis
 ![ff](https://user-images.githubusercontent.com/17976841/63212795-b8d57300-c133-11e9-882a-f604d67819cc.png)
 
 ***Sudomy*** is a subdomain enumeration tool, created using a bash script, to analyze domains and collect subdomains in fast and comprehensive way.
 
 ## Features !
-##### For recent time, ***Sudomy*** has these 16 features:
+##### For recent time, ***Sudomy*** has these 18 features:
 -  Easy, light, fast and powerful. Bash script is available by default in almost all Linux distributions. By using bash script multiprocessing feature, all processors will be utilized optimally.
 -  Subdomain enumeration process can be achieved by using **active** method or **passive** method
     - **Active Method**
@@ -39,15 +39,17 @@
 - Subdomain availability test based on Ping Sweep and/or by getting HTTP status code.
 - The ability to detect virtualhost (several subdomains which resolve to single IP Address). Sudomy will resolve the collected subdomains to IP addresses, then classify them if several subdomains resolve to single IP address. This feature will be very useful for the next penetration testing/bug bounty process. For instance, in port scanning, single IP address won’t be scanned repeatedly
 - Performed port scanning from collected subdomains/virtualhosts IP Addresses
-- Testing Subdomain TakeOver attack
-- Taking Screenshots of subdomains
+- Testing Subdomain TakeOver attack (CNAME Resolver, DNSLookup, Detect NXDomain, Check Vuln)
+- Taking Screenshots of subdomains default using gowitness or you can choice another screenshot tools, like (-ss webscreeenshot)
 - Identify technologies on websites
 - Detection urls, ports, title, content-length, status-code, response-body probbing.
 - Smart auto fallback from https to http as default.
 - Data Collecting/Scraping open port from 3rd party (Default::Shodan), For right now just using Shodan [Future::Censys,Zoomeye]. More efficient and effective to collecting port from list ip on target [[ Subdomain > IP Resolver > Crawling > ASN & Open Port ]]
 - Collecting Juicy URL & Extract URL Parameter ( Resource Default::WebArchive, CommonCrawl, UrlScanIO) 
+- Collect interesting path (api|.git|admin|etc), document (doc|pdf), javascript(js|node),Parameter
 - Define path for outputfile (specify an output file when completed) 
 - Check an IP is Owned by Cloudflare 
+- Generate & make wordlist based on collecting url resources (wayback,urlscan,commoncrawl. To make that, we Extract All the paramater and path from our domain recon
 - Report output in HTML & CSV format
 
 ## How Sudomy Works
@@ -93,26 +95,29 @@ $ pip install -r requirements.txt
 ```bash
 # Linux
 apt-get update
-apt-get install jq nmap phantomjs npm
+apt-get install jq nmap phantomjs npm chromium parallel
 npm i -g wappalyzer wscat
 
 # Mac
 brew cask install phantomjs 
-brew install jq nmap npm
+brew install jq nmap npm parallel
 npm i -g wappalyzer wscat
+
+# Note
+All you would need is an installation of the latest Google Chrome or Chromium 
 ```
 
 ## Running in a Docker Container
 ```bash
 # Pull an image from DockerHub
-docker pull screetsec/sudomy:v1.1.7
+docker pull screetsec/sudomy:v1.1.8
 
 # Run an image, you can run the image on custom directory but you must copy/download config sudomy.api on current directory
-docker run -v "${PWD}/output:/usr/lib/sudomy/output" -v "${PWD}/sudomy.api:/usr/lib/sudomy/sudomy.api" -it --rm screetsec/sudomy:v1.1.7 [argument]
+docker run -v "${PWD}/output:/usr/lib/sudomy/output" -v "${PWD}/sudomy.api:/usr/lib/sudomy/sudomy.api" -it --rm screetsec/sudomy:v1.1.8 [argument]
 
 or define API variable when executed an image.
 
-docker run -v "${PWD}/output:/usr/lib/sudomy/output" -e "SHODAN_API=xxxx" -e "VIRUSTOTAL=xxxx" -it --rm screetsec/sudomy:v1.1.7 [argument]
+docker run -v "${PWD}/output:/usr/lib/sudomy/output" -e "SHODAN_API=xxxx" -e "VIRUSTOTAL=xxxx" -it --rm screetsec/sudomy:v1.1.8 [argument]
 ```
 
 ### Post Installation
@@ -171,21 +176,23 @@ Optional Arguments:
   -h,  --help            show this help message
   -o,  --outfile         specify an output file when completed 
   -s,  --source          Use source for Enumerate Subdomain
-  -aI, --apps-identifier Identify technologies on websites from domain list
+  -aI, --apps-identifier Identify technologies on website (ex: -aI webanalyze)
   -dP, --db-port         Collecting port from 3rd Party default=shodan
   -eP, --extract-params  Collecting URL Parameter from Engine
   -tO, --takeover        Subdomain TakeOver Vulnerabilty Scanner
+  -wS, --websocket       WebSocket Connection Check
+  -cF, --cloudfare       Check an IP is Owned by Cloudflare
   -pS, --ping-sweep      Check live host using methode Ping Sweep
   -rS, --resolver        Convert domain lists to resolved IP lists without duplicates
   -sC, --status-code     Get status codes, response from domain list
   -nT, --nmap-top        Port scanning with top-ports using nmap from domain list
-  -sS, --screenshot      Screenshots a list of website
+  -sS, --screenshot      Screenshots a list of website (default: gowitness)
   -nP, --no-passive      Do not perform passive subdomain enumeration 
+  -gW, --gwordlist       Generate wordlist based on collecting url resources (Passive) 
        --httpx           Perform httpx multiple probers using retryablehttp 
        --dnsprobe        Perform multiple dns queries (dnsprobe) 
        --no-probe        Do not perform httprobe 
        --html            Make report output into HTML 
-
 
 ```
 To use all 20 Sources and Probe for working http or https servers:

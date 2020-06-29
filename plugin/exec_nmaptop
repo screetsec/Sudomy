@@ -15,11 +15,11 @@ function exec_nmaptop(){
 
 rm -r ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_NMAP_HOSTS} > /dev/null 2>&1
 
-	if [[ -f ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_IP_RESOLVER} ]]; then        ## Checking file resolver.txt 
-		echo -e "\n${BOLD}[${LGREEN}+${RESET}${BOLD}]${RESET} Port Scanner: Nmap Port Scanner top ports   "  ##  + Must running with argument -rS | --resolver
-		echo -e "---------------------------------------------\n"                 ###   Example : Sudomy -rS -nP/ --nmap 
+	if [[ -f ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_CFCHECK} ]]; then        ## Checking file cf_resolver.txt 
+		echo -e "\n${BOLD}[${LGREEN}+${RESET}${BOLD}]${RESET} Port Scanner: Nmap Port Scanner top ports   "  ##  + Must running with argument -rS | --resolver / --dnsprobe 
+		echo -e "---------------------------------------------\n"                 ###   Example : Sudomy --dnsprobe -nP/ --nmap 
 
-		for SUB_RESOLV in $(cat ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_IP_RESOLVER}) 
+		for SUB_RESOLV in $(cat ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_CFCHECK}) 
 		do
 		echo -e "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}Scan host ${SUB_RESOLV} "
 		

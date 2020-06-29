@@ -4,7 +4,7 @@
 #  Edo maland ~ @screetsec                                    #
 #-Info--------------------------------------------------------#
 #  This file is part of Sudomy project                        #
-#  Plugin DB PORT: Update = 2020-06-06                        #
+#  Plugin DB PORT: Update = 2020-06-26                        #
 #-Licence-----------------------------------------------------#
 #  MIT License ~ http://opensource.org/licenses/MIT           #
 #-------------------------------------------------------------#
@@ -12,12 +12,12 @@
 
 function exec_dbport(){
 rm -r ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_DB_PORT} > /dev/null 2>&1
-	if [[ -f ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_IP_RESOLVER} ]]; then        ## Checking file resolver.txt
+	if [[ -f ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_CFCHECK} ]]; then        ## Checking file cf_check.txt < resolver.txt
 	    echo -ne "\n${BOLD}[${LGREEN}+${RESET}${BOLD}]${RESET} Collecting/Scraping open port from Engine \n"  ##  + Must running with argument -rS | --resolver
 	     echo -e "---------------------------------------------\n"
  
 		if [[ ! -z "${SHODAN_API}" ]];then
-			 for HOSTS in $(cat ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_IP_RESOLVER});do
+			 for HOSTS in $(cat ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_CFCHECK});do
 			    DBS=$(curl -s  https://api.shodan.io/shodan/host/${HOSTS}?key=${SHODAN_API})
 			    DB_PORT=$(echo ${DBS} | jq --raw-output -r '.data[]? | .port, .transport' |  sed -e 's/tcp/\/tcp /g' | sed -e 's/udp/\/udp /g'  | tr -d '\n' ) 
 			    DB_ASN=$(echo ${DBS} | jq --raw-output -r '.data[]? | .asn'  | sort -u)
@@ -40,7 +40,7 @@ rm -r ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_DB_PORT} > /dev/null 2>&1
 	else
 		echo -e "\n${BOLD}[${LGREEN}+${RESET}${BOLD}]${RESET} DB Port Crawl: Port Collecting from 3rd party   "
         	echo -e "---------------------------------------------\n"
-        	echo -e  "${PADDING}${RED}${PADDING}!${PADDING}${RESET}Run together with arg -rS or --dnsprobe${RESET}\t[${RED}FAIL${RESET}]\n"
+        	echo -e  "${PADDING}${RED}${PADDING}!${PADDING}${RESET}Run together with arg -cF & --dnsprobe${RESET}\t[${RED}FAIL${RESET}]\n"
 	fi
 }
 

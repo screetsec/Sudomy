@@ -1,0 +1,18 @@
+#-Metadata----------------------------------------------------#
+#  Filename: Sudomy - Subdomain Enumeration & Analysis        #
+#-Author(s)---------------------------------------------------#
+#  Edo maland ~ @screetsec                                    #
+#-Info--------------------------------------------------------#
+#  This file is part of Sudomy project                        #
+#  Plugin Screenshots: Update = 2020-06-26                    #
+#-Licence-----------------------------------------------------#
+#  MIT License ~ http://opensource.org/licenses/MIT           #
+#-------------------------------------------------------------#
+
+function exec_webscreenshot(){
+rm -rf ${OUT}/${DATE_LOG}/${DOMAIN}/screenshots/* ## Cleaning old file
+ _webscreenshot="lib/webscreenshot/webscreenshot.py"
+		echo -e "\n${BOLD}[${LGREEN}+${RESET}${BOLD}]${RESET} Web Screenshots: from domain list    "
+		echo -e "---------------------------------------------\n"
+		python  ${_webscreenshot} -i ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_HTTPROBE} -o ${OUT}/${DATE_LOG}/${DOMAIN}/screenshots/
+}
