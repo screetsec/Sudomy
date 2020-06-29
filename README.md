@@ -110,7 +110,8 @@ Detail information File Reconnaissance & Juicy Data
 - ./wordlist/wordlist-parameter.lst     -- Generate params wordlist     < Passive_Collect_URL_Full.txt
 - ./wordlist/wordlist-pathurl.lst       -- Generate List paths wordlis  < Passive_Collect_URL_Full.txt
 
--  Notes : This Wordlist based on Subdomain information path, file, query strings and parameter
+-  Notes : This Wordlist based on domain & subdomain information (path,file,query strings & parameter)
+------------------------------------------------------------------------------------------------------
 ```
 
 ## Publication
