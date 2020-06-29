@@ -3,11 +3,10 @@
 ### Subdomain Enumeration & Analysis
 ![ff](https://user-images.githubusercontent.com/17976841/63212795-b8d57300-c133-11e9-882a-f604d67819cc.png)
 
-***Sudomy*** is a subdomain enumeration tool, created using a bash script, to analyze domains and collect subdomains in fast and comprehensive way.
-
+***Sudomy*** is a subdomain enumeration tool to collect subdomains and analyzing domains performing automated reconnaissance.
 ## Features !
 ##### For recent time, ***Sudomy*** has these 18 features:
--  Easy, light, fast and powerful. Bash script is available by default in almost all Linux distributions. By using bash script multiprocessing feature, all processors will be utilized optimally.
+-  Easy, light, fast and powerful. Bash script (Controller) is available by default in almost all Linux distributions. By using bash script multiprocessing feature, all processors will be utilized optimally.
 -  Subdomain enumeration process can be achieved by using **active** method or **passive** method
     - **Active Method**
         - *Sudomy* utilize Gobuster tools because of its highspeed performance in carrying out DNS Subdomain Bruteforce attack (wildcard support). The wordlist that is used comes from combined SecList (Discover/DNS) lists which contains around 3 million entries
@@ -41,12 +40,12 @@
 - Performed port scanning from collected subdomains/virtualhosts IP Addresses
 - Testing Subdomain TakeOver attack (CNAME Resolver, DNSLookup, Detect NXDomain, Check Vuln)
 - Taking Screenshots of subdomains default using gowitness or you can choice another screenshot tools, like (-ss webscreeenshot)
-- Identify technologies on websites
+- Identify technologies on websites (category,application,version)
 - Detection urls, ports, title, content-length, status-code, response-body probbing.
 - Smart auto fallback from https to http as default.
 - Data Collecting/Scraping open port from 3rd party (Default::Shodan), For right now just using Shodan [Future::Censys,Zoomeye]. More efficient and effective to collecting port from list ip on target [[ Subdomain > IP Resolver > Crawling > ASN & Open Port ]]
 - Collecting Juicy URL & Extract URL Parameter ( Resource Default::WebArchive, CommonCrawl, UrlScanIO) 
-- Collect interesting path (api|.git|admin|etc), document (doc|pdf), javascript(js|node),Parameter
+- Collect interesting path (api|.git|admin|etc), document (doc|pdf), javascript (js|node) and parameter
 - Define path for outputfile (specify an output file when completed) 
 - Check an IP is Owned by Cloudflare 
 - Generate & make wordlist based on collecting url resources (wayback,urlscan,commoncrawl. To make that, we Extract All the paramater and path from our domain recon
