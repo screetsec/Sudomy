@@ -6,7 +6,7 @@
 ***Sudomy*** is a subdomain enumeration tool to collect subdomains and analyzing domains performing automated reconnaissance.
 ## Features !
 ##### For recent time, ***Sudomy*** has these 18 features:
--  Easy, light, fast and powerful. Bash script (Controller) is available by default in almost all Linux distributions. By using bash script multiprocessing feature, all processors will be utilized optimally.
+-  Easy, light, fast and powerful. Bash script (controller) is available by default in almost all Linux distributions. By using bash script multiprocessing feature, all processors will be utilized optimally.
 -  Subdomain enumeration process can be achieved by using **active** method or **passive** method
     - **Active Method**
         - *Sudomy* utilize Gobuster tools because of its highspeed performance in carrying out DNS Subdomain Bruteforce attack (wildcard support). The wordlist that is used comes from combined SecList (Discover/DNS) lists which contains around 3 million entries
