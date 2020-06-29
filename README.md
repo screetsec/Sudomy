@@ -58,6 +58,7 @@ root@maland: ./sudomy -d bugcrowd.com -dP -eP -rS -cF -pS -tO -gW --httpx --dnsp
 ```
 ### Recon Worfklow
 This Recon Workflow Sudomy v1.1.8#dev 
+
 ![Recon Workflow](https://raw.githubusercontent.com/Screetsec/Sudomy/master/doc/Sudomy%20-%20Recon%20Workflow%20v1.1.8%23dev.png)
 
 ### Detail information
@@ -96,6 +97,7 @@ Detail information File Reconnaissance & Juicy Data
 - ./interest/interesturi-param-full.out	-- Full parameter list 		< Passive_Collect_URL_Full.txt
 - ./interest/interesturi-paramsuniq.out -- Full Uniq parameter list 	< Passive_Collect_URL_Full.txt
 
+-  Notes : You can validate juicy/interest urls/param using urlprobe or httpx to avoid false positives
 ------------------------------------------------------------------------------------------------------
 
 - ./takeover/CNAME-resolv.txt		-- CNAME Resolver 		< subdomain.txt
