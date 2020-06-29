@@ -110,6 +110,7 @@ Detail information File Reconnaissance & Juicy Data
 - ./wordlist/wordlist-parameter.lst     -- Generate params wordlist     < Passive_Collect_URL_Full.txt
 - ./wordlist/wordlist-pathurl.lst       -- Generate List paths wordlis  < Passive_Collect_URL_Full.txt
 
+-  Notes : This Wordlist based on Subdomain information path, file, query strings and parameter
 ```
 
 ## Publication
@@ -319,5 +320,5 @@ All notable changes to this project will be documented in this [file](https://gi
 - [NgeSEC](https://ngesec.id/) - Community
 - [Zerobyte](http://zerobyte.id/) - Community
 - [Gauli(dot)Net](https://gauli.net/) - Lab Hacking Indonesia
-- [missme3f](https://github.com/missme3f/) - Adrian
+- [missme3f](https://github.com/missme3f/) - Raditya Rahma
 - [Bugcrowd](https://www.bugcrowd.com/) & [Hackerone](https://www.hackerone.com/)
