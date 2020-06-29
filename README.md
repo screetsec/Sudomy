@@ -57,9 +57,11 @@ How sudomy works or recon flow, when you run the best arguments to collect subdo
 root@maland: ./sudomy -d bugcrowd.com -dP -eP -rS -cF -pS -tO -gW --httpx --dnsprobe  -aI webanalyze -sS
 ```
 ### Recon Worfklow
+This Recon Workflow Sudomy v1.1.8#dev 
 ![Recon Workflow](https://raw.githubusercontent.com/Screetsec/Sudomy/master/doc/Sudomy%20-%20Recon%20Workflow%20v1.1.8%23dev.png)
 
 ### Detail information
+Detail information File Reconnaissance & Juicy Data
 ```
 ------------------------------------------------------------------------------------------------------
 
