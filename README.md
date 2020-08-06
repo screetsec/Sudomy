@@ -3,7 +3,7 @@
 ### Subdomain Enumeration & Analysis
 ![ff](https://user-images.githubusercontent.com/17976841/63212795-b8d57300-c133-11e9-882a-f604d67819cc.png)
 
-***Sudomy*** is a subdomain enumeration tool to collect subdomains and analyzing domains performing automated reconnaissance.
+***Sudomy*** is a subdomain enumeration tool to collect subdomains and analyzing domains performing automated reconnaissance. This tool can also be used for OSINT activities.
 ## Features !
 ##### For recent time, ***Sudomy*** has these 18 features:
 -  Easy, light, fast and powerful. Bash script (controller) is available by default in almost all Linux distributions. By using bash script multiprocessing feature, all processors will be utilized optimally.
