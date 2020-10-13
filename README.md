@@ -296,6 +296,16 @@ HTML Report Sample:
 | ------------  | ------------ |
 |![Index](https://user-images.githubusercontent.com/17976841/63597336-6ab6e880-c5e7-11e9-819e-91634e347b0c.PNG)|![f](https://user-images.githubusercontent.com/17976841/63597476-bbc6dc80-c5e7-11e9-8985-6a73348a2e02.PNG)|
 
+To use best arguments to collect subdomains & analyze by doing automatic recon and sending notifications to slack
+```
+./sudomy -d ngesec.id -dP -eP -rS -cF -pS -tO -gW --httpx --dnsprobe  -aI webanalyze --slack  -sS
+```
+Slack Notification Sample:
+| Slack 	|
+| ------------  |
+|![Slacks](https://user-images.githubusercontent.com/17976841/95856703-a4672780-0d84-11eb-9a3e-03ab39e4dc10.png)|
+
+
 
 
 ## Tools Overview
