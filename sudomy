@@ -1047,7 +1047,7 @@ fi
 
 # Screenshots a list of website
 
-# Run argument -sS / --screenshot ( -aI gowitness / -aI webscreenshot ) 
+# Run argument -sS / --screenshot ( -sS gowitness / -sS webscreenshot ) 
 # Default screenshots using gowitness
 
 if [[ ${PLUGIN_DOMAIN_SCREENSHOTS} == true ]]; then	
