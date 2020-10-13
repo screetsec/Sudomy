@@ -104,3 +104,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 	- Fixing and Added regex to parsing url and parameter
 	- Change native subdomain take over to using subjack 
 	- Added to check cname (Subdomain > CNAME resolv > NXDOMAIN | Pattern matching )
+
+## [1.1.9] - 2020-10-13
+ - Update
+        - Added Feature Sending notifications to a slack channel 
