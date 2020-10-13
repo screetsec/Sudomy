@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #-Metadata----------------------------------------------------#
-#  Filename: sudomy (v1.1.8)             (Update: 2020-06-29) #
+#  Filename: sudomy (v1.1.9)             (Update: 2020-10-13) #
 #-Info--------------------------------------------------------#
 #  Fast Subdomain Enumeration & Analysis.                     #
 #-Author(s)---------------------------------------------------#
@@ -20,11 +20,12 @@
 ### Variable Name and Version
 
 APPNAME="sud⍥my.sh"
-VERSION="1.1.8#dev"
+VERSION="1.1.9#dev"
 
 ### Calling Source
 source sudomy.api
 source sudomy.conf
+source slack.conf
 
 #### Command calling
 goBanner(){
@@ -251,7 +252,12 @@ args="${1}";
         "--html")
             REPORTS=1
             shift
-        ;;       
+        ;;
+	
+	"--slack")
+            SLACK=true
+            shift
+        ;;
 
 
         "--httpx")
@@ -1096,6 +1102,20 @@ fi
 #Remove Temporary RAW DATA []
 rm -r ${OUT_RAW_WEBARCHIVE} ${OUT_RAW_COMMONCRAWL} ${OUT_RAW_URLSCAN} ${OUT}/${RESULT_EXTRACT_PARAM} > /dev/null 2>&1
 
+## Slack Alert Notifications
+# For configuration/tutorial to get webhook url following to this site
+#     - https://api.slack.com/apps/A01C1PXD7TR/incoming-webhooks?success=1
+
+if [[ ${SLACK} == true ]] ; then
+echo -e "\n${BOLD}[${LGREEN}+${RESET}${BOLD}]${RESET} Slack alert - Sending Notifications${RESET}"
+echo -e "---------------------------------------------\n"
+  if [[ ! -z "${YOUR_WEBHOOK_URL}" ]];then
+    echo -ne  "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}Sending Notifications${RESET}${DPADDING}[${GREEN} ✔ ${RESET}]\n"
+     curl -s  -X POST -H 'Content-type: application/json' --data '{"text":"*Sudomy - Subdomain Enumeration & analysis:* \n Information: Automated Recon Done !! \n - Domain: '${DOMAIN}' \n - Date: '${DATE_LOG}'"}' ${YOUR_WEBHOOK_URL}  > /dev/null
+  else
+    echo -e  "${PADDING}${RED}${PADDING}!${PADDING}${RESET}WEBHOOK URL Required, settings on slack.conf${RESET}\n"	
+  fi
+fi
 
 # Load template for reporting
 source lib/template/_template
