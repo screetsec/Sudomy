@@ -1,0 +1,19 @@
+image: docker:latest
+
+services:
+  - docker:dind
+
+stages:
+  - recon
+  
+sudomy:
+  stage: recon
+  before_script:
+    - docker pull screetsec/sudomy:v1.1.9
+    - mkdir output
+  script:
+    - docker run -v "$(pwd)/output:/usr/lib/sudomy/output" -v "$(pwd):/data" --rm sudomy -d $DOMAIN -dP -eP -rS -cF -pS -tO -gW --httpx --dnsprobe  -aI webanalyze --slack -sS
+  artifacts:
+    paths:
+      - output
+    expire_in: 1 week
