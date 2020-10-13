@@ -1,11 +1,11 @@
 # Sudomy
-[![License](https://img.shields.io/badge/license-MIT-red.svg)](https://github.com/Screetsec/Sudomy/blob/master/LICENSE.md)  [![Build Status](https://travis-ci.org/Screetsec/Sudomy.svg?branch=master)](https://travis-ci.org/Screetsec/Sudomy)  [![Version](https://img.shields.io/badge/Release-1.1.8-blue.svg?maxAge=259200)]()  [![Build](https://img.shields.io/badge/Supported_OS-Linux-yellow.svg)]()  [![Build](https://img.shields.io/badge/Supported_WSL-Windows-blue.svg)]() [![Contributions Welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/screetsec/sudomy/issues) [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.me/screetsec)
+[![License](https://img.shields.io/badge/license-MIT-red.svg)](https://github.com/Screetsec/Sudomy/blob/master/LICENSE.md)  [![Build Status](https://travis-ci.org/Screetsec/Sudomy.svg?branch=master)](https://travis-ci.org/Screetsec/Sudomy)  [![Version](https://img.shields.io/badge/Release-1.1.9-blue.svg?maxAge=259200)]()  [![Build](https://img.shields.io/badge/Supported_OS-Linux-yellow.svg)]()  [![Build](https://img.shields.io/badge/Supported_WSL-Windows-blue.svg)]() [![Contributions Welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/screetsec/sudomy/issues) [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.me/screetsec)
 ### Subdomain Enumeration & Analysis
 ![ff](https://user-images.githubusercontent.com/17976841/63212795-b8d57300-c133-11e9-882a-f604d67819cc.png)
 
 ***Sudomy*** is a subdomain enumeration tool to collect subdomains and analyzing domains performing automated reconnaissance. This tool can also be used for OSINT activities.
 ## Features !
-##### For recent time, ***Sudomy*** has these 18 features:
+##### For recent time, ***Sudomy*** has these 19 features:
 -  Easy, light, fast and powerful. Bash script (controller) is available by default in almost all Linux distributions. By using bash script multiprocessing feature, all processors will be utilized optimally.
 -  Subdomain enumeration process can be achieved by using **active** method or **passive** method
     - **Active Method**
@@ -50,6 +50,7 @@
 - Check an IP is Owned by Cloudflare 
 - Generate & make wordlist based on collecting url resources (wayback,urlscan,commoncrawl. To make that, we Extract All the paramater and path from our domain recon
 - Report output in HTML & CSV format
+- Sending notifications to a slack channel
 
 ## How Sudomy Works 
 How sudomy works or recon flow, when you run the best arguments to collect subdomains and analyze by doing automatic recon.
@@ -169,14 +170,14 @@ All you would need is an installation of the latest Google Chrome or Chromium
 ## Running in a Docker Container
 ```bash
 # Pull an image from DockerHub
-docker pull screetsec/sudomy:v1.1.8
+docker pull screetsec/sudomy:v1.1.9
 
 # Run an image, you can run the image on custom directory but you must copy/download config sudomy.api on current directory
-docker run -v "${PWD}/output:/usr/lib/sudomy/output" -v "${PWD}/sudomy.api:/usr/lib/sudomy/sudomy.api" -it --rm screetsec/sudomy:v1.1.8 [argument]
+docker run -v "${PWD}/output:/usr/lib/sudomy/output" -v "${PWD}/sudomy.api:/usr/lib/sudomy/sudomy.api" -it --rm screetsec/sudomy:v1.1.9 [argument]
 
 or define API variable when executed an image.
 
-docker run -v "${PWD}/output:/usr/lib/sudomy/output" -e "SHODAN_API=xxxx" -e "VIRUSTOTAL=xxxx" -it --rm screetsec/sudomy:v1.1.8 [argument]
+docker run -v "${PWD}/output:/usr/lib/sudomy/output" -e "SHODAN_API=xxxx" -e "VIRUSTOTAL=xxxx" -it --rm screetsec/sudomy:v1.1.9 [argument]
 ```
 
 ### Post Installation
@@ -209,6 +210,17 @@ BINARYEDGE=""
 # SecurityTrails
 # URL : https://securitytrails.com/
 SECURITY_TRAILS=""
+```
+YOUR_WEBHOOK_URL is needed before using the slack notifications
+- The URL setting can be done in slack.conf file.
+```bash
+# Configuration Slack Alert
+# For configuration/tutorial to get webhook url following to this site
+#     - https://api.slack.com/apps/A01C1PXD7TR/incoming-webhooks?success=1
+# Example: 
+#     - YOUR_WEBHOOK_URL="https://hooks.slack.com/services/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"
+
+YOUR_WEBHOOK_URL="https://hooks.slack.com/services/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"
 ```
 
 ## Usage
