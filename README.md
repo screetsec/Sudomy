@@ -170,17 +170,17 @@ All you would need is an installation of the latest Google Chrome or Chromium
 ## Running in a Docker Container
 ```bash
 # Pull an image from DockerHub
-docker pull screetsec/sudomy:v1.1.9
+docker pull screetsec/sudomy:v1.1.9-dev
 
 # Create output directory
 mkdir output
 
 # Run an image, you can run the image on custom directory but you must copy/download config sudomy.api on current directory
-docker run -v "${PWD}/output:/usr/lib/sudomy/output" -v "${PWD}/sudomy.api:/usr/lib/sudomy/sudomy.api" -t --rm screetsec/sudomy:v1.1.9 [argument]
+docker run -v "${PWD}/output:/usr/lib/sudomy/output" -v "${PWD}/sudomy.api:/usr/lib/sudomy/sudomy.api" -t --rm screetsec/sudomy:v1.1.9-dev [argument]
 
 # or define API variable when executed an image.
 
-docker run -v "${PWD}/output:/usr/lib/sudomy/output" -e "SHODAN_API=xxxx" -e "VIRUSTOTAL=xxxx" -t --rm screetsec/sudomy:v1.1.9 [argument]
+docker run -v "${PWD}/output:/usr/lib/sudomy/output" -e "SHODAN_API=xxxx" -e "VIRUSTOTAL=xxxx" -t --rm screetsec/sudomy:v1.1.9-dev [argument]
 ```
 
 ### Post Installation
