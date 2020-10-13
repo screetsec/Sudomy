@@ -298,7 +298,7 @@ HTML Report Sample:
 
 To use best arguments to collect subdomains & analyze by doing automatic recon and sending notifications to slack
 ```
-./sudomy -d ngesec.id -dP -eP -rS -cF -pS -tO -gW --httpx --dnsprobe  -aI webanalyze --slack  -sS
+./sudomy -d ngesec.id -dP -eP -rS -cF -pS -tO -gW --httpx --dnsprobe  -aI webanalyze --slack -sS
 ```
 Slack Notification Sample:
 | Slack 	|
