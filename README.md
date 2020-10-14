@@ -219,7 +219,7 @@ YOUR_WEBHOOK_URL is needed before using the slack notifications
 ```bash
 # Configuration Slack Alert
 # For configuration/tutorial to get webhook url following to this site
-#     - https://api.slack.com/apps/A01C1PXD7TR/incoming-webhooks?success=1
+#     - https://api.slack.com/messaging/webhooks
 # Example: 
 #     - YOUR_WEBHOOK_URL="https://hooks.slack.com/services/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"
 
