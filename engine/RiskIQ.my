@@ -1,0 +1,24 @@
+#-Metadata----------------------------------------------------#
+#  Filename: Sudomy - Subdomain Enumeration & Analysis        #
+#-Author(s)---------------------------------------------------#
+#  Edo maland ~ @screetsec                                    #
+#-Info--------------------------------------------------------#
+#  This file is part of Sudomy project                        #
+#  Engine RISKIQ : Update = 2020-12-14                        #
+#-Licence-----------------------------------------------------#
+#  MIT License ~ http://opensource.org/licenses/MIT           #
+#-------------------------------------------------------------#
+
+RISKIQ(){
+## Using API Key
+
+local URL_RISKIQ="https://api.passivetotal.org/v2/enrichment/subdomains" ## Using API
+  if [[ ! -z "${PASSIVE_API}" ]];then
+    echo -e  "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}RiskIQ${RESET}${DPADDING}\t\t[${GREEN} ✔ ${RESET}]"
+      MAKEFILE=$(curl --silent -u "${PASSIVE_API}" "${URL_RISKIQ}?query=${DOMAIN}" | jq --raw-output -r .subdomains[]? | sort -u  > ${TMP_RISKIQ})
+      for i in $(cat ${TMP_RISKIQ});do echo ${i}.${DOMAIN} >> ${OUT_RISKIQ}; done ; rm -r ${TMP_RISKIQ}
+  else
+    echo -e  "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}RiskIQ${RESET}${DPADDING}\t\t[${RED} ✕ ${RESET}]"
+
+  fi
+}

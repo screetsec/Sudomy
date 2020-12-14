@@ -11,10 +11,12 @@
 
 SHODAN(){
 ## Using API Key
-local URL_SHODAN="https://api.shodan.io/shodan/host/search?key=" ## Using API Shodan
+
+#local URL_SHODAN="https://api.shodan.io/shodan/host/search?key=" ## Using API Shodan
   if [[ ! -z "$SHODAN_API" ]];then
     echo -e  "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}Shodan${RESET}${DPADDING}\t\t[${GREEN} ✔ ${RESET}]"
-      MAKEFILE=$(curl --silent --request GET --url "${URL_SHODAN}${SHODAN_API}&query=hostname:${DOMAIN}" | jq --raw-output -r '.matches[] |.hostnames[]' | sort -u > ${OUT_SHODAN})
+      MAKEFILE=$(curl --silent --request GET --url "https://api.shodan.io/dns/domain/${DOMAIN}?key=${SHODAN_API}" | jq --raw-output -r .subdomains[]? | egrep -iv "_dmarc"  > ${TMP_SHODAN})
+      for i in $(cat ${TMP_SHODAN});do echo ${i}.${DOMAIN} >> ${OUT_SHODAN}; done ; rm -r ${TMP_SHODAN}
   else
     echo -e  "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}Shodan${RESET}${DPADDING}\t\t[${RED} ✕ ${RESET}]"
 

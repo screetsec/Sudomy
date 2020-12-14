@@ -14,7 +14,7 @@ CENSYS(){
 local _CENSYS="lib/censys/censys_subdomain_finder.py"
   if [[ ! -z "$CENSYS_API" ]] && [[ ! -z "$CENSYS_SECRET" ]] ;then
     echo -e  "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}Censys${RESET}${DPADDING}\t\t[${GREEN} ✔ ${RESET}]"
-      MAKEFILE=$(python ${_CENSYS} --censys-api-id ${CENSYS_API} --censys-api-secret ${CENSYS_SECRET} ${DOMAIN}> ${OUT_CENSYS})
+      MAKEFILE=$(python3 ${_CENSYS} --censys-api-id ${CENSYS_API} --censys-api-secret ${CENSYS_SECRET} ${DOMAIN}> ${OUT_CENSYS})
   else
     echo -e  "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}Censys${RESET}${DPADDING}\t\t[${RED} ✕ ${RESET}]"
   fi

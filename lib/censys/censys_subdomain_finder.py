@@ -38,7 +38,7 @@ def filter_subdomains(domain, subdomains):
 
 # Prints the list of found subdomains to stdout
 def print_subdomains(domain, subdomains, time_ellapsed):
-    if len(subdomains) is 0:
+    if len(subdomains) == 0:
         print('[-] Did not find any subdomain')
         return
 
@@ -49,7 +49,7 @@ def print_subdomains(domain, subdomains, time_ellapsed):
 
 # Saves the list of found subdomains to an output file
 def save_subdomains_to_file(subdomains, output_file):
-    if output_file is None or len(subdomains) is 0:
+    if output_file is None or len(subdomains) == 0:
         return
 
     try:

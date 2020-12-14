@@ -9,14 +9,14 @@
 #  MIT License ~ http://opensource.org/licenses/MIT           #
 #-------------------------------------------------------------#
 
-ENTRUST(){
-local URL_ENTRUST="https://ctsearch.entrust.com/api/v1/certificates?fields=subjectDN&domain="
+#ENTRUST(){
+#local URL_ENTRUST="https://ctsearch.entrust.com/api/v1/certificates?fields=subjectDN&domain="
   #echo -e  "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}Entrust${RESET}${DPADDING}\t\t[${GREEN} ✔ ${RESET}]"
-	local STATUS_ENTRUST=$(curl --write-out %{http_code} --silent --output /dev/null "https://ctsearch.entrust.com/api/v1/certificates?fields=subjectDN&domain=${DOMAIN}")
-		 if [[ ${STATUS_ENTRUST} == 403 ]]; then
-			echo -e  "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}Entrust${RESET}${DPADDING}\t\t[${RED} ✕ ${RESET}]"
-		 else
-			
-  			curl --silent --request GET --url "${URL_ENTRUST}${DOMAIN}&includeExpired=false&exactMatch=false&limit=5000" | jq --raw-output -r '.[].subjectDN' | sed 's/,.*//' | sed 's/\*\.//g' |  sed 's/cn=//g' | sort -u > ${OUT_ENTRUST}
-		 fi
+#	local STATUS_ENTRUST=$(curl --write-out %{http_code} --silent --output /dev/null "https://ctsearch.entrust.com/api/v1/certificates?fields=subjectDN&domain=${DOMAIN}")
+#		 if [[ ${STATUS_ENTRUST} == 403 ]]; then
+#			echo -e  "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}Entrust${RESET}${DPADDING}\t\t[${RED} ✕ ${RESET}]"
+#		 else
+#			
+#  			curl --silent --request GET --url "${URL_ENTRUST}${DOMAIN}&includeExpired=false&exactMatch=false&limit=5000" | jq --raw-output -r '.[].subjectDN' | sed 's/,.*//' | sed 's/\*\.//g' |  sed 's/cn=//g' | sort -u > ${OUT_ENTRUST}
+#		 fi
 }

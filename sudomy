@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #-Metadata----------------------------------------------------#
-#  Filename: sudomy (v1.1.9)             (Update: 2020-10-13) #
+#  Filename: sudomy (v1.2.0)             (Update: 2020-12-09) #
 #-Info--------------------------------------------------------#
 #  Fast Subdomain Enumeration & Analysis.                     #
 #-Author(s)---------------------------------------------------#
@@ -20,12 +20,12 @@
 ### Variable Name and Version
 
 APPNAME="sud⍥my.sh"
-VERSION="1.1.9#dev"
+VERSION="1.2.0#dev"
 
 ### Calling Source
 source sudomy.api
-source sudomy.conf
 source slack.conf
+source sudomy.conf
 
 #### Command calling
 goBanner(){
@@ -96,27 +96,29 @@ goBanner;
  echo -e "${PADDING}${BOLD}    ${RESET} --no-probe\t Do not perform httprobe "
  echo -e "${PADDING}${BOLD}    ${RESET} --html${DPADDING} Make report output into HTML " 
  echo -e "\n${BOLD}Sources:${RESET}"
- echo -e "${PADDING}${YELLOW}+${RESET} Shodan${DPADDING} http://developer.shodan.io/billing/"
- echo -e "${PADDING}${YELLOW}+${RESET} VirusTotal${PADDING}\t https://www.virustotal.com/vtapi/v2/domain/"
- echo -e "${PADDING}${YELLOW}+${RESET} Censys${DPADDING} http://censys.io/"
+ echo -e "${PADDING}${YELLOW}+${RESET} Shodan${DPADDING} http://developer.shodan.io"
+ echo -e "${PADDING}${YELLOW}+${RESET} VirusTotal${PADDING}\t https://www.virustotal.com"
+ echo -e "${PADDING}${YELLOW}+${RESET} Censys${DPADDING} http://censys.io"
  echo -e "${PADDING}${YELLOW}+${RESET} Certspotter${DPADDING} https://api.certspotter.com"
- echo -e "${PADDING}${YELLOW}+${RESET} BinaryEdge${DPADDING} https://docs.binaryedge.io/api-v2/"
- echo -e "${PADDING}${YELLOW}+${RESET} Hackertarget${PADDING}\t https://api.hackertarget.com/"
+ echo -e "${PADDING}${YELLOW}+${RESET} BinaryEdge${DPADDING} https://docs.binaryedge.io/"
+ echo -e "${PADDING}${YELLOW}+${RESET} Hackertarget${PADDING}\t https://api.hackertarget.com"
  echo -e "${PADDING}${YELLOW}+${RESET} Threatminer${DPADDING} https://api.threatminer.org"
- echo -e "${PADDING}${YELLOW}+${RESET} CrtSH${DPADDING} https://crt.sh/"
- echo -e "${PADDING}${YELLOW}+${RESET} DnsDB${DPADDING} https://www.dnsdb.info/"
+ echo -e "${PADDING}${YELLOW}+${RESET} CrtSH${DPADDING} https://crt.sh"
+ echo -e "${PADDING}${YELLOW}+${RESET} DnsDB${DPADDING} https://www.dnsdb.info"
  echo -e "${PADDING}${YELLOW}+${RESET} BufferOver${DPADDING} http://dns.bufferover.run"
- echo -e "${PADDING}${YELLOW}+${RESET} Findsubdomains\t http://findsubdomains.com/"
- echo -e "${PADDING}${YELLOW}+${RESET} Threatcrowd${DPADDING} http://threatcrowd.org/"
- echo -e "${PADDING}${YELLOW}+${RESET} Dnsdumpster${DPADDING} https://dnsdumpster.com/"
- echo -e "${PADDING}${YELLOW}+${RESET} Riddler${DPADDING} http://riddler.io/"
- echo -e "${PADDING}${YELLOW}+${RESET} Entrust${DPADDING} https://ctsearch.entrust.com/"
- echo -e "${PADDING}${YELLOW}+${RESET} Webarchive${DPADDING} http://web.archive.org/"
- echo -e "${PADDING}${YELLOW}+${RESET} SecurityTrails\t http://securitytrails.com/"
- echo -e "${PADDING}${YELLOW}+${RESET} RapidDNS${DPADDING} https://rapiddns.io/"
- echo -e "${PADDING}${YELLOW}+${RESET} AlienVault${DPADDING} https://otx.alienvault.com/"
- echo -e "${PADDING}${YELLOW}+${RESET} CommonCrawl${DPADDING} http://index.commoncrawl.org/"
- echo -e "${PADDING}${YELLOW}+${RESET} URLScan${DPADDING} https://urlscan.io/\n"
+ echo -e "${PADDING}${YELLOW}+${RESET} Sypse${DPADDING} https://spyse.com"
+ echo -e "${PADDING}${YELLOW}+${RESET} Threatcrowd${DPADDING} http://threatcrowd.org"
+ echo -e "${PADDING}${YELLOW}+${RESET} Dnsdumpster${DPADDING} https://dnsdumpster.com"
+ echo -e "${PADDING}${YELLOW}+${RESET} Riddler${DPADDING} http://riddler.io"
+ echo -e "${PADDING}${YELLOW}+${RESET} Webarchive${DPADDING} http://web.archive.org"
+ echo -e "${PADDING}${YELLOW}+${RESET} SecurityTrails\t http://securitytrails.com"
+ echo -e "${PADDING}${YELLOW}+${RESET} RapidDNS${DPADDING} https://rapiddns.io"
+ echo -e "${PADDING}${YELLOW}+${RESET} AlienVault${DPADDING} https://otx.alienvault.com"
+ echo -e "${PADDING}${YELLOW}+${RESET} CommonCrawl${DPADDING} http://index.commoncrawl.org"
+ echo -e "${PADDING}${YELLOW}+${RESET} FBcert${DPADDING} https://graph.facebook.com"
+ echo -e "${PADDING}${YELLOW}+${RESET} URLScan${DPADDING} https://urlscan.io"
+ echo -e "${PADDING}${YELLOW}+${RESET} RiskIQ${DPADDING} https://community.riskiq.com\n"
+
 
 }
 
@@ -355,6 +357,8 @@ DATE_LOG=$(date +%m-%d-%Y)
 ## Calling Engine (Third Party-Sites) Total 18 
 ## Selecting the good third-party sites, the enumeration process can be optimized
 
+# source ${Engine_Entrust} //  (not accessible) anymore
+
 source ${Engine_Shodan}
 source ${Engine_VirusTotal}
 source ${Engine_Censys}
@@ -363,18 +367,20 @@ source ${Engine_BinaryEdge}
 source ${Engine_Hackertarget}
 source ${Engine_Threatminer}
 source ${Engine_CrtSH}
-source ${Engine_Findsubdomains}
+source ${Engine_Spyse}
 source ${Engine_BufferOver}
 source ${Engine_Threatcrowd}
 source ${Engine_Dnsdumpster}
 source ${Engine_Riddler}
-source ${Engine_Entrust}
 source ${Engine_Webarchive}
 source ${Engine_SecurityTrails}
 source ${Engine_RapidDNS}
 source ${Engine_AlienVault}
 source ${Engine_CommonCrawl}
 source ${Engine_UrlScan}
+source ${Engine_DNSDB}
+source ${Engine_RiskIQ}
+source ${Engine_FBCert}
 
 # Timestamp
 current_date_time=$(date "+%Y-%m-%d %H:%M:%S")
@@ -515,20 +521,13 @@ done
     }
 
     [[ ${entrust} == true ]] && {
-    ENTRUST
+    #ENTRUST
     	if [[ -f ${OUT_ENTRUST} ]];then
     		COUNT=$(cat ${OUT_ENTRUST} | sort -u | wc  -l  )
     		#echo -e "\t${BLUE}-${RESET}${RESET} Subdomain total: ${COUNT}\n"
     	fi
     }
 
-    [[ ${findsubdomain} == true ]] && {
-    FINDSUBDOMAIN
-    	if [[ -f ${OUT_FINDSUBDOMAIN} ]];then
-    		COUNT=$(cat ${OUT_FINDSUBDOMAIN} | sort -u | wc  -l  )
-    		#echo -e "\t${BLUE}-${RESET}${RESET} Subdomain total: ${COUNT}\n"
-    	fi
-    }
 
     [[ ${threatcrowd} == true ]] && {
     THREATCROWD
@@ -614,8 +613,44 @@ done
     }
 
 
+    [[ ${dnsdb} == true ]] && {
+    DNSDB
+        if [[ -f ${OUT_DNSDB} ]];then
+                COUNT=$(cat ${OUT_DNSDB} | sort -u | wc  -l  )
+                #echo -e "\t${BLUE}-${RESET}${RESET} Subdomain total: ${COUNT}\n"
+        fi
+    }
+
+    [[ ${spyse} == true ]] && {
+    SPYSE
+    	if [[ -f ${OUT_SPYSE} ]];then
+    		COUNT=$(cat ${OUT_SPYSE} | sort -u | wc  -l  )
+    		#echo -e "\t${BLUE}-${RESET}${RESET} Subdomain total: ${COUNT}\n"
+    	fi
+    }
+
+
+    [[ ${riskiq} == true ]] && {
+    RISKIQ
+        if [[ -f ${OUT_RISKIQ} ]];then
+                COUNT=$(cat ${OUT_RISKIQ} | sort -u | wc  -l  )
+                #echo -e "\t${BLUE}-${RESET}${RESET} Subdomain total: ${COUNT}\n"
+        fi
+    }
+
+    [[ ${fbcert} == true ]] && {
+    FBCERT
+        if [[ -f ${OUT_FBCERT} ]];then
+                COUNT=$(cat ${OUT_FBCERT} | sort -u | wc  -l  )
+                #echo -e "\t${BLUE}-${RESET}${RESET} Subdomain total: ${COUNT}\n"
+        fi
+    }
+
+
+
+
 elif [[ ${SOURCE} == false ]] ; then
-	args_source=(SHODAN WEBARCHIVE DNSDUMPSTER VIRUSTOTAL CERTSPOTTER CERTSH BINARYEDGE SECURITY_TRAILS CENSYS THREATMINER BUFFEROVER HACKERTARGET ENTRUST FINDSUBDOMAIN THREATCROWD RIDDLER RAPIDDNS ALIENVAULT COMMONCRAWL URLSCAN)
+	args_source=(SHODAN WEBARCHIVE DNSDUMPSTER VIRUSTOTAL CERTSPOTTER CERTSH BINARYEDGE SECURITY_TRAILS CENSYS THREATMINER BUFFEROVER HACKERTARGET SPYSE THREATCROWD RIDDLER RAPIDDNS ALIENVAULT COMMONCRAWL URLSCAN DNSDB RISKIQ FBCERT)
 	for i in "${!args_source[@]}"; do
    		"${args_source[i]}" &
 	done
@@ -642,14 +677,7 @@ if [[ ${verbose} == true ]] ; then
           echo -e "\t - $VERBOSE"
       done
     fi
-    if [[ -f ${OUT_FINDSUBDOMAIN} ]] ; then
-      COUNT=$(cat ${OUT_FINDSUBDOMAIN} | sort -u | wc  -l  )
-      echo -e  "\n${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}Findsubdomain${RESET}${DPADDING}\t[${GREEN}${COUNT}${RESET}]"
-      cat ${OUT_FINDSUBDOMAIN} \
-      | while read VERBOSE; do
-          echo -e "\t - $VERBOSE"
-      done
-    fi
+
     if [[ -f ${OUT_VIRUSTOTAL} ]] ; then
       COUNT=$(cat ${OUT_VIRUSTOTAL} | sort -u | wc  -l  )
       echo -e  "\n${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}Virustotal${RESET}${DPADDING}\t\t[${GREEN}${COUNT}${RESET}]"
@@ -706,10 +734,10 @@ if [[ ${verbose} == true ]] ; then
             echo -e "\t - $VERBOSE"
         done
       fi
-    if [[ -f ${OUT_FINDSUBDOMAIN} ]] ; then
-        COUNT=$(cat ${OUT_FINDSUBDOMAIN} | sort -u | wc  -l  )
-        echo -e  "\n${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}Findsubdomain${RESET}${DPADDING}\t[${GREEN}${COUNT}${RESET}]"
-        cat ${OUT_FINDSUBDOMAIN} \
+    if [[ -f ${OUT_SPYSE} ]] ; then
+        COUNT=$(cat ${OUT_SPYSE} | sort -u | wc  -l  )
+        echo -e  "\n${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}Spyse${RESET}${DPADDING}\t\t[${GREEN}${COUNT}${RESET}]"
+        cat ${OUT_SPYSE} \
         | while read VERBOSE; do
             echo -e "\t - $VERBOSE"
         done
@@ -800,6 +828,44 @@ if [[ ${verbose} == true ]] ; then
         done
       fi
 
+    if [[ -f ${OUT_DNSDB} ]] ; then
+        COUNT=$(cat ${OUT_DNSDB} | sort -u | wc  -l  )
+        echo -e  "\n${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}DNSDB${RESET}${DPADDING}\t\t[${GREEN}${COUNT}${RESET}]"
+        cat ${OUT_DNSDB} \
+        | while read VERBOSE; do
+            echo -e "\t - $VERBOSE"
+        done
+      fi
+
+    if [[ -f ${OUT_SPYSE} ]] ; then
+      COUNT=$(cat ${OUT_SPYSE} | sort -u | wc  -l  )
+      echo -e  "\n${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}Spyse${RESET}${DPADDING}\t[${GREEN}${COUNT}${RESET}]"
+      cat ${OUT_SPYSE} \
+      | while read VERBOSE; do
+          echo -e "\t - $VERBOSE"
+      done
+    fi
+
+
+    if [[ -f ${OUT_RISKIQ} ]] ; then
+        COUNT=$(cat ${OUT_RISKIQ} | sort -u | wc  -l  )
+        echo -e  "\n${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}RiskIQ${RESET}${DPADDING}\t\t[${GREEN}${COUNT}${RESET}]"
+        cat ${OUT_RISKIQ} \
+        | while read VERBOSE; do
+            echo -e "\t - $VERBOSE"
+        done
+      fi
+
+    if [[ -f ${OUT_FBCERT} ]] ; then
+        COUNT=$(cat ${OUT_FBCERT} | sort -u | wc  -l  )
+        echo -e  "\n${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}FBcert${RESET}${DPADDING}\t\t[${GREEN}${COUNT}${RESET}]"
+        cat ${OUT_FBCERT} \
+        | while read VERBOSE; do
+            echo -e "\t - $VERBOSE"
+        done
+      fi
+
+
 	
 	ARG_PARS_LIST
 else
@@ -813,9 +879,9 @@ else
           echo -e  "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}Hackertarget: Total Subdomain (${COUNT})${RESET}"
         fi
 
-        if [[ -f ${OUT_FINDSUBDOMAIN} ]] ; then
-     	    COUNT=$(cat ${OUT_FINDSUBDOMAIN} | sort -u | wc  -l  )
-          echo -e  "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}Findsubdomain: Total Subdomain (${COUNT})${RESET}"
+        if [[ -f ${OUT_SPYSE} ]] ; then
+     	    COUNT=$(cat ${OUT_SPYSE} | sort -u | wc  -l  )
+          echo -e  "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}Spyse: Total Subdomain (${COUNT})${RESET}"
         fi
 
         if [[ -f ${OUT_VIRUSTOTAL} ]] ; then
@@ -902,6 +968,23 @@ else
           COUNT=$(cat ${OUT_URLSCAN} | sort -u | wc  -l  )
           echo -e  "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}UrlScanIo: Total Subdomain (${COUNT})${RESET}"
         fi
+
+        if [[ -f ${OUT_DNSDB} ]] ; then
+          COUNT=$(cat ${OUT_DNSDB} | sort -u | wc  -l  )
+          echo -e  "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}DNSDB: Total Subdomain (${COUNT})${RESET}"
+        fi
+
+        if [[ -f ${OUT_RISKIQ} ]] ; then
+          COUNT=$(cat ${OUT_RISKIQ} | sort -u | wc  -l  )
+          echo -e  "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}RiskIQ: Total Subdomain (${COUNT})${RESET}"
+        fi
+
+        if [[ -f ${OUT_FBCERT} ]] ; then
+          COUNT=$(cat ${OUT_FBCERT} | sort -u | wc  -l  )
+          echo -e  "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}FBcert: Total Subdomain (${COUNT})${RESET}"
+        fi
+
+
 
 	ARG_PARS_LIST
 fi

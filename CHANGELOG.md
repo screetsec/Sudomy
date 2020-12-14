@@ -108,3 +108,15 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 ## [1.1.9] - 2020-10-13
  - Update
         - Added Feature Sending notifications to a slack channel 
+
+## [1.2.0] - 2020=12-14
+ - Update
+	- Fixed and update regular expresion shodan to crawling subdomain
+	- Added Engine/Resources
+              - DNSDB - OK
+              - Spyse - Ok
+              - RiskIQ/PassiveTotal - Ok
+              - Facebook Cert Transparency - Ok
+	- Remove Entrust Sources (Not accessible) anymore
+	- Findsubdomains replace to Spyse
+

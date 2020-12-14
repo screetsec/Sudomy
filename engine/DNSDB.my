@@ -1,0 +1,25 @@
+#-Metadata----------------------------------------------------#
+#  Filename: Sudomy - Subdomain Enumeration & Analysis        #
+#-Author(s)---------------------------------------------------#
+#  Edo maland ~ @screetsec                                    #
+#-Info--------------------------------------------------------#
+#  This file is part of Sudomy project                        #
+#  Engine DNSDB  : Update = 2020-05-08                        #
+#-Licence-----------------------------------------------------#
+#  MIT License ~ http://opensource.org/licenses/MIT           #
+#-------------------------------------------------------------#
+
+DNSDB(){
+## Using API Key
+
+#local URL_DNSDB="https://api.dnsdb.info/" ## Using API DNSDB
+  if [[ ! -z "${DNSDB_API}" ]];then
+    echo -e  "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}DNSDB${RESET}${DPADDING}\t\t[${GREEN} ✔ ${RESET}]"
+      MAKEFILE=$(curl -gs -H "Accept: application/json" -H "X-API-Key: ${DNSDB_API}" "https://api.dnsdb.info/lookup/rrset/name/*.${DOMAIN}?limit=1000000000" | jq --raw-output -r .rrname? | sed -e 's/\.$//' | sort -u  > ${OUT_DNSDB})
+      #for i in $(cat ${TMP_SHODAN});do echo ${i}.${DOMAIN} >> ${OUT_SHODAN}; done ; rm -r ${TMP_SHODAN}
+  else
+    echo -e  "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}DNSDB${RESET}${DPADDING}\t\t[${RED} ✕ ${RESET}]"
+
+  fi
+}
+

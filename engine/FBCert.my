@@ -1,0 +1,24 @@
+#-Metadata----------------------------------------------------#
+#  Filename: Sudomy - Subdomain Enumeration & Analysis        #
+#-Author(s)---------------------------------------------------#
+#  Edo maland ~ @screetsec                                    #
+#-Info--------------------------------------------------------#
+#  This file is part of Sudomy project                        #
+#  Engine FB Cert  : Update = 2020-12-14                      #
+#-Licence-----------------------------------------------------#
+#  MIT License ~ http://opensource.org/licenses/MIT           #
+#-------------------------------------------------------------#
+
+FBCERT(){
+## Using API Key
+
+local URL_FB="https://graph.facebook.com/certificates" ## Using API 
+  if [[ ! -z "${FACEBOOK_TOKEN}" ]];then
+    echo -e  "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}FBcert${RESET}${DPADDING}\t\t[${GREEN} ✔ ${RESET}]"
+      MAKEFILE=$(curl -s -X GET "${URL_FB}?query=${DOMAIN}&fields=domains&limit=10000&access_token=${FACEBOOK_TOKEN}" | jq --raw-output -r .data[].domains[]?  | grep ${DOMAIN}  | sed 's/\*\.//g' | sort -u  > ${OUT_FBCERT})
+  else
+    echo -e  "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}FBcert${RESET}${DPADDING}\t\t[${RED} ✕ ${RESET}]"
+
+  fi
+}
+
