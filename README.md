@@ -16,28 +16,28 @@
     - **Passive Method**
         - By evaluating and **selecting** the **good** third-party sites/resources, the enumeration process can be **optimized**. More results will be obtained with less time required. *Sudomy* can collect data from these  well-curated 22 third-party sites:
 
-				https://censys.io                                                                                                                                             
-				https://developer.shodan.io                                                                                                                                   
-				https://dns.bufferover.run                                                                                                                                    
-				https://index.commoncrawl.org                                                                                                                                 
-				https://riddler.io                                                                                                                                            
-				https://api.certspotter.com                                                                                                                                  
-				https://api.hackertarget.com                                                                                                                                 
-				https://api.threatminer.org                                                                                                                                  
+				https://censys.io
+				https://developer.shodan.io
+				https://dns.bufferover.run
+				https://index.commoncrawl.org 
+				https://riddler.io 
+				https://api.certspotter.com
+				https://api.hackertarget.com 
+				https://api.threatminer.org
 				https://community.riskiq.com
-				https://crt.sh                                                                                                                                               
-				https://dnsdumpster.com                                                                                                                                      
-				https://docs.binaryedge.io/                                                                                                                                  
-				https://securitytrails.com                                                                                                                                    
-				https://graph.facebook.com                                                                                                                                   
-				https://otx.alienvault.com                                                                                                                                   
-				https://rapiddns.io                                                                                                                                          
-				https://spyse.com                                                                                                                                            
-				https://urlscan.io                                                                                                                                           
-				https://www.dnsdb.info                                                                                                                                       
-				https://www.virustotal.com                                                                                                                                   
-				https://threatcrowd.org                                                                                                                                       
-				https://web.archive.org                                                                                                                                       
+				https://crt.sh
+				https://dnsdumpster.com
+				https://docs.binaryedge.io
+				https://securitytrails.com
+				https://graph.facebook.com
+				https://otx.alienvault.com
+				https://rapiddns.io
+				https://spyse.com
+				https://urlscan.io
+				https://www.dnsdb.info
+				https://www.virustotal.com
+				https://threatcrowd.org
+				https://web.archive.org
 - Test the list of collected subdomains and probe for working http or https servers. This feature uses a third-party tool, [httprobe](https://github.com/tomnomnom/httprobe "httprobe").
 - Subdomain availability test based on Ping Sweep and/or by getting HTTP status code.
 - The ability to detect virtualhost (several subdomains which resolve to single IP Address). Sudomy will resolve the collected subdomains to IP addresses, then classify them if several subdomains resolve to single IP address. This feature will be very useful for the next penetration testing/bug bounty process. For instance, in port scanning, single IP address won’t be scanned repeatedly
@@ -136,9 +136,8 @@ The following are the results of passive enumeration DNS testing of *Sublist3r v
 In here subfinder is still classified as very fast for collecting subdomains by utilizing quite a lot of resources. Especially if the resources used have been optimized (?)
 When I have free time. Maybe In the future, sudomy will use golang too. If you want to contributes it's open to pull requests.
 
-For compilation results and videos, you can check here
+For compilation results and videos, you can check here: 
 
-Youtube Videos :
 - [Sudomy](https://www.youtube.com/watch?v=ksZkMpLljcY)
 - [Subfinder](https://youtu.be/Zxf3pwh7uMI)
 - [Sublist3r](https://youtu.be/DexFkrEwtt4)
@@ -179,7 +178,7 @@ All you would need is an installation of the latest Google Chrome or Chromium
 ## Running in a Docker Container
 ```bash
 # Pull an image from DockerHub
-docker pull screetsec/sudomy:v1.1.9-dev
+docker pull screetsec/sudomy:v1.2.0-dev
 
 # Create output directory
 mkdir output
