@@ -127,16 +127,21 @@ Detail information File Reconnaissance & Juicy Data
 - Online User Guide : [Subdomain Enumeration and Analysis User Guide](https://sudomy.screetsec.web.id/features) - Up to date
 
 ## Comparison
-The following are the results of passive enumeration DNS testing of *Sublist3r, Subfinder*, and *Sudomy*. The domain that is used in this comparison is ***bugcrowd.com***.
+Sudomy minimize more resources when use resources (Third-Party Sites) By evaluating and selecting the good third-party sites/resources, so the enumeration process can be optimized. The domain that is used in this comparison is ***tiket.com***.
 
-|  Sudomy | Subfinder   | Sublister |
-| ------------  | ------------ | ------------ |
-|<img align="left" width="420" height="363" src="https://user-images.githubusercontent.com/17976841/63593207-b9f81b80-c5dd-11e9-9f46-f0cc53e032d4.gif">| <img align="left" width="430" height="363" src="https://user-images.githubusercontent.com/17976841/63592469-d85d1780-c5db-11e9-9e45-421653b65bad.gif"> | <img align="left" width="430" height="363" src="https://user-images.githubusercontent.com/17976841/63592249-55d45800-c5db-11e9-8ad0-80a5b70411c1.gif">   |
+The following are the results of passive enumeration DNS testing of *Sublist3r v1.1.0, Subfinder v2.4.5*, and *Sudomy v1.2.0*.
 
-Asciinema :
-- [Subfinder](https://asciinema.org/a/260323)
-- [Sudomy](https://asciinema.org/a/260324)
-- [Sublist3r](https://asciinema.org/a/260325)
+<img width="900" alt="Untitled" src="https://user-images.githubusercontent.com/17976841/102053848-00990700-3e1b-11eb-9f48-9a82a8b3e64e.png">
+
+In here subfinder is still classified as very fast for collecting subdomains by utilizing quite a lot of resources. Especially if the resources used have been optimized (?)
+When I have free time. Maybe In the future, sudomy will use golang too. If you want to contributes it's open to pull requests.
+
+For compilation results and videos, you can check here
+
+Youtube Videos :
+- [Sudomy](https://www.youtube.com/watch?v=ksZkMpLljcY)
+- [Subfinder](https://youtu.be/Zxf3pwh7uMI)
+- [Sublist3r](https://youtu.be/DexFkrEwtt4)
 
 ### But it's shit! And your implementation sucks!
 - Yes, you're probably correct. Feel free to "Not use it" and there is a pull button to "Make it better". 
