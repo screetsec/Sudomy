@@ -1,9 +1,10 @@
 # Sudomy
-[![License](https://img.shields.io/badge/license-MIT-red.svg)](https://github.com/Screetsec/Sudomy/blob/master/LICENSE.md)  [![Build Status](https://action-badges.now.sh/screetsec/sudomy)](https://github.com/Screetsec/Sudomy/actions)  [![Version](https://img.shields.io/badge/Release-1.1.9-blue.svg?maxAge=259200)]()  [![Build](https://img.shields.io/badge/Supported_OS-Linux-yellow.svg)]()  [![Build](https://img.shields.io/badge/Supported_WSL-Windows-blue.svg)]() [![Contributions Welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/screetsec/sudomy/issues) [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.me/screetsec)
+[![License](https://img.shields.io/badge/license-MIT-red.svg)](https://github.com/Screetsec/Sudomy/blob/master/LICENSE.md)  [![Build Status](https://action-badges.now.sh/screetsec/sudomy)](https://github.com/Screetsec/Sudomy/actions)  [![Version](https://img.shields.io/badge/Release-1.2.0-red.svg?maxAge=259200)]()  [![Build](https://img.shields.io/badge/Supported_OS-Linux-yellow.svg)]()  [![Build](https://img.shields.io/badge/Supported_WSL-Windows-blue.svg)]() [![Contributions Welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/screetsec/sudomy/issues) [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.me/screetsec)
 ### Subdomain Enumeration & Analysis
-![ff](https://user-images.githubusercontent.com/17976841/63212795-b8d57300-c133-11e9-882a-f604d67819cc.png)
+![Sudomy](https://user-images.githubusercontent.com/17976841/102051640-7602d880-3e17-11eb-8ca1-929a20f70da9.png)
 
-***Sudomy*** is a subdomain enumeration tool to collect subdomains and analyzing domains performing automated reconnaissance. This tool can also be used for OSINT activities.
+***Sudomy*** is a subdomain enumeration tool to collect subdomains and analyzing domains performing automated reconnaissance (framework). This tool can also be used for OSINT (Open-source intelligence) activities.
+
 ## Features !
 ##### For recent time, ***Sudomy*** has these 19 features:
 -  Easy, light, fast and powerful. Bash script (controller) is available by default in almost all Linux distributions. By using bash script multiprocessing feature, all processors will be utilized optimally.
@@ -12,28 +13,30 @@
         - *Sudomy* utilize Gobuster tools because of its highspeed performance in carrying out DNS Subdomain Bruteforce attack (wildcard support). The wordlist that is used comes from combined SecList (Discover/DNS) lists which contains around 3 million entries
 
     - **Passive Method**
-        - By evaluating and **selecting** the **good** third-party sites/resources, the enumeration process can be **optimized**. More results will be obtained with less time required. *Sudomy* can collect data from these  well-curated 20 third-party sites:
+        - By evaluating and **selecting** the **good** third-party sites/resources, the enumeration process can be **optimized**. More results will be obtained with less time required. *Sudomy* can collect data from these  well-curated 22 third-party sites:
 
-                https://dnsdumpster.com
-                https://web.archive.org
-                https://shodan.io
-                https://virustotal.com
-                https://crt.sh
-                https://www.binaryedge.io
-                https://securitytrails.com
-                https://sslmate.com/certspotter
-                https://censys.io
-                https://threatminer.org
-                http://dns.bufferover.run
-                https://hackertarget.com
-                https://www.entrust.com/ct-search/
-                https://www.threatcrowd.org
-                https://riddler.io
-                https://findsubdomains.com
-                https://rapiddns.io/
-                https://otx.alienvault.com/
-                https://index.commoncrawl.org/
-                https://urlscan.io/
+				https://censys.io                                                                                                                                             
+				https://developer.shodan.io                                                                                                                                   
+				https://dns.bufferover.run                                                                                                                                    
+				https://index.commoncrawl.org                                                                                                                                 
+				https://riddler.io                                                                                                                                            
+				https://api.certspotter.com                                                                                                                                  
+				https://api.hackertarget.com                                                                                                                                 
+				https://api.threatminer.org                                                                                                                                  
+				https://community.riskiq.com
+				https://crt.sh                                                                                                                                               
+				https://dnsdumpster.com                                                                                                                                      
+				https://docs.binaryedge.io/                                                                                                                                  
+				https://securitytrails.com                                                                                                                                    
+				https://graph.facebook.com                                                                                                                                   
+				https://otx.alienvault.com                                                                                                                                   
+				https://rapiddns.io                                                                                                                                          
+				https://spyse.com                                                                                                                                            
+				https://urlscan.io                                                                                                                                           
+				https://www.dnsdb.info                                                                                                                                       
+				https://www.virustotal.com                                                                                                                                   
+				https://threatcrowd.org                                                                                                                                       
+				https://web.archive.org                                                                                                                                       
 - Test the list of collected subdomains and probe for working http or https servers. This feature uses a third-party tool, [httprobe](https://github.com/tomnomnom/httprobe "httprobe").
 - Subdomain availability test based on Ping Sweep and/or by getting HTTP status code.
 - The ability to detect virtualhost (several subdomains which resolve to single IP Address). Sudomy will resolve the collected subdomains to IP addresses, then classify them if several subdomains resolve to single IP address. This feature will be very useful for the next penetration testing/bug bounty process. For instance, in port scanning, single IP address won’t be scanned repeatedly
