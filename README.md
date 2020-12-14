@@ -357,3 +357,4 @@ All notable changes to this project will be documented in this [file](https://gi
 - [Gauli(dot)Net](https://gauli.net/) - Lab Hacking Indonesia
 - [missme3f](https://github.com/missme3f/) - Raditya Rahma
 - [Bugcrowd](https://www.bugcrowd.com/) & [Hackerone](https://www.hackerone.com/)
+- [darknetdiaries](https://darknetdiaries.com/) - Awesome Art
