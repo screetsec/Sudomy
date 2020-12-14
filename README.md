@@ -133,14 +133,15 @@ The following are the results of passive enumeration DNS testing of *Sublist3r v
 
 <img width="900" alt="Untitled" src="https://user-images.githubusercontent.com/17976841/102053848-00990700-3e1b-11eb-9f48-9a82a8b3e64e.png">
 
-In here subfinder is still classified as very fast for collecting subdomains by utilizing quite a lot of resources. Especially if the resources used have been optimized (?)
-When I have free time. Maybe In the future, sudomy will use golang too. If you want to contributes it's open to pull requests.
+In here subfinder is still classified as very fast for collecting subdomains by utilizing quite a lot of resources. Especially if the resources used have been optimized (?).
 
 For compilation results and videos, you can check here: 
 
 - [Sudomy](https://www.youtube.com/watch?v=ksZkMpLljcY)
 - [Subfinder](https://youtu.be/Zxf3pwh7uMI)
 - [Sublist3r](https://youtu.be/DexFkrEwtt4)
+
+When I have free time. Maybe In the future, sudomy will use golang too. If you want to contributes it's open to pull requests.
 
 ### But it's shit! And your implementation sucks!
 - Yes, you're probably correct. Feel free to "Not use it" and there is a pull button to "Make it better". 
