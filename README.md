@@ -157,7 +157,7 @@ git clone --recursive https://github.com/screetsec/Sudomy.git
 
 ### Dependencies
 ```
-$ pip install -r requirements.txt
+$ python3 -m pip install -r requirements.txt
 ```
 *Sudomy* requires [jq](https://stedolan.github.io/jq/download/) to run and parse. Information on how to download and install jq can be accessed [here](https://stedolan.github.io/jq/download/)
 
