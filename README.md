@@ -4,7 +4,7 @@
 <img width="900" alt="sudomy" src="https://user-images.githubusercontent.com/17976841/102057012-d85fd700-3e1f-11eb-9740-3087ddc826f4.png">
 
 
-***Sudomy*** is a subdomain enumeration tool to collect subdomains and analyzing domains performing automated reconnaissance (framework). This tool can also be used for OSINT (Open-source intelligence) activities.
+***Sudomy*** is a subdomain enumeration tool to collect subdomains and analyzing domains performing advanced automated reconnaissance (framework). This tool can also be used for OSINT (Open-source intelligence) activities.
 
 ## Features !
 ##### For recent time, ***Sudomy*** has these 19 features:
