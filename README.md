@@ -274,17 +274,21 @@ Optional Arguments:
   -gW, --gwordlist       Generate wordlist based on collecting url resources (Passive) 
        --httpx           Perform httpx multiple probers using retryablehttp 
        --dnsprobe        Perform multiple dns queries (dnsprobe) 
-       --no-probe        Do not perform httprobe 
+       --no-probe        Do not perform httprobe/validations
        --html            Make report output into HTML 
 
 ```
-To use all 20 Sources and Probe for working http or https servers:
+To use all 22 Sources and Probe for working http or https servers (Validations):
 ```
 $ sudomy -d hackerone.com
 ```
 To use one or more source:
 ```
 $ sudomy -s shodan,dnsdumpster,webarchive -d hackerone.com
+```
+To use all Sources Without Validations:
+```
+$ sudomy -d hackerone.com --no-probe
 ```
 To use one or more plugins:
 ```
