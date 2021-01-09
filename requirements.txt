@@ -2,5 +2,5 @@ censys
 future
 argparse
 pyvis
-yaml
+PyYAML
 yq
