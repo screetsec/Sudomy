@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #-Metadata----------------------------------------------------#
-#  Filename: sudomy (v1.2.0)             (Update: 2020-12-09) #
+#  Filename: sudomy (v1.2.1)             (Update: 2021-01-04) #
 #-Info--------------------------------------------------------#
 #  Fast Subdomain Enumeration & Analysis.                     #
 #-Author(s)---------------------------------------------------#
@@ -20,7 +20,7 @@
 ### Variable Name and Version
 
 APPNAME="sud⍥my.sh"
-VERSION="1.2.0#dev"
+VERSION="1.2.1#dev"
 
 ### Calling Source
 source sudomy.api
@@ -95,6 +95,7 @@ goBanner;
  echo -e "${PADDING}${BOLD}    ${RESET} --dnsprobe\t Perform multiple dns queries (dnsprobe) "
  echo -e "${PADDING}${BOLD}    ${RESET} --no-probe\t Do not perform httprobe "
  echo -e "${PADDING}${BOLD}    ${RESET} --html${DPADDING} Make report output into HTML " 
+ echo -e "${PADDING}${BOLD}    ${RESET} --graph${DPADDING} Network Graph Visualization" 
  echo -e "\n${BOLD}Sources:${RESET}"
  echo -e "${PADDING}${YELLOW}+${RESET} Shodan${DPADDING} http://developer.shodan.io"
  echo -e "${PADDING}${YELLOW}+${RESET} VirusTotal${PADDING}\t https://www.virustotal.com"
@@ -274,6 +275,10 @@ args="${1}";
             shift
         ;;  
 
+	"--graph")
+	    PLUGIN_NGRAPH=true
+	    shift
+	;;
 
         "-gw"|"--gwordlist")
             PLUGIN_WORDLISTS=true
@@ -292,6 +297,7 @@ args="${1}";
 	    PLUGIN_HTTPX=true
 	    PLUGIN_DNSPROBE=true
 	    PLUGIN_CFCHECK=true
+	    PLUGIN_NGRAPH=true
 	    PLUGIN_WORDLISTS=true
             shift
         ;;        
@@ -1027,7 +1033,6 @@ if [[ ${PLUGIN_RESOLV_SD} == true ]] ; then
 fi
 
 
-
 # Get status codes, response from domain list
 if [[ ${PLUGIN_STATUS_CODE} == true ]]; then
 	source ${APP_HTTPSTATUS}
@@ -1166,7 +1171,7 @@ fi
 # Generate wordlist based on collecting url resources (wayback,urlscan,commoncrawl)
 # Running with argument -eP
 # Wordlist based on path/param 
-# efault running with plugin -eP
+# Default running with plugin -eP
 
 if [[ ${PLUGIN_WORDLISTS} == true ]] ; then
 	if [[ ${PLUGIN_EXTRACT_PARAMS} == true ]] ; then
@@ -1181,6 +1186,22 @@ if [[ ${PLUGIN_WORDLISTS} == true ]] ; then
 	fi
 fi 
 
+
+# Subdomain, IPAddress & Virtualhost (Make Network Graph Mapping)
+# nGraph for Mapping Results 
+# Run this argument wirh -rS or this argument will rung that argument to perform 
+if [[ ${PLUGIN_NGRAPH} == true ]] ; then
+        if [[ ${PLUGIN_RESOLV_SD} == true ]] ; then
+         source ${APP_GRAPH}
+                exec_ngraph
+        else            
+         source ${APP_RESOLVER}
+               exec_resolver
+
+         source ${APP_GRAPH}
+               exec_ngraph
+        fi
+fi 
 
 
 #Remove Temporary RAW DATA []
@@ -1319,6 +1340,7 @@ if [[ $DESTINATION == true ]];then
 
 		echo -e "${BOLD}${PADDING}${PADDING}\t-${RESET}${BOLD}${RESET}${LGREEN} ${OUTFILE}/${OUT_NAME}/${DOMAIN} ${RESET} "
 		echo -e "${BOLD}${PADDING}${PADDING}\t-${RESET}${BOLD}${RESET}${LGREEN} ${OUTFILE}/${OUT_NAME}/${DOMAIN}/report ${RESET} "
+		echo -e "${BOLD}${PADDING}${PADDING}\t-${RESET}${BOLD}${RESET}${LGREEN} ${OUTFILE}/${OUT_NAME}/${DOMAIN}/nGraph ${RESET} "
                 echo -e "${BOLD}${PADDING}${PADDING}\t-${RESET}${BOLD}${RESET}${LGREEN} ${OUTFILE}/${OUT_NAME}/${DOMAIN}/wordlists ${RESET} "
 		echo -e "${BOLD}${PADDING}${PADDING}\t-${RESET}${BOLD}${RESET}${LGREEN} ${OUTFILE}/${OUT_NAME}/${DOMAIN}/screenshots ${RESET} \n\n"
 
@@ -1328,6 +1350,7 @@ else
 		echo -e "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}Location output:"
 		echo -e "${BOLD}${PADDING}${PADDING}\t-${RESET}${BOLD}${RESET}${LGREEN} output/${DATE_LOG}/${DOMAIN} ${RESET} "
 		echo -e "${BOLD}${PADDING}${PADDING}\t-${RESET}${BOLD}${RESET}${LGREEN} output/${DATE_LOG}/${DOMAIN}/report ${RESET} "
+		echo -e "${BOLD}${PADDING}${PADDING}\t-${RESET}${BOLD}${RESET}${LGREEN} ${OUTFILE}/${OUT_NAME}/${DOMAIN}/nGraph ${RESET} "
                 echo -e "${BOLD}${PADDING}${PADDING}\t-${RESET}${BOLD}${RESET}${LGREEN} output/${DATE_LOG}/${DOMAIN}/wordlists ${RESET} "
 		echo -e "${BOLD}${PADDING}${PADDING}\t-${RESET}${BOLD}${RESET}${LGREEN} output/${DATE_LOG}/${DOMAIN}/screenshots ${RESET} \n\n"
 fi

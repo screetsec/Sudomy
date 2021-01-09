@@ -1,3 +1,6 @@
 censys
 future
 argparse
+pyvis
+yaml
+yq

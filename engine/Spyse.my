@@ -4,7 +4,7 @@
 #  Edo maland ~ @screetsec                                    #
 #-Info--------------------------------------------------------#
 #  This file is part of Sudomy project                        #
-#  Engine Spyse  : Update = 2020-12-14                        #
+#  Engine Spyse  : Update = 2020-01-04                        #
 #-Licence-----------------------------------------------------#
 #  MIT License ~ http://opensource.org/licenses/MIT           #
 #-------------------------------------------------------------#
@@ -15,7 +15,7 @@ SPYSE(){
 local URL_SPYSE="https://api.spyse.com/v3/data/domain/subdomain" ## Using API 
   if [[ ! -z "${SPYSE_API}" ]];then
     echo -e  "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}Spyse${RESET}${DPADDING}\t\t[${GREEN} ✔ ${RESET}]"
-      MAKEFILE=$(curl -s -X GET "${URL_SPYSE}?domain=${DOMAIN}&limit=100" -H  "accept: application/json" -H  "Authorization: Bearer ${SPYSE_API}" |  jq --raw-output -r '.data.items[].name?' | sort -u  > ${OUT_SPYSE})
+      MAKEFILE=$(curl -s -X GET "${URL_SPYSE}?domain=${DOMAIN}&limit=100" -H  "accept: application/json" -H  "Authorization: Bearer ${SPYSE_API}" |  jq --raw-output -r '.data.items[]?.name?' | sort -u  > ${OUT_SPYSE})
       #for i in $(cat ${TMP_SHODAN});do echo ${i}.${DOMAIN} >> ${OUT_SHODAN}; done ; rm -r ${TMP_SHODAN}
   else
     echo -e  "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}Spyse${RESET}${DPADDING}\t\t[${RED} ✕ ${RESET}]"

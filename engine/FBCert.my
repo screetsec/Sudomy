@@ -15,7 +15,7 @@ FBCERT(){
 local URL_FB="https://graph.facebook.com/certificates" ## Using API 
   if [[ ! -z "${FACEBOOK_TOKEN}" ]];then
     echo -e  "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}FBcert${RESET}${DPADDING}\t\t[${GREEN} ✔ ${RESET}]"
-      MAKEFILE=$(curl -s -X GET "${URL_FB}?query=${DOMAIN}&fields=domains&limit=10000&access_token=${FACEBOOK_TOKEN}" | jq --raw-output -r .data[].domains[]?  | grep ${DOMAIN}  | sed 's/\*\.//g' | sort -u  > ${OUT_FBCERT})
+      MAKEFILE=$(curl -s -X GET "${URL_FB}?query=${DOMAIN}&fields=domains&limit=10000&access_token=${FACEBOOK_TOKEN}" | jq --raw-output -r .data[]?.domains[]?  | grep ${DOMAIN}  | sed 's/\*\.//g' | sort -u  > ${OUT_FBCERT})
   else
     echo -e  "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}FBcert${RESET}${DPADDING}\t\t[${RED} ✕ ${RESET}]"
 

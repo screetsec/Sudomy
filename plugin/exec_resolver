@@ -4,7 +4,8 @@
 #  Edo maland ~ @screetsec                                    #
 #-Info--------------------------------------------------------#
 #  This file is part of Sudomy project                        #
-#  Plugin Resolver: Update = 2020-06-06                       #
+#  Plugin Resolver: Update = 2021-04-01                       #
+#     - With Network Graph				      #
 #-Licence-----------------------------------------------------#
 #  MIT License ~ http://opensource.org/licenses/MIT           #
 #-------------------------------------------------------------#
@@ -31,8 +32,8 @@ function exec_resolver(){
 	    fi
 		done
 	
-	   #Resolver IP = Subdomain {pars}	
-	   	awk '{ if (a[$3]) a[$3] = a[$3]"\n - "$1; else a[$3] ="\n - "$1;} END { for (i in a) print i, a[i]}'  < ${OUT}/${DATE_LOG}/${DOMAIN}/${TMP_RESOL} >  ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_SUB_RESOLVER}
+	   #Resolver IP = Subdomain {pars} Into YAML File 
+	   	awk '{ if (a[$3]) a[$3] = a[$3]"\n - "$1; else a[$3]=":\n - "$1;} END { for (i in a) print i,a[i]}' < ${OUT}/${DATE_LOG}/${DOMAIN}/${TMP_RESOL} | sed -e 's/\s:/:/g' > ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_SUB_RESOLVER}
 		rm -r ${OUT}/${DATE_LOG}/${DOMAIN}/${TMP_RESOL} > /dev/null 2>&1
 		sort -u -o ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_IP_RESOLVER} ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_IP_RESOLVER} ## Pars duplicate resolver ip
 	

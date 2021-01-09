@@ -3,7 +3,7 @@ services:
   - docker
 
 env:
-  - VERSION=v1.1.9
+  - VERSION=v1.2.1
 
 before_install:
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
