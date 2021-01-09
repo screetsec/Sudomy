@@ -240,19 +240,22 @@ YOUR_WEBHOOK_URL="https://hooks.slack.com/services/T01CGNA9743/B01D6BQNJM6/MRSpV
 ## Usage
 
 ```text
- ___         _ _  _
-/ __|_  _ __| (_)(_)_ __ _  _
+ ___         _ _  _           
+/ __|_  _ __| (_)(_)_ __ _  _ 
 \__ \ || / _  / __ \  ' \ || |
 |___/\_,_\__,_\____/_|_|_\_, |
-                          |__/ v{1.1.5#dev} by @screetsec
-Sud⍥my - Fast Subdmain Enumeration and Analyzer
-	 http://github.com/screetsec/sudomy
+                          |__/ v{1.2.1#dev} by @screetsec 
+Sud⍥my - Fast Subdmain Enumeration and Analyzer      
+         http://github.com/screetsec/sudomy
 
-Usage: sud⍥my.sh [-h [--help]] [-s[--source]][-d[--domain=]]
+Usage: sud⍥my.sh [-h [--help]] [-s[--source]][-d[--domain=]] 
 
-Example: sud⍥my.sh -d example.com
+Example: sud⍥my.sh -d example.com   
          sud⍥my.sh -s Shodan,VirusTotal -d example.com
-         sud⍥my.sh -pS -rS -sC -nT -sS -d example.com
+
+Best Argument:
+  sudomy -d domain.com -dP -eP -rS -cF -pS -tO -gW --httpx --dnsprobe  -aI webanalyze --slack -sS
+
 
 Optional Arguments:
   -a,  --all             Running all Enumeration, no nmap & gobuster 
@@ -276,9 +279,9 @@ Optional Arguments:
   -gW, --gwordlist       Generate wordlist based on collecting url resources (Passive) 
        --httpx           Perform httpx multiple probers using retryablehttp 
        --dnsprobe        Perform multiple dns queries (dnsprobe) 
-       --no-probe        Do not perform httprobe/validations
+       --no-probe        Do not perform httprobe 
        --html            Make report output into HTML 
-
+       --graph           Network Graph Visualization
 ```
 To use all 22 Sources and Probe for working http or https servers (Validations):
 ```
@@ -300,12 +303,12 @@ To use all plugins: testing host status, http/https status code, subdomain takeo
 
 Nmap,Gobuster,wappalyzer and wscat Not Included.
 ```
-$ sudomy --all -d hackerone.com
+$ sudomy -d hackerone.com --all 
 ```
 
 To create report in HTML Format
 ```
-$ sudomy --all -d hackerone.com --html
+$ sudomy -d hackerone.com --html --all
 ```
 
 HTML Report Sample:
@@ -314,9 +317,19 @@ HTML Report Sample:
 | ------------  | ------------ |
 |![Index](https://user-images.githubusercontent.com/17976841/63597336-6ab6e880-c5e7-11e9-819e-91634e347b0c.PNG)|![f](https://user-images.githubusercontent.com/17976841/63597476-bbc6dc80-c5e7-11e9-8985-6a73348a2e02.PNG)|
 
-To use best arguments to collect subdomains & analyze by doing automatic recon and sending notifications to slack
+
+To gnereate network graph visualization subdomain & virtualhosts
 ```
-./sudomy -d ngesec.id -dP -eP -rS -cF -pS -tO -gW --httpx --dnsprobe  -aI webanalyze --slack -sS
+$ sudomy -d hackerone.com -rS --graph
+```
+Graph Visualization [Sample](https://screetsec.github.io/): 
+| nGraph	|
+| ------------  |
+|![nGraph](https://user-images.githubusercontent.com/17976841/104086846-b24a1d00-528d-11eb-88f5-de9bb0b641d1.PNG)|
+
+To use best arguments to collect subdomains, analyze by doing automatic recon and sending notifications to slack
+```
+./sudomy -d ngesec.id -dP -eP -rS -cF -pS -tO -gW --httpx --dnsprobe --graph  -aI webanalyze --slack -sS
 ```
 Slack Notification Sample:
 | Slack 	|
