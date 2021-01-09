@@ -109,7 +109,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
  - Update
         - Added Feature Sending notifications to a slack channel 
 
-## [1.2.0] - 2020=12-14
+## [1.2.0] - 2020-12-14
  - Update
 	- Fixed and update regular expresion shodan to crawling subdomain
 	- Added Engine/Resources
