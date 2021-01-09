@@ -119,4 +119,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
               - Facebook Cert Transparency - Ok
 	- Remove Entrust Sources (Not accessible) anymore
 	- Findsubdomains replace to Spyse
+	
+## [1.2.1] - 2020-01-09
+ - Update
+        - Added Feature Generate Network Graph Visualization Subdomain & Virtualhosts	
+	- Fixing Bug on Engine/Resources
 
