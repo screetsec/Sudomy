@@ -161,7 +161,7 @@ git clone --recursive https://github.com/screetsec/Sudomy.git
 ```
 $ python3 -m pip install -r requirements.txt
 ```
-*Sudomy* requires [jq](https://stedolan.github.io/jq/download/) to run and parse. Information on how to download and install jq can be accessed [here](https://stedolan.github.io/jq/download/)
+*Sudomy* requires [jq](https://stedolan.github.io/jq/download/) and [GNU grep](https://www.gnu.org/software/grep/) to run and parse. Information on how to download and install jq can be accessed [here](https://stedolan.github.io/jq/download/)
 
 ```bash
 # Linux
@@ -174,8 +174,11 @@ brew cask install phantomjs
 brew install jq nmap npm parallel
 npm i -g wappalyzer wscat
 
+brew install grep
+
 # Note
 All you would need is an installation of the latest Google Chrome or Chromium 
+Set the PATH in rc file for GNU grep changes
 ```
 
 ## Running in a Docker Container
