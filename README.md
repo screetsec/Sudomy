@@ -171,10 +171,9 @@ npm i -g wappalyzer wscat
 
 # Mac
 brew cask install phantomjs 
-brew install jq nmap npm parallel
+brew install jq nmap npm parallel grep
 npm i -g wappalyzer wscat
 
-brew install grep
 
 # Note
 All you would need is an installation of the latest Google Chrome or Chromium 
