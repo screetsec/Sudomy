@@ -329,6 +329,16 @@ for dependency in "${dependencies[@]}"; do
 	}
 done
 
+## Check GNU grep for MacOS
+if [[ "$(grep -V)" == *"BSD"* ]]; then 
+    echo "Error: require GNU grep. Aborting." >&2
+    exit 1
+fi
+
+
+
+
+
 ## Check 3rd dependencies 
 
 
