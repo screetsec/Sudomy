@@ -14,6 +14,8 @@ RUN apt update \
     musl-dev \
     dnsutils \
     wget \
+	parallel \
+	grep \
     bsdmainutils \
     # Install NodeJS 10.x
     && curl -sL https://deb.nodesource.com/setup_10.x -o setup.sh \
@@ -35,7 +37,7 @@ COPY requirements.txt .
 RUN pip3 install -r requirements.txt
 
 FROM builder
-ENV SHODAN_API="" CENSYS_API="" CENSYS_SECRET="" VIRUSTOTAL="" BINARYEDGE="" SECURITY_TRAILS="" YOUR_WEBHOOK_URL=""
+ENV SHODAN_API="" CENSYS_API="" CENSYS_SECRET="" VIRUSTOTAL="" BINARYEDGE="" SECURITY_TRAILS="" DNSDB_API="" PASSIVE_API="" SPYSE_API="" FACEBOOK_TOKEN="" YOUR_WEBHOOK_URL=""
 RUN npm config set unsafe-perm true \
     # Install wappalyzer & wscat
     && npm i -g wappalyzer wscat
