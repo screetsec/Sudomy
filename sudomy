@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #-Metadata----------------------------------------------------#
-#  Filename: sudomy (v1.2.1)             (Update: 2021-01-04) #
+#  Filename: sudomy (v1.2.1)             (Update: 2021-04-19) #
 #-Info--------------------------------------------------------#
 #  Fast Subdomain Enumeration & Analysis.                     #
 #-Author(s)---------------------------------------------------#
@@ -1050,13 +1050,6 @@ if [[ ${PLUGIN_STATUS_CODE} == true ]]; then
 fi 
 
 
-# Port scanning with top-ports using nmap from domain list
-if [[ ${PLUGIN_NMAP_PORTS} == true ]] ; then
-	source ${APP_NMAPTOP}
-		exec_nmaptop
-
-fi
-
 if [[ ${PLUGIN_DNSPROBE} == true ]]; then
 	source ${APP_DNSPROBE}
 		exec_dnsprobe
@@ -1078,6 +1071,16 @@ if [[ ${PLUGIN_CFCHECK} == true ]]; then
             exec_dnsprobe
             exec_cfcheck
 	fi
+fi
+
+# Port scanning with top-ports using nmap from domain list
+# To run this plugin, rung with argument -cF to check IP Onwed with Cloudfare
+# Before perform Active Scanning
+# For Example sudomy -d example.com -cF -nT 
+if [[ ${PLUGIN_NMAP_PORTS} == true ]] ; then
+	source ${APP_NMAPTOP}
+		exec_nmaptop
+
 fi
 
 # Plugin to check Title,Status Code, Lenght
