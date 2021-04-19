@@ -4,7 +4,7 @@
 #  Edo maland ~ @screetsec                                    #
 #-Info--------------------------------------------------------#
 #  This file is part of Sudomy project                        #
-#  Plugin Nmap Top  : Update = 2020-06-06                     #
+#  Plugin Nmap Top  : Update = 2021-04-19                     #
 #-Licence-----------------------------------------------------#
 #  MIT License ~ http://opensource.org/licenses/MIT           #
 #-------------------------------------------------------------#
@@ -16,7 +16,7 @@ function exec_nmaptop(){
 rm -r ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_NMAP_HOSTS} > /dev/null 2>&1
 
 	if [[ -f ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_CFCHECK} ]]; then        ## Checking file cf_resolver.txt 
-		echo -e "\n${BOLD}[${LGREEN}+${RESET}${BOLD}]${RESET} Port Scanner: Nmap Port Scanner top ports   "  ##  + Must running with argument -rS | --resolver / --dnsprobe 
+		echo -e "\n${BOLD}[${LGREEN}+${RESET}${BOLD}]${RESET} Port Scanner: Nmap Port Scanner top ports   "  ##  + Must running with argument -cF e 
 		echo -e "---------------------------------------------\n"                 ###   Example : Sudomy --dnsprobe -nP/ --nmap 
 
 		for SUB_RESOLV in $(cat ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_CFCHECK}) 
@@ -37,7 +37,7 @@ rm -r ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_NMAP_HOSTS} > /dev/null 2>&1
 	else
 		echo -e "\n${BOLD}[${LGREEN}+${RESET}${BOLD}]${RESET} Host Resolver: Nmap Port Scanner   "
 		echo -e "---------------------------------------------\n"
- 		echo -e  "${PADDING}${RED}${PADDING}!${PADDING}${RESET}Run together with arg -rS${RESET}\t[${RED}FAIL${RESET}]\n"
+ 		echo -e  "${PADDING}${RED}${PADDING}!${PADDING}${RESET}Run together with arg -cF${RESET}\t[${RED}FAIL${RESET}]\n"
 
 	fi
  }
