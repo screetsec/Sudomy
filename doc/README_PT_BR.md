@@ -142,7 +142,7 @@ A chave da API é necessária antes da busca em sites terceiros, como por exempl
 SHODAN_API=""
 
 # Censys
-# URL : https://censys.io/register
+# URL : https://search.censys.io/register
 
 CENSYS_API=""
 CENSYS_SECRET=""
