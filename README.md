@@ -208,7 +208,7 @@ API Key is needed before querying on third-party sites, such as ```Shodan, Censy
 SHODAN_API=""
 
 # Censys
-# URL : https://censys.io/register
+# URL : https://search.censys.io/register
 
 CENSYS_API=""
 CENSYS_SECRET=""

@@ -104,7 +104,7 @@ API Key diperlukan untuk melakukan query pada situs pihak ketiga seperti ```Shod
 SHODAN_API=""
 
 # Censys
-# URL : https://censys.io/register
+# URL : https://search.censys.io/register
 
 CENSYS_API=""
 CENSYS_SECRET=""

@@ -1,4 +1,4 @@
-censys
+censys==0.08
 future
 argparse
 pyvis
