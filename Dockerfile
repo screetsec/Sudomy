@@ -37,6 +37,7 @@ COPY requirements.txt .
 RUN pip3 install -r requirements.txt
 
 FROM builder
+ENV PATH "$PATH:/usr/lib/sudomy/lib/bin"
 ENV SHODAN_API="" CENSYS_API="" CENSYS_SECRET="" VIRUSTOTAL="" BINARYEDGE="" SECURITY_TRAILS="" DNSDB_API="" PASSIVE_API="" SPYSE_API="" FACEBOOK_TOKEN="" YOUR_WEBHOOK_URL=""
 RUN npm config set unsafe-perm true \
     # Install wappalyzer & wscat
