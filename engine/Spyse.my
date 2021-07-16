@@ -12,11 +12,27 @@
 SPYSE(){
 ## Using API Key
 
-local URL_SPYSE="https://api.spyse.com/v3/data/domain/subdomain" ## Using API 
+local URL_SPYSE="https://api.spyse.com/v4/data/domain/search" ## Using API
   if [[ ! -z "${SPYSE_API}" ]];then
     echo -e  "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}Spyse${RESET}${DPADDING}\t\t[${GREEN} ✔ ${RESET}]"
-      MAKEFILE=$(curl -s -X GET "${URL_SPYSE}?domain=${DOMAIN}&limit=100" -H  "accept: application/json" -H  "Authorization: Bearer ${SPYSE_API}" |  jq --raw-output -r '.data.items[]?.name?' | sort -u  > ${OUT_SPYSE})
-      #for i in $(cat ${TMP_SHODAN});do echo ${i}.${DOMAIN} >> ${OUT_SHODAN}; done ; rm -r ${TMP_SHODAN}
+    offset=0
+    total_items=0
+    MAKEFILE=""
+    while [ $offset -le $total_items ] && [ $offset -le 9900 ]
+    do
+
+        SPYSE_RESPONSE=$(curl -s -X POST "${URL_SPYSE}" -H  "accept: application/json" -H  "Authorization: Bearer ${SPYSE_API}" -H  "Accept: application/json" --data "{\"search_params\":[{\"name\":{\"operator\":\"ends\",\"value\":\".${DOMAIN}\"}}],\"limit\":100,\"offset\":${offset}}")
+
+        total_items=$(echo "${SPYSE_RESPONSE}" | jq --raw-output -r '.data.total_items')
+
+        tmp=$(echo "${SPYSE_RESPONSE}" | jq --raw-output -r '.data.items[]?.name?' | sort -u)
+
+        MAKEFILE="${MAKEFILE}"$'\n'"${tmp}"
+
+        offset=$((offset+2))
+        tmp=""
+    done
+    $(echo "${MAKEFILE}">${OUT_SPYSE})
   else
     echo -e  "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}Spyse${RESET}${DPADDING}\t\t[${RED} ✕ ${RESET}]"
 
