@@ -224,6 +224,7 @@ args="${1}";
         "-ss"|"--screenshot")
             PLUGIN_DOMAIN_SCREENSHOTS=true
             LIST_SCREENSHOT=${2}
+            PLUGIN_AQUATONE=true
             shift
             shift
         ;; 
@@ -441,7 +442,9 @@ command -v ${_UNFURL} > /dev/null 2>&1 || {
 command -v ${_SUBJACK} > /dev/null 2>&1 || {
          echo -e "${BOLD}${PADDING}${PADDING}- ${YELLOW}Warning: ${RESET}require ${RED}${_SUBJACK}${RESET} but it's is not installed.${GREEN}Trying to setup${RESET} pkg_${_SUBJACK} " >&2; cp -r ${PKG_SUBJACK} /usr/local/bin/; }
 
-
+# pkg aquatone, checking in local system and if not have try setup pkg to local system /usr/local/bin
+command -v ${_AQUATONE} > /dev/null 2>&1 || {
+         echo -e "${BOLD}${PADDING}${PADDING}- ${YELLOW}Warning: ${RESET}require ${RED}${_AQUATONE}${RESET} but it's is not installed.${GREEN}Trying to setup${RESET} pkg_${_AQUATONE} " >&2; cp -r ${PKG_AQUATONE} /usr/local/bin/; }
 
 
 echo -e "\n${BOLD}[${LBLUE}*${RESET}${BOLD}]${RESET} Load target domain: ${LGREEN}${DOMAIN}${RESET}  "
@@ -1109,7 +1112,8 @@ fi
 
 if [[ ${PLUGIN_EXTRACT_PARAMS} == true ]]; then
 	source ${APP_EXTRACT_PARAMS}
-		exec_extract_params
+		# exec_extract_params
+    echo ""
 fi
 
 #Remove Temporary RAW DATA []
@@ -1153,24 +1157,8 @@ fi
 # Default screenshots using gowitness
 
 if [[ ${PLUGIN_DOMAIN_SCREENSHOTS} == true ]]; then	
-   if [[ -z ${LIST_SCREENSHOT} ]]; then 
-      source ${APP_GOWITNESS}
-        exec_gowitness
-   else 
-     for arr_ass in $(echo ${LIST_SCREENSHOT} | tr "," "\n" | tr '[:upper:]' '[:lower:]'); do
-	 eval "${arr_ass}=true";
-     done  
-	# Execution The Plugin (Choice Manual)
-	[[ ${gowitness} == true ]] && {
-	    source ${APP_GOWITNESS} 
-		exec_gowitness
-	}
-	# Running Webscreenshot
-	[[ ${webscreenshot} == true ]] && {
-	    source ${APP_WEBSCREENSHOT}
-                exec_webscreenshot
-        }
-    fi 
+    source ${APP_AQUATONE}
+    exec_aquatone
 fi
 
 
@@ -1192,7 +1180,8 @@ if [[ ${PLUGIN_WORDLISTS} == true ]] ; then
 		exec_wordlists
 	else	        
 	 source ${APP_EXTRACT_PARAMS}
-               exec_extract_params
+               #exec_extract_params
+               echo ""
 
 	 source ${APP_WORDLISTS}
      	       exec_wordlists

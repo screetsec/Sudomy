@@ -21,25 +21,12 @@ function exec_pingsweep(){
 ## hosts. If a given address is live, it will return an ICMP ECHO reply. Ping sweeps are among
 ## the older and slower methods used to scan a network. 
 
-echo -e "\n${BOLD}[${LGREEN}+${RESET}${BOLD}]${RESET} Check Live Host: Ping Sweep - ICMP PING  "  ### Reference : https://searchnetworking.techtarget.com/definition/ping-sweep-ICMP-sweep
-echo -e "---------------------------------------------\n"
-for SUB_LIVE_CHECK in $(cat ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_SUBDOMAIN}) 
-do
-  ping -c1 -W2 ${SUB_LIVE_CHECK} > /dev/null 2>&1
-    if [[ $? -eq 0 ]];
-    then
-        echo -e "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}[${GREEN}LIVE${RESET}]\t ${SUB_LIVE_CHECK} ${RESET}"
-        echo -e "${SUB_LIVE_CHECK}  LIVE" | tee -a ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_PINGSWEEP} > /dev/null 2>&1
-
-    else
-	echo -e "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}[${RED}DEAD${RESET}]\t ${SUB_LIVE_CHECK} ${RESET}"
-        echo -e "${SUB_LIVE_CHECK}  DEAD" | tee -a ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_PINGSWEEP} > /dev/null 2>&1
-    fi
-
-	done
-
-    #MAKER MORE PRETTY 
-    cat ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_PINGSWEEP} | sed 's/ / ,/g' | column -t -s, > ${OUT}/${DATE_LOG}/${DOMAIN}/${FINAL_PINGSWEEP}
-    rm -r ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_PINGSWEEP} > /dev/null 2>&1
-
+    echo -e "\n${BOLD}[${LGREEN}+${RESET}${BOLD}]${RESET} Check Live Host: Ping Sweep - ICMP PING  "
+    echo -e "---------------------------------------------\n"
+    SUBDOMAINS_FILE="${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_SUBDOMAIN}"
+    RESULT_FILE="${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_PINGSWEEP}"
+    FINAL_RESULT_FILE="${OUT}/${DATE_LOG}/${DOMAIN}/${FINAL_PINGSWEEP}"
+    _domain_sweep="lib/domain_ping_sweep/domain_sweep.py"
+    python3 ${_domain_sweep} ${SUBDOMAINS_FILE} | tee ${RESULT_FILE}
+    cat ${RESULT_FILE} | awk '{print $4}' > ${FINAL_RESULT_FILE}
 }
