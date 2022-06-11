@@ -4,3 +4,4 @@ argparse
 pyvis
 PyYAML
 yq
+pydig
