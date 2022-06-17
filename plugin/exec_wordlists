@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 #-Metadata----------------------------------------------------#
 #  Filename: Sudomy - Subdomain Enumeration & Analysis        #
 #-Author(s)---------------------------------------------------#
@@ -9,41 +10,39 @@
 #  MIT License ~ http://opensource.org/licenses/MIT           #
 #-------------------------------------------------------------#
 
+function exec_wordlists() {
+	which ${_UNFURL} >/dev/null
+	if [[ "$?" -eq "0" ]]; then
+		echo -e "\n${BOLD}[${LGREEN}+${RESET}${BOLD}]${RESET} Genereate wordlist based on domain recon "
+		echo -e "---------------------------------------------\n"
+		echo -e "\n${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}Make wordlists by: ${RESET}"
 
-function exec_wordlists(){
-          which ${_UNFURL} > /dev/null
-             if  [[ "$?" -eq "0" ]];then
-                 echo -e "\n${BOLD}[${LGREEN}+${RESET}${BOLD}]${RESET} Genereate wordlist based on domain recon "
-                   echo -e "---------------------------------------------\n"
-		   echo -e  "\n${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}Make wordlists by: ${RESET}"
+		## Check Folder Results
+		[[ ! -e "${OUT}/${DATE_LOG}/${DOMAIN}/wordlists" ]] &&
+			mkdir -p "${OUT}/${DATE_LOG}/${DOMAIN}/wordlists" || true
 
-   	             ## Check Folder Results 
-                        [[ ! -e "${OUT}/${DATE_LOG}/${DOMAIN}/wordlists" ]] \
-                                && mkdir -p "${OUT}/${DATE_LOG}/${DOMAIN}/wordlists"||true
+		# Clean
 
-			# Clean
+		rm -r ${OUT}/${DATE_LOG}/${DOMAIN}/wordlists/*.lst >/dev/null 2>&1
 
-			   rm -r ${OUT}/${DATE_LOG}/${DOMAIN}/wordlists/*.lst > /dev/null 2>&1
+		# Making wordlist by path from collecting url resource / per line (ex: a/b/c )
+		cat ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_JUICY_URL_FULL} | ${_UNFURL} -u paths | sed 's#/#\n#g' | sort -u >${OUT}/${DATE_LOG}/${DOMAIN}/wordlists/${WORDLIST_PATH}
 
-			# Making wordlist by path from collecting url resource / per line (ex: a/b/c ) 
-			   cat ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_JUICY_URL_FULL} | ${_UNFURL} -u paths | sed 's#/#\n#g' | sort -u > ${OUT}/${DATE_LOG}/${DOMAIN}/wordlists/${WORDLIST_PATH}
+		# Full url wordlst
+		cat ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_JUICY_URL_FULL} | ${_UNFURL} -u paths | sort -u >>${OUT}/${DATE_LOG}/${DOMAIN}/wordlists/${WORDLIST_PATH}
 
-			# Full url wordlst 
-			   cat ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_JUICY_URL_FULL} | ${_UNFURL} -u paths | sort -u >> ${OUT}/${DATE_LOG}/${DOMAIN}/wordlists/${WORDLIST_PATH}
+		COUNT_WORDLIST_BY_PATH=$(cat ${OUT}/${DATE_LOG}/${DOMAIN}/wordlists/${WORDLIST_PATH} | wc -l)
+		echo -e "${YELLOW}\t- ${RESET}Extract All the path${RESET}${PADDING}\t[${GREEN}${COUNT_WORDLIST_BY_PATH}${RESET}]"
 
-				COUNT_WORDLIST_BY_PATH=$( cat ${OUT}/${DATE_LOG}/${DOMAIN}/wordlists/${WORDLIST_PATH} | wc -l )
-				echo -e  "${YELLOW}\t- ${RESET}Extract All the path${RESET}${PADDING}\t[${GREEN}${COUNT_WORDLIST_BY_PATH}${RESET}]"
+		# Making wordlistt by param from collecting url resource
+		cat ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_JUICY_URL_FULL} | ${_UNFURL} -u keys | sort -u >${OUT}/${DATE_LOG}/${DOMAIN}/wordlists/${WORDLIST_PARM}
+		COUNT_WORDLIST_BY_PARM=$(cat ${OUT}/${DATE_LOG}/${DOMAIN}/wordlists/${WORDLIST_PARM} | wc -l)
+		echo -e "${YELLOW}\t- ${RESET}Extract All the parm${RESET}${PADDING}\t[${GREEN}${COUNT_WORDLIST_BY_PARM}${RESET}]"
+	else
+		echo -e "\n${BOLD}[${LGREEN}+${RESET}${BOLD}]${RESET} Genereate wordlist based on domain recon"
+		echo -e "---------------------------------------------\n"
+		echo -e "${PADDING}${RESET}${PADDING}${LRED}x${RESET} This Plugin need unfurl, ${RED} running the tools again${RESET}"
 
-			# Making wordlistt by param from collecting url resource
-			   cat ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_JUICY_URL_FULL} | ${_UNFURL} -u keys | sort -u > ${OUT}/${DATE_LOG}/${DOMAIN}/wordlists/${WORDLIST_PARM}
-				COUNT_WORDLIST_BY_PARM=$( cat ${OUT}/${DATE_LOG}/${DOMAIN}/wordlists/${WORDLIST_PARM} | wc -l )
-                                echo -e  "${YELLOW}\t- ${RESET}Extract All the parm${RESET}${PADDING}\t[${GREEN}${COUNT_WORDLIST_BY_PARM}${RESET}]"
-             else 
-               echo -e "\n${BOLD}[${LGREEN}+${RESET}${BOLD}]${RESET} Genereate wordlist based on domain recon"
-               echo -e "---------------------------------------------\n"
-               echo -e "${PADDING}${RESET}${PADDING}${LRED}x${RESET} This Plugin need unfurl, ${RED} running the tools again${RESET}"
-
-        fi
-
+	fi
 
 }

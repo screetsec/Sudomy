@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 #-Metadata----------------------------------------------------#
 #  Filename: Sudomy - Subdomain Enumeration & Analysis        #
 #-Author(s)---------------------------------------------------#
@@ -10,8 +11,6 @@
 #  MIT License ~ http://opensource.org/licenses/MIT           #
 #-------------------------------------------------------------#
 
-
-
 function exec_resolver() {
 
 	echo -e "\n${BOLD}[${LGREEN}+${RESET}${BOLD}]${RESET} Check Resolving: Subdomains & Domains  "
@@ -19,13 +18,13 @@ function exec_resolver() {
 	TMP_RESOL=temp_resolver.lst
 	_SUBDOMAINS_FILE="${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_SUBDOMAIN}"
 
-	cat "${_SUBDOMAINS_FILE}" | sed 's/  - //g' | grep -v '\[' | sort -u > "${OUT}/${DATE_LOG}/${DOMAIN}/parsed_subdomains.txt"
-	cat "${OUT}/${DATE_LOG}/${DOMAIN}/parsed_subdomains.txt" > "${_SUBDOMAINS_FILE}"
+	cat "${_SUBDOMAINS_FILE}" | sed 's/  - //g' | grep -v '\[' | sort -u >"${OUT}/${DATE_LOG}/${DOMAIN}/parsed_subdomains.txt"
+	cat "${OUT}/${DATE_LOG}/${DOMAIN}/parsed_subdomains.txt" >"${_SUBDOMAINS_FILE}"
 	_exec_resolver="lib/resolver/exec_resolver.py"
 	python3 ${_exec_resolver} "${OUT}/${DATE_LOG}/${DOMAIN}/parsed_subdomains.txt"
 
 	if [ -f resolver_ips.txt ]; then
 		mv resolver_ips.txt "${OUT}/${DATE_LOG}/${DOMAIN}/resolver_ips.txt"
 	fi
-	
+
 }

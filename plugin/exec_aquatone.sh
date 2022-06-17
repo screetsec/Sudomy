@@ -14,10 +14,10 @@
 #-------------------------------------------------------------#
 
 function exec_aquatone(){
-rm -rf ${OUT}/${DATE_LOG}/${DOMAIN}/screenshots/* ## Cleaning old file
+rm -rf ${OUT}/${DATE_LOG}/${DOMAIN}/screenshots/aquatone/* ## Cleaning old file
 		echo -e "\n${BOLD}[${LGREEN}+${RESET}${BOLD}]${RESET} Web Screenshots: from domain list"
 		echo -e "---------------------------------------------\n"
 		## Check Folder Results
-		[[ ! -e "${OUT}/${DATE_LOG}/${DOMAIN}/screenshots" ]] && mkdir -p "${OUT}/${DATE_LOG}/${DOMAIN}/screenshots" || true
-		cat ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_HTTPROBE} | ${_AQUATONE} -ports 80,443 -out ${OUT}/${DATE_LOG}/${DOMAIN}/screenshots -screenshot-timeout 40000
+		[[ ! -e "${OUT}/${DATE_LOG}/${DOMAIN}/screenshots/aquatone" ]] && mkdir -p "${OUT}/${DATE_LOG}/${DOMAIN}/screenshots/aquatone" || true
+		cat ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_HTTPROBE} | ${_AQUATONE} -ports 80,443 -out ${OUT}/${DATE_LOG}/${DOMAIN}/screenshots/aquatone -screenshot-timeout 40000
 }

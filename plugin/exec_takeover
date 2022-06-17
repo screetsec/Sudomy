@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 #-Metadata----------------------------------------------------#
 #  Filename: Sudomy - Subdomain Enumeration & Analysis        #
 #-Author(s)---------------------------------------------------#
@@ -5,81 +6,77 @@
 #-Info--------------------------------------------------------#
 #  This file is part of Sudomy project                        #
 #  Plugin TakeOver : Update = 2020-06-28                      #
-# 		Based on Subjack & dnsprobe		      #
+# 		Based on Subjack & dnsx							      #
 #-Licence-----------------------------------------------------#
 #  MIT License ~ http://opensource.org/licenses/MIT           #
 #-------------------------------------------------------------#
 
+function exec_takeover() {
 
-function exec_takeover(){
+	# Subdomain takeover vulnerabilities occur when a subdomain (subdomain.example.com) is pointing to a service
+	# (e.g. GitHub pages, Heroku, etc.) that has been removed or deleted. This allows an attacker to set up a page on the
+	# service that was being used and point their page to that subdomain. For example, if subdomain.example.com was
+	# Pointing to a GitHub page and the user decided to delete their GitHub page, an attacker can now create a GitHub
+	# page, add a CNAME file containing subdomain.example.com, and claim subdomain.example.com.
 
-# Subdomain takeover vulnerabilities occur when a subdomain (subdomain.example.com) is pointing to a service 
-# (e.g. GitHub pages, Heroku, etc.) that has been removed or deleted. This allows an attacker to set up a page on the 
-# service that was being used and point their page to that subdomain. For example, if subdomain.example.com was 
-# Pointing to a GitHub page and the user decided to delete their GitHub page, an attacker can now create a GitHub 
-# page, add a CNAME file containing subdomain.example.com, and claim subdomain.example.com.
+	#can read up more about subdomain takeovers here:
 
-#can read up more about subdomain takeovers here:
+	#    https://labs.detectify.com/2014/10/21/hostile-subdomain-takeover-using-herokugithubdesk-more/
+	#    https://www.hackerone.com/blog/Guide-Subdomain-Takeovers
+	#    https://0xpatrik.com/subdomain-takeover-ns/
 
-#    https://labs.detectify.com/2014/10/21/hostile-subdomain-takeover-using-herokugithubdesk-more/
-#    https://www.hackerone.com/blog/Guide-Subdomain-Takeovers
-#    https://0xpatrik.com/subdomain-takeover-ns/
-
-
-
-echo -e "\n${BOLD}[${LGREEN}+${RESET}${BOLD}]${RESET} Subdomain TakeOver - Check Possible Vulns  "  # Reference : https://github.com/EdOverflow/can-i-take-over-xyz                      
-echo -e "---------------------------------------------\n"     
-
-## Cleaning Log Files { {${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_TAKEOVER} }
-local TO=takeover
-	
- ## Check Folder Results 
-  [[ ! -e "${OUT}/${DATE_LOG}/${DOMAIN}/${TO}" ]] \
-        && mkdir -p "${OUT}/${DATE_LOG}/${DOMAIN}/${TO}"||true
-
-	rm -r ${OUT}/${DATE_LOG}/${DOMAIN}/${TO}/${RESULT_TAKEOVER} > /dev/null 2>&1
-	echo -e  "\n${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}Execute CNAME Resolv  ${RESET}\n"
-	
-	# Checking DNSPROBE
-	 which ${_DNSPROBE} > /dev/null
-             if  [[ "$?" -eq "0" ]];then
-		# Resolv using dnsprobe to make it faster
-			${_DNSPROBE} -l ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_SUBDOMAIN} -r CNAME --silent  -o ${OUT}/${DATE_LOG}/${DOMAIN}/${TO}/temp_cname.raw
-				if [[ -s ${OUT}/${DATE_LOG}/${DOMAIN}/${TO}/temp_cname.raw ]]; then
-					cat ${OUT}/${DATE_LOG}/${DOMAIN}/${TO}/temp_cname.raw | awk '{print $1}' > ${OUT}/${DATE_LOG}/${DOMAIN}/${TO}/${RESULT_CNAME_RESOLV} 
-					rm -r ${OUT}/${DATE_LOG}/${DOMAIN}/${TO}/temp_cname.raw
-						#COUNT_CNAME=$(cat ${OUT}/${DATE_LOG}/${DOMAIN}/${TO}/${RESULT_CNAME_RESOLV} | wc -l)
-							#echo -e  "${RESET}\t- Found${RESET}${DPADDING}\t\t[${GREEN}${COUNT_CNAME}${RESET}] "
-					
-					# Cheking DNSLOOK UP 
-					parallel -j 20 host {1} {2} :::: ${OUT}/${DATE_LOG}/${DOMAIN}/${TO}/${RESULT_CNAME_RESOLV} ::: 8.8.8.8 1.1.1.1 8.8.4.4 >> ${OUT}/${DATE_LOG}/${DOMAIN}/${TO}/${RESULT_DNSLOOKUP}
-					
-					# Parsing NXDOMAIN
-					cat ${OUT}/${DATE_LOG}/${DOMAIN}/${TO}/${RESULT_DNSLOOKUP} | grep "NXDOMAIN" | awk '{print $2" "$7}' > ${OUT}/${DATE_LOG}/${DOMAIN}/${TO}/${RESULT_NXDOMAIN}
-
-					# Running to check TakeOVer
-					 which ${_SUBJACK} > /dev/null
-						if  [[ "$?" -eq "0" ]];then
-							echo -e  "\n${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}Checking ${RESET}\n"
-							${_SUBJACK}  -w ${OUT}/${DATE_LOG}/${DOMAIN}/${TO}/${RESULT_CNAME_RESOLV} -timeout 30 -ssl -o ${OUT}/${DATE_LOG}/${DOMAIN}/${TO}/${RAW_RESULT_TAKEOVER} -c ${LIB_SJACK} -v 3 | sed -e 's/^/\t- /'
-
-								# Pars the output
-									cat ${OUT}/${DATE_LOG}/${DOMAIN}/${TO}/${RAW_RESULT_TAKEOVER} | tr '[\]' '- ' > ${OUT}/${DATE_LOG}/${DOMAIN}/${TO}/${RESULT_TAKEOVER} 
-									rm -r ${OUT}/${DATE_LOG}/${DOMAIN}/${TO}/${RAW_RESULT_TAKEOVER}
-						else
-							echo -e "${PADDING}${RESET}${PADDING}${LRED}x${RESET}  This Plugin need ${_SUBJACK},${RED} running the tools again${RESET}"
- 						fi
-				else
-					echo -e  "${YELLOW}\t- ${RESET}CNAME resv not found in subdomains"
-					rm -r ${OUT}/${DATE_LOG}/${DOMAIN}/${TO}/temp_cname.raw
-				fi					 
-
-	       else 
-           
-	echo -e "\n${BOLD}[${LGREEN}+${RESET}${BOLD}]${RESET} Subdomain TakeOver - Check Possible Vulns"
+	echo -e "\n${BOLD}[${LGREEN}+${RESET}${BOLD}]${RESET} Subdomain TakeOver - Check Possible Vulns  " # Reference : https://github.com/EdOverflow/can-i-take-over-xyz
 	echo -e "---------------------------------------------\n"
-	echo -e "${PADDING}${RESET}${PADDING}${LRED}x${RESET} This Plugin need ${_DNSPROBE},${RED} running the tools again${RESET}"
 
-        fi
-}	 
-	
+	## Cleaning Log Files { {${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_TAKEOVER} }
+	local TO=takeover
+
+	## Check Folder Results
+	[[ ! -e "${OUT}/${DATE_LOG}/${DOMAIN}/${TO}" ]] &&
+		mkdir -p "${OUT}/${DATE_LOG}/${DOMAIN}/${TO}" || true
+
+	rm -r ${OUT}/${DATE_LOG}/${DOMAIN}/${TO}/${RESULT_TAKEOVER} >/dev/null 2>&1
+	echo -e "\n${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}Execute CNAME Resolv  ${RESET}\n"
+
+	# Checking DNSX
+	which ${_DNSX} >/dev/null
+	if [[ "$?" -eq "0" ]]; then
+		# Resolv using dnsx to make it faster
+		${_DNSX} -l ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_SUBDOMAIN} -cname -silent -o ${OUT}/${DATE_LOG}/${DOMAIN}/${TO}/temp_cname.raw
+		if [[ -s ${OUT}/${DATE_LOG}/${DOMAIN}/${TO}/temp_cname.raw ]]; then
+			cat ${OUT}/${DATE_LOG}/${DOMAIN}/${TO}/temp_cname.raw | awk '{print $1}' >${OUT}/${DATE_LOG}/${DOMAIN}/${TO}/${RESULT_CNAME_RESOLV}
+			rm -r ${OUT}/${DATE_LOG}/${DOMAIN}/${TO}/temp_cname.raw
+			#COUNT_CNAME=$(cat ${OUT}/${DATE_LOG}/${DOMAIN}/${TO}/${RESULT_CNAME_RESOLV} | wc -l)
+			#echo -e  "${RESET}\t- Found${RESET}${DPADDING}\t\t[${GREEN}${COUNT_CNAME}${RESET}] "
+
+			# Cheking DNSLOOK UP
+			parallel -j 20 host {1} {2} :::: ${OUT}/${DATE_LOG}/${DOMAIN}/${TO}/${RESULT_CNAME_RESOLV} ::: 8.8.8.8 1.1.1.1 8.8.4.4 >>${OUT}/${DATE_LOG}/${DOMAIN}/${TO}/${RESULT_DNSLOOKUP}
+
+			# Parsing NXDOMAIN
+			cat ${OUT}/${DATE_LOG}/${DOMAIN}/${TO}/${RESULT_DNSLOOKUP} | grep "NXDOMAIN" | awk '{print $2" "$7}' >${OUT}/${DATE_LOG}/${DOMAIN}/${TO}/${RESULT_NXDOMAIN}
+
+			# Running to check TakeOVer
+			which ${_SUBJACK} >/dev/null
+			if [[ "$?" -eq "0" ]]; then
+				echo -e "\n${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}Checking ${RESET}\n"
+				${_SUBJACK} -w ${OUT}/${DATE_LOG}/${DOMAIN}/${TO}/${RESULT_CNAME_RESOLV} -timeout 30 -ssl -o ${OUT}/${DATE_LOG}/${DOMAIN}/${TO}/${RAW_RESULT_TAKEOVER} -c ${LIB_SJACK} -v 3 | sed -e 's/^/\t- /'
+
+				# Pars the output
+				cat ${OUT}/${DATE_LOG}/${DOMAIN}/${TO}/${RAW_RESULT_TAKEOVER} | tr '[\]' '- ' >${OUT}/${DATE_LOG}/${DOMAIN}/${TO}/${RESULT_TAKEOVER}
+				rm -r ${OUT}/${DATE_LOG}/${DOMAIN}/${TO}/${RAW_RESULT_TAKEOVER}
+			else
+				echo -e "${PADDING}${RESET}${PADDING}${LRED}x${RESET}  This Plugin need ${_SUBJACK},${RED} running the tools again${RESET}"
+			fi
+		else
+			echo -e "${YELLOW}\t- ${RESET}CNAME resv not found in subdomains"
+			rm -r ${OUT}/${DATE_LOG}/${DOMAIN}/${TO}/temp_cname.raw
+		fi
+
+	else
+
+		echo -e "\n${BOLD}[${LGREEN}+${RESET}${BOLD}]${RESET} Subdomain TakeOver - Check Possible Vulns"
+		echo -e "---------------------------------------------\n"
+		echo -e "${PADDING}${RESET}${PADDING}${LRED}x${RESET} This Plugin need ${_DNSX},${RED} running the tools again${RESET}"
+
+	fi
+}

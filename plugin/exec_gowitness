@@ -1,31 +1,37 @@
+#!/usr/bin/env bash
 #-Metadata----------------------------------------------------#
 #  Filename: Sudomy - Subdomain Enumeration & Analysis        #
 #-Author(s)---------------------------------------------------#
 #  Edo maland ~ @screetsec                                    #
 #-Info--------------------------------------------------------#
 #  This file is part of Sudomy project                        #
-#  Plugin Screenshots: Update = 2020-06-26                    #
+#  Plugin Screenshots: Update = 2022-06-17                    #
 #	- gowitness					      #
 #-Licence-----------------------------------------------------#
 #  MIT License ~ http://opensource.org/licenses/MIT           #
 #-------------------------------------------------------------#
 
-function exec_gowitness(){
-rm -rf ${OUT}/${DATE_LOG}/${DOMAIN}/screenshots/* ## Cleaning old file
-		echo -e "\n${BOLD}[${LGREEN}+${RESET}${BOLD}]${RESET} Web Screenshots: from domain list"
-		echo -e "---------------------------------------------\n"
-		## Check Folder Results	
-			[[ ! -e "${OUT}/${DATE_LOG}/${DOMAIN}/screenshots" ]] \
-				&& mkdir -p "${OUT}/${DATE_LOG}/${DOMAIN}/screenshots"||true
-		${_GOWITNESS} file --source ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_HTTPROBE} --log-level fatal --destination ${OUT}/${DATE_LOG}/${DOMAIN}/screenshots/ --db ${OUT}/${DATE_LOG}/${DOMAIN}/screenshots/gowitness.db
+function exec_gowitness() {
+	rm -rf "${OUT}/${DATE_LOG}/${DOMAIN}/screenshots/gowitness/*" ## Cleaning old file
+	echo -e "\n${BOLD}[${LGREEN}+${RESET}${BOLD}]${RESET} Web Screenshots: from domain list"
+	echo -e "---------------------------------------------\n"
+	## Check Folder Results
+	[[ ! -e "${OUT}/${DATE_LOG}/${DOMAIN}/screenshots/gowitness" ]] &&
+		mkdir -p "${OUT}/${DATE_LOG}/${DOMAIN}/screenshots/gowitness" || true
 
-		## Reports
-		pushd ${OUT}/${DATE_LOG}/${DOMAIN}/screenshots/ > /dev/null
-		${_GOWITNESS} report generate --log-level fatal 
-		popd > /dev/null
+	${_GOWITNESS} file -f "${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_HTTPROBE}" \
+	--screenshot-path "${OUT}/${DATE_LOG}/${DOMAIN}/screenshots/gowitness/" \
+	--db-path "${OUT}/${DATE_LOG}/${DOMAIN}/screenshots/gowitness/gowitness.sqlite3" \
+	-t 20
 
-		
-		## Counting Successfully screenshoot
-		COUNT=$(ls ${OUT}/${DATE_LOG}/${DOMAIN}/screenshots/ | wc  -l  )
-                        echo -e  "\n${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}Total ${RESET}${DPADDING}\t\t[${GREEN}${COUNT}${RESET}]\n"
+	## Reports
+	${_GOWITNESS} report export \
+	--db-path "${OUT}/${DATE_LOG}/${DOMAIN}/screenshots/gowitness/gowitness.sqlite3" \
+	--file "${OUT}/${DATE_LOG}/${DOMAIN}/screenshots/gowitness/gowitness_report.html"
+
+	## Start the gowitness report server and open up in new firefox window/tab
+	cd "${OUT}/${DATE_LOG}/${DOMAIN}/screenshots/gowitness/"
+	${_GOWITNESS} server -A &
+	cd - || true
+	firefox http://localhost:7171
 }

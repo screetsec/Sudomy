@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 #-Metadata----------------------------------------------------#
 #  Filename: Sudomy - Subdomain Enumeration & Analysis        #
 #-Author(s)---------------------------------------------------#
@@ -9,17 +10,16 @@
 #  MIT License ~ http://opensource.org/licenses/MIT           #
 #-------------------------------------------------------------#
 
+function exec_pingsweep() {
 
-function exec_pingsweep(){
+    # Ping sweep (ICMP sweep)
 
-# Ping sweep (ICMP sweep)
-
-## A ping sweep (also known as an ICMP sweep) is a basic network scanning technique used
-## to determine which of a range of IP addresses map to live hosts (computers). Whereas a
-## Single ping will tell you whether one specified host computer exists on the network, a ping 
-## Sweep consists of ICMP (Internet Control Message Protocol) ECHO requests sent to multiple
-## hosts. If a given address is live, it will return an ICMP ECHO reply. Ping sweeps are among
-## the older and slower methods used to scan a network. 
+    ## A ping sweep (also known as an ICMP sweep) is a basic network scanning technique used
+    ## to determine which of a range of IP addresses map to live hosts (computers). Whereas a
+    ## Single ping will tell you whether one specified host computer exists on the network, a ping
+    ## Sweep consists of ICMP (Internet Control Message Protocol) ECHO requests sent to multiple
+    ## hosts. If a given address is live, it will return an ICMP ECHO reply. Ping sweeps are among
+    ## the older and slower methods used to scan a network.
 
     echo -e "\n${BOLD}[${LGREEN}+${RESET}${BOLD}]${RESET} Check Live Host: Ping Sweep - ICMP PING  "
     echo -e "---------------------------------------------\n"
@@ -28,5 +28,5 @@ function exec_pingsweep(){
     FINAL_RESULT_FILE="${OUT}/${DATE_LOG}/${DOMAIN}/${FINAL_PINGSWEEP}"
     _domain_sweep="lib/domain_ping_sweep/domain_sweep.py"
     python3 ${_domain_sweep} ${SUBDOMAINS_FILE} | tee ${RESULT_FILE}
-    cat ${RESULT_FILE} | awk '{print $4}' > ${FINAL_RESULT_FILE}
+    cat ${RESULT_FILE} | awk '{print $4}' >${FINAL_RESULT_FILE}
 }

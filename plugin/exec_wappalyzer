@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 #-Metadata----------------------------------------------------#
 #  Filename: Sudomy - Subdomain Enumeration & Analysis        #
 #-Author(s)---------------------------------------------------#
@@ -9,23 +10,21 @@
 #  MIT License ~ http://opensource.org/licenses/MIT           #
 #-------------------------------------------------------------#
 
+function exec_wappalyzer() {
 
-function exec_wappalyzer(){
+  rm -r ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_WAPPALYZER} >/dev/null 2>&1
 
-    rm -r ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_WAPPALYZER} > /dev/null 2>&1
+  echo -e "\n${BOLD}[${LGREEN}+${RESET}${BOLD}]${RESET} Web Apss Identifier (wappalyzer)  "
+  echo -e "---------------------------------------------\n"
 
-    echo -e "\n${BOLD}[${LGREEN}+${RESET}${BOLD}]${RESET} Web Apss Identifier (wappalyzer)  "
-    echo -e "---------------------------------------------\n"
-
-    for WAPPALYZER_SITE in $(cat ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_HTTPROBE}) 
-    do
-      WAPPALYZER_RAW=$(wappalyzer ${WAPPALYZER_SITE} 2> /dev/null | jq -r '.applications[] | "\(.name) \(.version)"' | sed 's/ null$//g' | sed 's/,/./g')
-        if [[ ! -z ${WAPPALYZER_RAW} ]]; then
-          echo -e "   ${WAPPALYZER_SITE}"
-          echo -e "${WAPPALYZER_RAW}" | sed 's/^/        - /g'
-          echo ""
-          echo "${WAPPALYZER_SITE};$(echo "${WAPPALYZER_RAW}" | sed ':a;N;$!ba;s/\n/, /g')" >> ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_WAPPALYZER}
-        fi
-    done
+  for WAPPALYZER_SITE in $(cat ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_HTTPROBE}); do
+    WAPPALYZER_RAW=$(wappalyzer ${WAPPALYZER_SITE} 2>/dev/null | jq -r '.applications[] | "\(.name) \(.version)"' | sed 's/ null$//g' | sed 's/,/./g')
+    if [[ ! -z ${WAPPALYZER_RAW} ]]; then
+      echo -e "   ${WAPPALYZER_SITE}"
+      echo -e "${WAPPALYZER_RAW}" | sed 's/^/        - /g'
+      echo ""
+      echo "${WAPPALYZER_SITE};$(echo "${WAPPALYZER_RAW}" | sed ':a;N;$!ba;s/\n/, /g')" >>${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_WAPPALYZER}
+    fi
+  done
 
 }
