@@ -21,7 +21,7 @@ function exec_dnsx() {
         echo -e "\n${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}Execute ${RESET}\n"
         ${_DNSX} -l ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_SUBDOMAIN} -t 50 -silent -o ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_DNSX} &
         wait
-        sort -u ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_DNSX} --output=${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_DNSX}
+        sort -u ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_DNSX} -o ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_DNSX}
         cat ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_DNSX} | sed -e 's/^/\t - /'
 
         # Extract IP Resolver

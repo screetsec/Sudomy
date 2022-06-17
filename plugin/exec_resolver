@@ -15,7 +15,7 @@ function exec_resolver() {
 
 	echo -e "\n${BOLD}[${LGREEN}+${RESET}${BOLD}]${RESET} Check Resolving: Subdomains & Domains  "
 	echo -e "---------------------------------------------\n"
-	TMP_RESOL=temp_resolver.lst
+	TMP_RESOLV=temp_resolver.lst
 	_SUBDOMAINS_FILE="${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_SUBDOMAIN}"
 
 	cat "${_SUBDOMAINS_FILE}" | sed 's/  - //g' | grep -v '\[' | sort -u >"${OUT}/${DATE_LOG}/${DOMAIN}/parsed_subdomains.txt"
@@ -25,6 +25,28 @@ function exec_resolver() {
 
 	if [ -f resolver_ips.txt ]; then
 		mv resolver_ips.txt "${OUT}/${DATE_LOG}/${DOMAIN}/resolver_ips.txt"
+		RESOLVER_IPS="${OUT}/${DATE_LOG}/${DOMAIN}/resolver_ips.txt"
+	else
+		RESOLVER_IPS="resolver_ips.txt"
 	fi
+
+	while read line; do
+		domain=$(echo "$line" | awk '{print $1}')
+		ip=$(echo "$line" | awk '{print $2}')
+		if [[ -n "${ip}" ]]; then
+			echo -e "${domain} = ${ip} " | tee -a "${OUT}/${DATE_LOG}/${DOMAIN}/${TMP_RESOLV}" &>/dev/null
+			echo -e "${ip}" | tee -a "${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_IP_RESOLVER}" &>/dev/null
+			echo -e "${domain} ${ip} " | tee -a "${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_SUB_TABLE}" &>/dev/null
+		fi
+	done <${RESOLVER_IPS}
+
+	#Resolver IP = Subdomain {pars} Into YAML File
+	awk '{ if (a[$3]) a[$3] = a[$3]"\n - "$1; else a[$3]=":\n - "$1;} END { for (i in a) print i,a[i]}' <${OUT}/${DATE_LOG}/${DOMAIN}/${TMP_RESOLV} | sed -e 's/\s:/:/g' >${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_SUB_RESOLVER}
+	rm -r ${OUT}/${DATE_LOG}/${DOMAIN}/${TMP_RESOLV} >/dev/null 2>&1
+	sort -u -o ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_IP_RESOLVER} ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_IP_RESOLVER} ## Pars duplicate resolver ip
+
+	## Make more pretty
+	cat ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_SUB_TABLE} | sed 's/ / ,/g' | column -t -s, >${OUT}/${DATE_LOG}/${DOMAIN}/${FINAL_SUBDOMAIN_REV_ALL}
+	rm -r ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_SUB_TABLE} >/dev/null 2>&1
 
 }

@@ -4,6 +4,7 @@ import datetime
 import argparse
 
 from pyvis.network import Network
+from os.path import dirname as up
 
 def init_argparse():
     parser = argparse.ArgumentParser(
@@ -71,6 +72,7 @@ for ip in domain_data:
         net.add_node(domain, label=domain, title=domain, color="#828282", physics=True, group=domain, labelHighlightBold=True)
         net.add_edge(domain, ip, title=ip)
 
+report_path = up(args.file)
 d = datetime.date.today()
 date_now = '{}-{}-{}'.format(d.strftime('%m'),d.strftime('%d'), d.strftime('%Y'))
-net.show("{}-nGraph_{}.html".format(main_domain, date_now))
+net.show("{}/{}-nGraph_{}.html".format(report_path, main_domain, date_now))

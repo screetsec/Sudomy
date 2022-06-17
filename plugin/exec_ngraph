@@ -9,6 +9,7 @@
 #-Licence-----------------------------------------------------#
 #  MIT License ~ http://opensource.org/licenses/MIT           #
 #-------------------------------------------------------------#
+# file:///home/phil/repos/Sudomy/metactf.com-nGraph_06-17-2022.html
 
 function exec_ngraph() {
    local _nGraph="lib/lib/nGraph/nGraph.py"
@@ -20,12 +21,11 @@ function exec_ngraph() {
       [[ ! -e "${OUT}/${DATE_LOG}/${DOMAIN}/nGraph" ]] &&
          mkdir -p "${OUT}/${DATE_LOG}/${DOMAIN}/nGraph" || true
       # Clean
-      rm -r ${OUT}/${DATE_LOG}/${DOMAIN}/nGraph/*.* >/dev/null 2>&1
+      rm -r "${OUT}/${DATE_LOG}/${DOMAIN}/nGraph/*.*" >/dev/null 2>&1
       # Move YAML & Generate JSON Output
-      mv ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_SUB_RESOLVER} ${OUT}/${DATE_LOG}/${DOMAIN}/nGraph/${RESULT_SUB_RESOLVER}
+      mv "${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_SUB_RESOLVER}" "${OUT}/${DATE_LOG}/${DOMAIN}/nGraph/${RESULT_SUB_RESOLVER}"
       #ls ${OUT}/${DATE_LOG}/${DOMAIN}/nGraph/${RESULT_SUB_RESOLVER}
-      python3 ${_nGraph} --domain ${DOMAIN} --file ${OUT}/${DATE_LOG}/${DOMAIN}/nGraph/${RESULT_SUB_RESOLVER}
-      mv ${DOMAIN}-nGraph_${DATE_LOG}.html ${OUT}/${DATE_LOG}/${DOMAIN}/nGraph/${DOMAIN}-nGraph_${DATE_LOG}.html
+      python3 ${_nGraph} --domain "${DOMAIN}" --file "${OUT}/${DATE_LOG}/${DOMAIN}/nGraph/${RESULT_SUB_RESOLVER}"
       echo -e "${YELLOW}\t- ${RESET}Complete Generate network Graph${RESET}${PADDING}\t${GREEN}${RESET}"
    else
       echo -e "\n${BOLD}[${LGREEN}+${RESET}${BOLD}]${RESET} Genereate Visualization For Virtual Host"

@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 #-Metadata----------------------------------------------------#
 #  Filename: Sudomy - Subdomain Enumeration & Analysis        #
 #-Author(s)---------------------------------------------------#
@@ -13,54 +14,52 @@
 #  MIT License ~ http://opensource.org/licenses/MIT           #
 #-------------------------------------------------------------#
 
+function exec_extract_params() {
+	# Clean Old File
+	rm -r ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_EXTRACT_PARAM_FULL} ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_EXTRACT_PARAM_UNIQ} >/dev/null 2>&1
 
-function exec_extract_params(){
-# Clean Old File
-rm -r ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_EXTRACT_PARAM_FULL} ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_EXTRACT_PARAM_UNIQ} > /dev/null 2>&1
+	local INTR=interest
+	# Collecting RAW
+	cat ${OUT}/*.raw >${OUT_JUICY_URL_RAW}
+	if [[ -f ${OUT_JUICY_URL_RAW} ]]; then #Check Full Raw Data
+		# Pattern Removing Click identifier
+		# pattern1="\?utm(_|-)(source|campaign|content|medium|term)=|\?fbclid=|\?gclid=|\?dclid=|\?mscklid=|\?zanpid=|\?gclsrc=|\?af_(ios|android)_url=|";
+		# pattern2="\?af_force_deeplink=|\?af_banner=|\?af_web_dp=|\?is_retargeting=|\?af_(dp|esp)=|\&utm(_|-)(campaign|source|medium)=|";
+		# pattern3="\?_="
 
-local INTR=interest
-# Collecting RAW 
-cat ${OUT}/*.raw > ${OUT_JUICY_URL_RAW}
-	if [[ -f ${OUT_JUICY_URL_RAW} ]]; then #Check Full Raw Data 
-	# Pattern Removing Click identifier 
-	# pattern1="\?utm(_|-)(source|campaign|content|medium|term)=|\?fbclid=|\?gclid=|\?dclid=|\?mscklid=|\?zanpid=|\?gclsrc=|\?af_(ios|android)_url=|";
-	# pattern2="\?af_force_deeplink=|\?af_banner=|\?af_web_dp=|\?is_retargeting=|\?af_(dp|esp)=|\&utm(_|-)(campaign|source|medium)=|";
-	# pattern3="\?_="
+		## Check Folder Results
+		[[ ! -e "${OUT}/${DATE_LOG}/${DOMAIN}/${INTR}" ]] &&
+			mkdir -p "${OUT}/${DATE_LOG}/${DOMAIN}/${INTR}" || true
 
-        ## Check Folder Results 
-        [[ ! -e "${OUT}/${DATE_LOG}/${DOMAIN}/${INTR}" ]] \
-                && mkdir -p "${OUT}/${DATE_LOG}/${DOMAIN}/${INTR}"||true
+		pattern1="(\?|\&)utm(_|-)(source|campaign|content|medium|term)=|\?fbclid=|\?gclid=|\?dclid=|\?mscklid=|\?zanpid=|\?gclsrc=|\?af_(ios|android)_url=|"
+		pattern2="\?af_force_deeplink=|\?af_banner=|\?af_web_dp=|\?is_retargeting=|\?af_(dp|esp)=|"
+		pattern3="pk_campaign=|piwik_campaign=|\_ga=|\?clickid=|\?Click|\?campaignid=|\?__cf_chl_(jschl|captcha)_tk__|"
+		pattern4="pagespeed=noscript|PageSpeed\%3Dnoscript|PageSpeed\%253Dnoscript"
+		# pattern5="\?_=|\,|\!|js\?vue"; #
 
+		echo -ne "\n${BOLD}[${LGREEN}+${RESET}${BOLD}]${RESET} Collecting Juicy URL & Parameter from Engine \n" ##
+		echo -e "---------------------------------------------\n"
 
-	pattern1="(\?|\&)utm(_|-)(source|campaign|content|medium|term)=|\?fbclid=|\?gclid=|\?dclid=|\?mscklid=|\?zanpid=|\?gclsrc=|\?af_(ios|android)_url=|";	
-	pattern2="\?af_force_deeplink=|\?af_banner=|\?af_web_dp=|\?is_retargeting=|\?af_(dp|esp)=|";
-	pattern3="pk_campaign=|piwik_campaign=|\_ga=|\?clickid=|\?Click|\?campaignid=|\?__cf_chl_(jschl|captcha)_tk__|";
-	pattern4="pagespeed=noscript|PageSpeed\%3Dnoscript|PageSpeed\%253Dnoscript";
-	# pattern5="\?_=|\,|\!|js\?vue"; #
-
-		echo -ne "\n${BOLD}[${LGREEN}+${RESET}${BOLD}]${RESET} Collecting Juicy URL & Parameter from Engine \n"  ## 
-		echo -e "---------------------------------------------\n"  
-		
-		# Removing duplicate parameter value & Delete uri containing extension 
-		cat ${OUT_JUICY_URL_RAW} | grep -P "=" | sed  "/\b\(jpg\|JPG\|jpeg\|png\|doc\|PNG\|SVG\|svg\|pdf\|PDF\|ttf\|eot\|cssx\|css\|gif\|GIF\|ico\|woff\|woff2\)\b/d" | \
-		egrep -iv "${pattern1}${pattern2}${pattern3}${pattern4}" \
-		> ${OUT_PARAM_URL_PARSING} 
-			for i in $(cat ${OUT_PARAM_URL_PARSING}); do
-				URL="${i}"
-				LIST_DOM=(${URL//[=&]/=FUZZ&})
-					#echo "${URL}"
-					echo ${LIST_DOM} | awk -F'=' -vOFS='=' '{$NF="FUZZ"}1;' >> ${OUT}/${RESULT_EXTRACT_PARAM}
-			done
-		# Remove Raw Data   
+		# Removing duplicate parameter value & Delete uri containing extension
+		cat ${OUT_JUICY_URL_RAW} | grep -P "=" | sed "/\b\(jpg\|JPG\|jpeg\|png\|doc\|PNG\|SVG\|svg\|pdf\|PDF\|ttf\|eot\|cssx\|css\|gif\|GIF\|ico\|woff\|woff2\)\b/d" |
+			egrep -iv "${pattern1}${pattern2}${pattern3}${pattern4}" \
+				>${OUT_PARAM_URL_PARSING}
+		for i in $(cat ${OUT_PARAM_URL_PARSING}); do
+			URL="${i}"
+			LIST_DOM=(${URL//[=&]/=FUZZ&})
+			#echo "${URL}"
+			echo ${LIST_DOM} | awk -F'=' -vOFS='=' '{$NF="FUZZ"}1;' >>${OUT}/${RESULT_EXTRACT_PARAM}
+		done
+		# Remove Raw Data
 		# rm -r ${OUT_RAW_WEBARCHIVE} ${OUT_RAW_WEBARCHIVE_PARS} > /dev/null 2>&1
 
 		# Make another output, Sorting Duplicate Parameter to interest folder
-		sort -u ${OUT}/${RESULT_EXTRACT_PARAM} > ${OUT}/${DATE_LOG}/${DOMAIN}/${INTR}/${INTERESTURI_PARAM_UNIQ} 
+		sort -u ${OUT}/${RESULT_EXTRACT_PARAM} >${OUT}/${DATE_LOG}/${DOMAIN}/${INTR}/${INTERESTURI_PARAM_UNIQ}
 
 		# Full URL Paramaeter no parsing to interest uri folder
 		mv ${OUT_PARAM_URL_PARSING} ${OUT}/${DATE_LOG}/${DOMAIN}/${INTR}/${INTERESTURI_PARAM}
 
-		# Full Juicy URL 
+		# Full Juicy URL
 
 		mv ${OUT_JUICY_URL_RAW} ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_JUICY_URL_FULL}
 
@@ -68,59 +67,57 @@ cat ${OUT}/*.raw > ${OUT_JUICY_URL_RAW}
 		COUNT_JUICY_URL_FULL=$(cat ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_JUICY_URL_FULL} | wc -l)
 
 		# INTEREST URI
-		COUNT_URL_PARAM_FULL=$(cat ${OUT}/${DATE_LOG}/${DOMAIN}/${INTR}/${INTERESTURI_PARAM} | wc -l )
-		COUNT_URL_PARAM_UNIQ=$(cat ${OUT}/${DATE_LOG}/${DOMAIN}/${INTR}/${INTERESTURI_PARAM_UNIQ} | wc -l )
-		
-		echo -e  "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}Total Juicy URL${RESET}${DPADDING}\t[${GREEN}${COUNT_JUICY_URL_FULL}${RESET}]"
-		echo -e  "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}Total Full Parameter${RESET}${DPADDING}[${GREEN}${COUNT_URL_PARAM_FULL}${RESET}]"
-		echo -e  "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}Total Uniq Parameter${RESET}${DPADDING}[${GREEN}${COUNT_URL_PARAM_UNIQ}${RESET}]"
+		COUNT_URL_PARAM_FULL=$(cat ${OUT}/${DATE_LOG}/${DOMAIN}/${INTR}/${INTERESTURI_PARAM} | wc -l)
+		COUNT_URL_PARAM_UNIQ=$(cat ${OUT}/${DATE_LOG}/${DOMAIN}/${INTR}/${INTERESTURI_PARAM_UNIQ} | wc -l)
+
+		echo -e "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}Total Juicy URL${RESET}${DPADDING}\t[${GREEN}${COUNT_JUICY_URL_FULL}${RESET}]"
+		echo -e "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}Total Full Parameter${RESET}${DPADDING}[${GREEN}${COUNT_URL_PARAM_FULL}${RESET}]"
+		echo -e "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}Total Uniq Parameter${RESET}${DPADDING}[${GREEN}${COUNT_URL_PARAM_UNIQ}${RESET}]"
 
 		#mv ${OUT_RAW_WEBARCHIVE_PARS} ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_EXTRACT_PARAM}
-                #cat ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_EXTRACT_PARAM_UNIQ} \
+		#cat ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_EXTRACT_PARAM_UNIQ} \
 		# | while read VERBOSE; do
-                #	echo -e ${YELLOW}"\t - ${RESET}$VERBOSE"
-       		#   done
+		#	echo -e ${YELLOW}"\t - ${RESET}$VERBOSE"
+		#   done
 		#echo -e  "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}Total ${RESET}${DPADDING}\t\t[${GREEN}${COUNT_URL_PARAM_UNIQ}${RESET}]\n"
-		
-		
-		# Parsing Path Interest URI 
-			# Like gettting admin,api,backup, internal ticket and etc
-		
-		echo -ne "\n${BOLD}[${LGREEN}+${RESET}${BOLD}]${RESET} Extract Interest Url,File,Js & Parameter \n"  ## 
-		echo -e "---------------------------------------------\n"  
+
+		# Parsing Path Interest URI
+		# Like gettting admin,api,backup, internal ticket and etc
+
+		echo -ne "\n${BOLD}[${LGREEN}+${RESET}${BOLD}]${RESET} Extract Interest Url,File,Js & Parameter \n" ##
+		echo -e "---------------------------------------------\n"
 		echo -e "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}Extract: "
-		  path1="\/(admin|api|auth|access|account|beta|board|bin|backup|cgi|create|checkout|debug|dashboard|deploy|get|post|prod|pay|git|"
-		  path2="purchase|panel|rest|user|member|internal|ticket|test|staging|system|setting|server|"
-		  path3="java|subscription|private|log|v[0-9]|[1-9]\.[0-9])"
-		  junkpath1="\/wp-(json|content)\/"	
-			echo -e  "${YELLOW}\t- ${RESET}Interest Parameter"
-			echo -e  "${YELLOW}\t- ${RESET}Interest Paths"
-		  
-			egrep -v '${junkpath1}' ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_JUICY_URL_FULL} | egrep "${path1}${path2}${path3}" | sort -u > ${OUT}/${DATE_LOG}/${DOMAIN}/${INTR}/${INTERESTURI_PATH}
-		
-		
+		path1="\/(admin|api|auth|access|account|beta|board|bin|backup|cgi|create|checkout|debug|dashboard|deploy|get|post|prod|pay|git|"
+		path2="purchase|panel|rest|user|member|internal|ticket|test|staging|system|setting|server|"
+		path3="java|subscription|private|log|v[0-9]|[1-9]\.[0-9])"
+		junkpath1="\/wp-(json|content)\/"
+		echo -e "${YELLOW}\t- ${RESET}Interest Parameter"
+		echo -e "${YELLOW}\t- ${RESET}Interest Paths"
+
+		egrep -v '${junkpath1}' ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_JUICY_URL_FULL} | egrep "${path1}${path2}${path3}" | sort -u >${OUT}/${DATE_LOG}/${DOMAIN}/${INTR}/${INTERESTURI_PATH}
+
 		# Parsing url javascript files + Fetch js file
-		   echo -e  "${YELLOW}\t- ${RESET}Interest Url Javascript Files"
-			egrep -i "\.js" ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_JUICY_URL_FULL} | sort -u > ${OUT}/${DATE_LOG}/${DOMAIN}/${INTR}/${INTERESTURI_JS}
+		echo -e "${YELLOW}\t- ${RESET}Interest Url Javascript Files"
+		egrep -i "\.js" ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_JUICY_URL_FULL} | sort -u >${OUT}/${DATE_LOG}/${DOMAIN}/${INTR}/${INTERESTURI_JS}
 
 		# Other juicy files :: json, txt, toml, xml, yaml, etc
-		  echo -e  "${YELLOW}\t- ${RESET}Interest Juicy Files"
-		    otherext="\.json|\.txt|\.yaml|\.toml|\.xml|\.env|\.config|\.tar|\.rar|\.gz|\.log"
-			egrep -i "${otherext}" ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_JUICY_URL_FULL} | sort -u > ${OUT}/${DATE_LOG}/${DOMAIN}/${INTR}/${INTERESTURI_OTF}
+		echo -e "${YELLOW}\t- ${RESET}Interest Juicy Files"
+		otherext="\.json|\.txt|\.yaml|\.toml|\.xml|\.env|\.config|\.tar|\.rar|\.gz|\.log"
+		egrep -i "${otherext}" ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_JUICY_URL_FULL} | sort -u >${OUT}/${DATE_LOG}/${DOMAIN}/${INTR}/${INTERESTURI_OTF}
 
 		# Parsing url contain document files (some bug lfi in here/information disclosoure)
-		   echo -e  "${YELLOW}\t- ${RESET}Interest Url Document Files"
-		    documentlist="\.pdf|\.doc|\.docx|\.pptx|\.docm|\.xls|\.xlsx|\.xlsm|\.xps|\.pub"
-			egrep -i "${documentlist}" ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_JUICY_URL_FULL} | sort -u > ${OUT}/${DATE_LOG}/${DOMAIN}/${INTR}/${INTERESTURI_DOC}
+		echo -e "${YELLOW}\t- ${RESET}Interest Url Document Files"
+		documentlist="\.pdf|\.doc|\.docx|\.pptx|\.docm|\.xls|\.xlsx|\.xlsm|\.xps|\.pub"
+		egrep -i "${documentlist}" ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_JUICY_URL_FULL} | sort -u >${OUT}/${DATE_LOG}/${DOMAIN}/${INTR}/${INTERESTURI_DOC}
 
-                # Parsing url contain document node module 
-                   echo -e  "${YELLOW}\t- ${RESET}Interest javascript nodemodule"
-                        egrep -i "node_module" ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_JUICY_URL_FULL} | sort -u > ${OUT}/${DATE_LOG}/${DOMAIN}/${INTR}/${INTERESTURI_NODE}
+		# Parsing url contain document node module
+		echo -e "${YELLOW}\t- ${RESET}Interest javascript nodemodule"
+		egrep -i "node_module" ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_JUICY_URL_FULL} | sort -u >${OUT}/${DATE_LOG}/${DOMAIN}/${INTR}/${INTERESTURI_NODE}
 
-	else	
+	else
 		echo -e "\n${BOLD}[${LGREEN}+${RESET}${BOLD}]${RESET} Collecting Juicy URL & Parameter from Engine   "
-                echo -e "---------------------------------------------\n"
-                echo -e  "${PADDING}${RED}${PADDING}!${PADDING}${RESET}Please, run it again with source WebArchive,CommonCrawl,UrlScan${RESET}\t[${RED}FAIL${RESET}]\n"
+		echo -e "---------------------------------------------\n"
+		echo -e "${PADDING}${RED}${PADDING}!${PADDING}${RESET}Please, run it again with source WebArchive,CommonCrawl,UrlScan${RESET}\t[${RED}FAIL${RESET}]\n"
 
 	fi
 }

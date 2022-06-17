@@ -1103,7 +1103,7 @@ fi
 
 if [[ ${PLUGIN_EXTRACT_PARAMS} == true ]]; then
   source ${APP_EXTRACT_PARAMS}
-  # exec_extract_params
+  exec_extract_params
   echo ""
 fi
 
@@ -1173,7 +1173,7 @@ if [[ ${PLUGIN_WORDLISTS} == true ]]; then
     exec_wordlists
   else
     source ${APP_EXTRACT_PARAMS}
-    #exec_extract_params
+    exec_extract_params
     echo ""
 
     source ${APP_WORDLISTS}
@@ -1337,6 +1337,13 @@ for i in $(ls "${OUT}/${DATE_LOG}/${DOMAIN}"); do
   fi
 done
 
+echo -e "---------------------------------------------\n"
+echo -e "If your using the screenshot plugin (gowitness) Remeber to kill the server process when you're done"
+echo -e "ps aux | grep gowitness"
+echo -e "kill -9 <PID>"
+echo -e "---------------------------------------------\n"
+
+
 if [[ $DESTINATION == true ]]; then
   echo -e "\n${BOLD}[${LGREEN}+${RESET}${BOLD}]${RESET} Sud⍥my has been sucessfully ${GRENN}completed${RESET}"
   echo -e "---------------------------------------------\n"
@@ -1358,7 +1365,7 @@ else
   echo -e "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}Location output:"
   echo -e "${BOLD}${PADDING}${PADDING}\t-${RESET}${BOLD}${RESET}${LGREEN} output/${DATE_LOG}/${DOMAIN} ${RESET} "
   echo -e "${BOLD}${PADDING}${PADDING}\t-${RESET}${BOLD}${RESET}${LGREEN} output/${DATE_LOG}/${DOMAIN}/report ${RESET} "
-  echo -e "${BOLD}${PADDING}${PADDING}\t-${RESET}${BOLD}${RESET}${LGREEN} ${OUTFILE}/${OUT_NAME}/${DOMAIN}/nGraph ${RESET} "
+  echo -e "${BOLD}${PADDING}${PADDING}\t-${RESET}${BOLD}${RESET}${LGREEN} output/${DATE_LOG}/${DOMAIN}/nGraph ${RESET} "
   echo -e "${BOLD}${PADDING}${PADDING}\t-${RESET}${BOLD}${RESET}${LGREEN} output/${DATE_LOG}/${DOMAIN}/wordlists ${RESET} "
   echo -e "${BOLD}${PADDING}${PADDING}\t-${RESET}${BOLD}${RESET}${LGREEN} output/${DATE_LOG}/${DOMAIN}/screenshots ${RESET} \n\n"
 fi

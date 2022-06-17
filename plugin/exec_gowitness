@@ -20,18 +20,23 @@ function exec_gowitness() {
 		mkdir -p "${OUT}/${DATE_LOG}/${DOMAIN}/screenshots/gowitness" || true
 
 	${_GOWITNESS} file -f "${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_HTTPROBE}" \
-	--screenshot-path "${OUT}/${DATE_LOG}/${DOMAIN}/screenshots/gowitness/" \
+	--screenshot-path "${OUT}/${DATE_LOG}/${DOMAIN}/screenshots/gowitness" \
 	--db-path "${OUT}/${DATE_LOG}/${DOMAIN}/screenshots/gowitness/gowitness.sqlite3" \
 	-t 20
 
 	## Reports
 	${_GOWITNESS} report export \
 	--db-path "${OUT}/${DATE_LOG}/${DOMAIN}/screenshots/gowitness/gowitness.sqlite3" \
-	--file "${OUT}/${DATE_LOG}/${DOMAIN}/screenshots/gowitness/gowitness_report.html"
+	--file "${OUT}/${DATE_LOG}/${DOMAIN}/screenshots/gowitness/gowitness_report.html" \
+	--screenshot-path "${OUT}/${DATE_LOG}/${DOMAIN}/screenshots/gowitness"
 
 	## Start the gowitness report server and open up in new firefox window/tab
-	cd "${OUT}/${DATE_LOG}/${DOMAIN}/screenshots/gowitness/"
-	${_GOWITNESS} server -A &
-	cd - || true
+	${_GOWITNESS} server -A \
+	--db-path "${OUT}/${DATE_LOG}/${DOMAIN}/screenshots/gowitness/gowitness.sqlite3" \
+	--screenshot-path "${OUT}/${DATE_LOG}/${DOMAIN}/screenshots/gowitness" \
+	--disable-logging &
+
 	firefox http://localhost:7171
+
+	echo -e "Dont forget to kill the server when you're done. ex. ps aux | grep gowitness ; kill -9 <PID>"
 }
