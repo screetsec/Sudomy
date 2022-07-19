@@ -18,7 +18,7 @@ RUN apt update \
 	grep \
     bsdmainutils \
     # Install NodeJS 10.x
-    && curl -sL https://deb.nodesource.com/setup_10.x -o setup.sh \
+    && curl -sL https://deb.nodesource.com/setup_14.x -o setup.sh \
     && bash setup.sh \
     && apt install -y nodejs \
     # Install PhantomJS
