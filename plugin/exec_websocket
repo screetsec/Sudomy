@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 #-Metadata----------------------------------------------------#
 #  Filename: Sudomy - Subdomain Enumeration & Analysis        #
 #-Author(s)---------------------------------------------------#
@@ -11,17 +12,16 @@
 #  Custom Plugin by LocalheartZ (@agussetyar) IndoXploit      #
 #--------------------------------------------------------------
 
-function exec_websocket(){
-    echo -e "\n${BOLD}[${LGREEN}+${RESET}${BOLD}]${RESET} WebSocket Connection Check "
-    echo -e "---------------------------------------------\n"
+function exec_websocket() {
+  echo -e "\n${BOLD}[${LGREEN}+${RESET}${BOLD}]${RESET} WebSocket Connection Check "
+  echo -e "---------------------------------------------\n"
 
-    for WEBSOCKET_SITE in $(cat ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_HTTPROBE} | sed 's/https\?:\/\///' | sed 's/^www.//' | sed 's/^.//' | sort -u | uniq) 
-    do
-      echo -e "\t${WEBSOCKET_SITE} (WS/HTTP): "
-      timeout --foreground 5 wscat -c ws://${WEBSOCKET_SITE}
+  for WEBSOCKET_SITE in $(cat ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_HTTPROBE} | sed 's/https\?:\/\///' | sed 's/^www.//' | sed 's/^.//' | sort -u | uniq); do
+    echo -e "\t${WEBSOCKET_SITE} (WS/HTTP): "
+    timeout --foreground 5 wscat -c ws://${WEBSOCKET_SITE}
 
-      echo -e "\t${WEBSOCKET_SITE} (WSS/HTTPS): "
-      timeout --foreground 5 wscat -c wss://${WEBSOCKET_SITE}
-    done
+    echo -e "\t${WEBSOCKET_SITE} (WSS/HTTPS): "
+    timeout --foreground 5 wscat -c wss://${WEBSOCKET_SITE}
+  done
 
 }

@@ -1,0 +1,36 @@
+#!/usr/bin/env bash
+#-Metadata----------------------------------------------------#
+#  Filename: Sudomy - Subdomain Enumeration & Analysis        #
+#-Author(s)---------------------------------------------------#
+#  Edo maland ~ @screetsec                                    #
+#-Info--------------------------------------------------------#
+#  This file is part of Sudomy project                        #
+#  Plugin DNSX : Update = 2022-06-17                          #
+#-Licence-----------------------------------------------------#
+#  MIT License ~ http://opensource.org/licenses/MIT           #
+#-------------------------------------------------------------#
+
+function exec_dnsx() {
+    which ${_DNSX} >/dev/null
+    if [[ "$?" -eq "0" ]]; then
+        echo -e "\n${BOLD}[${LGREEN}+${RESET}${BOLD}]${RESET} Perform multiple dns queries (dnsx) "
+        echo -e "---------------------------------------------\n"
+
+        # Default Thread 50
+        # You Can edit the argument here for dnsx here
+        echo -e "\n${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}Execute ${RESET}\n"
+        ${_DNSX} -l ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_SUBDOMAIN} -t 50 -silent -o ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_DNSX} &
+        wait
+        sort -u ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_DNSX} -o ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_DNSX}
+        cat ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_DNSX} | sed -e 's/^/\t - /'
+
+        # Extract IP Resolver
+        cat ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_DNSX} | awk '{print $2}' | sort -u >>${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_IP_RESOLVER}
+    else
+        echo -e "\n${BOLD}[${LGREEN}+${RESET}${BOLD}]${RESET} Perform multiple dns queries (dnsx)"
+        echo -e "---------------------------------------------\n"
+        echo -e "${PADDING}${RESET}${PADDING}${LRED}x${RESET} This Plugin need ${_DNSX}, ${RED} running the tools again${RESET}"
+
+    fi
+
+}

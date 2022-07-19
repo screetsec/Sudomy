@@ -92,7 +92,7 @@ Detail information File Reconnaissance & Juicy Data
 ------------------------------------------------------------------------------------------------------
 
 - ./screenshots/report-0.html   	-- Screenshoting report    	< httprobe_subdomain.txt
-- ./screenshots/gowitness.db   		-- Database screenshot    	< httprobe_subdomain.txt
+- ./screenshots/gowitness/gowitness.sqlite3   		-- Database screenshot    	< httprobe_subdomain.txt
 
 ------------------------------------------------------------------------------------------------------
 

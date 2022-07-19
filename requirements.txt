@@ -1,6 +1,7 @@
-censys==0.0.8
+censys
 future
 argparse
 pyvis
 PyYAML
 yq
+pydig

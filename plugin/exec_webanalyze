@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 #-Metadata----------------------------------------------------#
 #  Filename: Sudomy - Subdomain Enumeration & Analysis        #
 #-Author(s)---------------------------------------------------#
@@ -9,24 +10,21 @@
 #  MIT License ~ http://opensource.org/licenses/MIT           #
 #-------------------------------------------------------------#
 
+function exec_webanalyze() {
+  which ${_WEBANALYZE} >/dev/null
+  if [[ "$?" -eq "0" ]]; then
+    echo -e "\n${BOLD}[${LGREEN}+${RESET}${BOLD}]${RESET} Web Apss Identifier (webanalyze) "
+    echo -e "---------------------------------------------\n"
+    #echo -e  "\n${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}Execute ${RESET}\n"
 
-function exec_webanalyze(){
-          which ${_WEBANALYZE} > /dev/null
-             if  [[ "$?" -eq "0" ]];then
-                 echo -e "\n${BOLD}[${LGREEN}+${RESET}${BOLD}]${RESET} Web Apss Identifier (webanalyze) "
-                   echo -e "---------------------------------------------\n"
-		   #echo -e  "\n${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}Execute ${RESET}\n"
+    # Default Thread 50
+    # You Can edit the argument here for httpx
+    ${_WEBANALYZE} -apps ${LIB_APPS} -worker 10 -hosts ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_HTTPROBE} | tee ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_WEBANALYZE}
+  else
+    echo -e "\n${BOLD}[${LGREEN}+${RESET}${BOLD}]${RESET} Web Apps Identifier (webanalyze) "
+    echo -e "---------------------------------------------\n"
+    echo -e "${PADDING}${RESET}${PADDING}${LRED}x${RESET} This Plugin need webanalyze, ${RED} running the tools again${RESET}"
 
-
-		# Default Thread 50 
-		# You Can edit the argument here for httpx
-		    ${_WEBANALYZE} -apps ${LIB_APPS} -worker 10 -hosts ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_HTTPROBE} | tee ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_WEBANALYZE}
-        else 
-               echo -e "\n${BOLD}[${LGREEN}+${RESET}${BOLD}]${RESET} Web Apps Identifier (webanalyze) "
-               echo -e "---------------------------------------------\n"
-               echo -e "${PADDING}${RESET}${PADDING}${LRED}x${RESET} This Plugin need webanalyze, ${RED} running the tools again${RESET}"
-
-        fi
-
+  fi
 
 }

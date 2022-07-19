@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 #-Metadata----------------------------------------------------#
 #  Filename: Sudomy - Subdomain Enumeration & Analysis        #
 #-Author(s)---------------------------------------------------#
@@ -9,35 +10,33 @@
 #  MIT License ~ http://opensource.org/licenses/MIT           #
 #-------------------------------------------------------------#
 
+function exec_nmaptop() {
+	## Cleaning Log Files ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_NMAP_HOSTS}
 
-function exec_nmaptop(){
-## Cleaning Log Files ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_NMAP_HOSTS}
+	rm -r ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_NMAP_HOSTS} >/dev/null 2>&1
 
-rm -r ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_NMAP_HOSTS} > /dev/null 2>&1
+	if [[ -f ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_CFCHECK} ]]; then                                     ## Checking file cf_resolver.txt
+		echo -e "\n${BOLD}[${LGREEN}+${RESET}${BOLD}]${RESET} Port Scanner: Nmap Port Scanner top ports   " ##  + Must running with argument -cF
+		echo -e "---------------------------------------------\n"                                           ###   Example : Sudomy  -d example.com  -cF -nT  -nP or  Sudomy -d example.com -rS -cF -nT
 
-	if [[ -f ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_CFCHECK} ]]; then        ## Checking file cf_resolver.txt 
-		echo -e "\n${BOLD}[${LGREEN}+${RESET}${BOLD}]${RESET} Port Scanner: Nmap Port Scanner top ports   "  ##  + Must running with argument -cF  
-		echo -e "---------------------------------------------\n"                 ###   Example : Sudomy  -d example.com  -cF -nT  -nP or  Sudomy -d example.com -rS -cF -nT 
+		for SUB_RESOLV in $(cat ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_CFCHECK}); do
+			echo -e "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}Scan host ${SUB_RESOLV} "
 
-		for SUB_RESOLV in $(cat ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_CFCHECK}) 
-		do
-		echo -e "${PADDING}${YELLOW}${PADDING}⍥${PADDING}${RESET}Scan host ${SUB_RESOLV} "
-		
-		Open_Ports=$(nmap --top-ports 1024 ${SUB_RESOLV} -T4 |   awk '/^Nmap scan report/{}/open/ { split($1,a,"/"); result[Host][a[1]]=""}
+			Open_Ports=$(nmap --top-ports 1024 ${SUB_RESOLV} -T4 | awk '/^Nmap scan report/{}/open/ { split($1,a,"/"); result[Host][a[1]]=""}
 		       END {
 		       for (i in result) {
 		         printf i;
 		         for (j in result[i])
 		           printf ",%s", j ;
-		         print ""} }' |   sed -e 's/,/\t/' )
-		
-		echo -e "${SUB_RESOLV} ${Open_Ports}" | tee -a ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_NMAP_HOSTS} > /dev/null 2>&1
-		done 
+		         print ""} }' | sed -e 's/,/\t/')
+
+			echo -e "${SUB_RESOLV} ${Open_Ports}" | tee -a ${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_NMAP_HOSTS} >/dev/null 2>&1
+		done
 
 	else
 		echo -e "\n${BOLD}[${LGREEN}+${RESET}${BOLD}]${RESET} Host Resolver: Nmap Port Scanner   "
 		echo -e "---------------------------------------------\n"
- 		echo -e  "${PADDING}${RED}${PADDING}!${PADDING}${RESET}Run together with arg -cF${RESET}\t[${RED}FAIL${RESET}]\n"
+		echo -e "${PADDING}${RED}${PADDING}!${PADDING}${RESET}Run together with arg -cF${RESET}\t[${RED}FAIL${RESET}]\n"
 
 	fi
- }
+}
