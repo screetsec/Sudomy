@@ -1,0 +1,53 @@
+#!/usr/bin/env bash
+#-Metadata----------------------------------------------------#
+#  Filename: Sudomy - Subdomain Enumeration & Analysis        #
+#-Author(s)---------------------------------------------------#
+#  Edo maland ~ @screetsec                                    #
+#-Info--------------------------------------------------------#
+#  This file is part of Sudomy project                        #
+#  Plugin Screenshots: Update = 2022-06-17                    #
+#	- gowitness					      #
+#-Licence-----------------------------------------------------#
+#  MIT License ~ http://opensource.org/licenses/MIT           #
+#-------------------------------------------------------------#
+
+function exec_gowitness() {
+
+	echo -e "---------------------------------------------\n"
+	echo -e "Kill gowitness \n"
+	echo -e "rm -rf ${OUT}/${DATE_LOG}/${DOMAIN}/screenshots/gowitness/* \n"
+	pkill gowitness
+	ps -aux | grep gowitness
+	echo -e "---------------------------------------------\n"
+	
+	## Cleaning old file
+	rm -rf ${OUT}/${DATE_LOG}/${DOMAIN}/screenshots/gowitness/*
+	sleep 2
+	echo -e "\n${BOLD}[${LGREEN}+${RESET}${BOLD}]${RESET} Web Screenshots: from domain list"
+	echo -e "---------------------------------------------\n"
+	## Check Folder Results
+	[[ ! -e "${OUT}/${DATE_LOG}/${DOMAIN}/screenshots/gowitness" ]] &&
+		mkdir -p "${OUT}/${DATE_LOG}/${DOMAIN}/screenshots/gowitness" || true
+	
+	${_GOWITNESS} file -f "${OUT}/${DATE_LOG}/${DOMAIN}/${RESULT_HTTPROBE}" \
+	--screenshot-path "${OUT}/${DATE_LOG}/${DOMAIN}/screenshots/gowitness" \
+	--db-location "sqlite://${OUT}/${DATE_LOG}/${DOMAIN}/screenshots/gowitness/gowitness.sqlite3" \
+	-t 20
+
+	
+	## Reports
+	${_GOWITNESS} report export \
+	--db-location "sqlite://${OUT}/${DATE_LOG}/${DOMAIN}/screenshots/gowitness/gowitness.sqlite3" \
+	--file "${OUT}/${DATE_LOG}/${DOMAIN}/screenshots/gowitness/gowitness_report.html" \
+	--screenshot-path "${OUT}/${DATE_LOG}/${DOMAIN}/screenshots/gowitness"
+	
+	## Start the gowitness report server and open up in new firefox window/tab
+	${_GOWITNESS} server -a 0.0.0.0:7575 -A \
+	--db-location "sqlite://${OUT}/${DATE_LOG}/${DOMAIN}/screenshots/gowitness/gowitness.sqlite3" \
+	--screenshot-path "${OUT}/${DATE_LOG}/${DOMAIN}/screenshots/gowitness" \
+	--disable-logging &
+
+	firefox http://localhost:7575
+
+	echo -e "Dont forget to kill the server when you're done. ex. ps aux | grep gowitness ; kill -9 <PID>"
+}
