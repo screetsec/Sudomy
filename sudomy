@@ -27,7 +27,31 @@ source slack.conf
 source sudomy.conf
 
 #### Command calling
+LOGO="                                                                                  
+            .                          
+          ..                           
+          :            .:              
+         :.          *%@@%.            
+   ......=-::::::::::+@@@@@@%=:        
+     ..  *%@%@%%%@%%%%@@@@@*.          
+         .. :-==+*#%@@@@@@=            
+          :        .*%@@%:             
+          .        .::-%#              
+            .       +%%@**-            
+                    *@@@@%*            
+                    %@@%@@%            
+                   =@@@%%@@:           
+                   %@%+:*@@=           
+                  =@%#   #@*           
+                  =@%:   -@@:          
+                 :%%#.    #@+          
+                  ::.      :.           
+                :::..      :..          "
+
+
+#### Command calling
 goBanner() {
+  echo -e ${RED}"${LOGO}"
   echo -e ${RED}" ___         _${YELLOW} _  _ ${GREEN}          ${RESET}"
   echo -e ${RED}"/ __|_  _ __| ${YELLOW}(_)(_)${GREEN}_ __ _  _ ${RESET}"
   echo -e ${RED}"\__ \ || / _  ${YELLOW}/ __ \ ${GREEN} ' \ || |${RESET}"
