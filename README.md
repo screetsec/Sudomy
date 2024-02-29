@@ -165,8 +165,8 @@ $ python3 -m pip install -r requirements.txt
 
 ```bash
 # Linux
-apt-get update
-apt-get install jq nmap phantomjs npm chromium parallel
+sudo apt-get update
+sudo apt-get install jq nmap phantomjs npm chromium parallel
 npm i -g wappalyzer wscat
 
 # Mac
